@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:anime_and_comic_entertainment/pages/home.dart';
+import 'package:anime_and_comic_entertainment/main.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {
@@ -27,8 +27,9 @@ class _SplashState extends State<Splash> {
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          const HomeScreen(),
+      pageBuilder: (context, animation, secondaryAnimation) => MyHomePage(
+        title: 'skylark',
+      ),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 2.0);
         const end = Offset.zero;
@@ -53,11 +54,13 @@ class _SplashState extends State<Splash> {
   }
 
   Widget content() {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.black,
       child: Center(
         child: (Image(
           image: AssetImage('assets/images/skylark_logo.gif'),
+          width: screenWidth * 0.6,
         )),
       ),
     );
