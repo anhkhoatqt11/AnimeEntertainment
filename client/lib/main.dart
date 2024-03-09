@@ -6,7 +6,7 @@ import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -54,12 +54,7 @@ class _NavigationScreenState extends State<NavigationScreen>
   Widget build(BuildContext context) {
     return Container(
       color: Color(0xFF141414),
-      child: ListView(
-        children: [
-          SizedBox(height: 64),
-          Center(child: widget.navIndex == 1 ? ComicPage() : AnimePage()),
-        ],
-      ),
+      child: widget.navIndex == 1 ? ComicPage() : AnimePage(),
     );
   }
 }
@@ -79,11 +74,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   var _bottomNavIndex = 0; //default index of a first screen
 
   final iconList = <IconData>[
-    CupertinoIcons.house_fill,
-    CupertinoIcons.book_solid,
-    Icons.movie_filter,
-    CupertinoIcons.gamecontroller_alt_fill,
-    CupertinoIcons.person_crop_square_fill,
+    FontAwesomeIcons.house,
+    FontAwesomeIcons.bookOpenReader,
+    FontAwesomeIcons.clapperboard,
+    FontAwesomeIcons.gamepad,
+    FontAwesomeIcons.clipboardUser,
   ];
 
   final titleList = ['Trang chủ', 'Truyện', 'Anime', 'Thử thách', 'Cá nhân'];
@@ -96,12 +91,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF141414),
       extendBody: true,
       body: NotificationListener<ScrollNotification>(
         child: NavigationScreen(_bottomNavIndex),
       ),
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-        height: 69,
+        height: 60,
         itemCount: iconList.length,
         tabBuilder: (int index, bool isActive) {
           final whiteColors = List<Color>.from([
@@ -118,10 +114,10 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   colors: finalColor,
                   begin: Alignment.topCenter,
                 ).createShader(rect),
-                child: Icon(
+                child: FaIcon(
                   iconList[index],
                   color: Colors.white,
-                  size: 24,
+                  size: 20,
                 ),
               ),
               const SizedBox(height: 2),

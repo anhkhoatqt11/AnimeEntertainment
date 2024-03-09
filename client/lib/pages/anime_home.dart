@@ -1,3 +1,5 @@
+import 'package:anime_and_comic_entertainment/components/HotSeries.dart';
+import 'package:anime_and_comic_entertainment/components/MainBanner.dart';
 import 'package:flutter/material.dart';
 
 class AnimePage extends StatelessWidget {
@@ -6,7 +8,7 @@ class AnimePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("Anime world"),
+      child: HotSeries(),
     );
   }
 }
