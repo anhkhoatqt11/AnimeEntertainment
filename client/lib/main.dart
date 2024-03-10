@@ -1,5 +1,6 @@
 import 'package:anime_and_comic_entertainment/pages/anime_home.dart';
 import 'package:anime_and_comic_entertainment/pages/comic_page.dart';
+import 'package:anime_and_comic_entertainment/pages/home.dart';
 import 'package:anime_and_comic_entertainment/pages/splash.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'skylark',
-      home: Splash(),
+      home: HomeScreen(),
     );
   }
 }

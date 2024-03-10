@@ -5,7 +5,7 @@ import createHttpError, {isHttpError} from "http-errors";
 import cors from "cors"
 //import route ---------------------------------------------------------
 import userRoutes from "./routes/user"
-
+import comicRoutes from "./routes/comics"
 //----------------------------------------------------------------------
 const app = express();
 
@@ -37,6 +37,8 @@ app.use(cors({
 
 // use route -------------------------------------------------
 app.use("/api/users", userRoutes);
+app.use("/api/comics", comicRoutes);
+
 //------------------------------------------------------------
 
 app.use((req, res, next) => {
