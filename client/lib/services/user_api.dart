@@ -35,14 +35,14 @@ class Api {
       print(jsonDecode(res.body));
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        data.forEach((value) => {
-              users.add(User(
-                  id: value['id'].toString(),
-                  name: value['name'],
-                  total: value['total'],
-                  payed: value['payed'],
-                  debt: value['debt']))
-            });
+        // data.forEach((value) => {
+        //       users.add(User(
+        //           id: value['id'].toString(),
+        //           name: value['name'],
+        //           total: value['total'],
+        //           payed: value['payed'],
+        //           debt: value['debt']))
+        //     });
         return users;
       } else {
         return [];

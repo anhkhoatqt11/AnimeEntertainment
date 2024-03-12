@@ -21,7 +21,8 @@ interface Users {
         watchingMovie: [
             
         ]
-    }
+    },
+    paymentHistories: []
 }
 
 interface Comics {

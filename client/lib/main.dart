@@ -1,21 +1,28 @@
 import 'package:anime_and_comic_entertainment/pages/anime_home.dart';
 import 'package:anime_and_comic_entertainment/pages/comic_page.dart';
-import 'package:anime_and_comic_entertainment/pages/home.dart';
+// import 'package:anime_and_comic_entertainment/pages/home.dart';
+import 'package:anime_and_comic_entertainment/pages/login.dart';
+import 'package:anime_and_comic_entertainment/pages/profile.dart';
 import 'package:anime_and_comic_entertainment/pages/splash.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+// import 'package:anime_and_comic_entertainment/pages/splash.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = StripeApiKey.publishableKey;
   await Stripe.instance.applySettings();
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => UserProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +34,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'skylark',
-      home: HomeScreen(),
+      home: Splash(),
     );
   }
 }
@@ -55,7 +62,11 @@ class _NavigationScreenState extends State<NavigationScreen>
   Widget build(BuildContext context) {
     return Container(
       color: Color(0xFF141414),
-      child: widget.navIndex == 1 ? ComicPage() : AnimePage(),
+      child: widget.navIndex == 1
+          ? ComicPage()
+          : widget.navIndex == 4
+              ? Profile()
+              : AnimePage(),
     );
   }
 }

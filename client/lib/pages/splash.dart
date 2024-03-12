@@ -1,6 +1,11 @@
 import 'dart:async';
 import 'package:anime_and_comic_entertainment/main.dart';
+import 'package:anime_and_comic_entertainment/pages/login.dart';
+import 'package:anime_and_comic_entertainment/pages/profile.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -10,9 +15,11 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+  @override
   void initState() {
     super.initState();
     startTimer();
+    AuthApi.getLogin(context);
   }
 
   startTimer() {
@@ -27,9 +34,15 @@ class _SplashState extends State<Splash> {
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => MyHomePage(
-        title: 'skylark',
-      ),
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          Provider.of<UserProvider>(context)
+                      .user
+                      .authentication['sessionToken'] !=
+                  ""
+              ? MyHomePage(
+                  title: 'skylark',
+                )
+              : Login(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 2.0);
         const end = Offset.zero;

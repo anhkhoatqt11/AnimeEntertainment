@@ -16,7 +16,7 @@ export const getUsers: RequestHandler = async (req, res, next)=>{
         next(error);
     }
 }
-// api get one
+// // api get one
 export const getUser: RequestHandler = async (req, res, next) => {
     const userId = req.params.userId;
     try
@@ -70,58 +70,58 @@ interface UpdateUserParams {
     userId: string,
 }
 
-interface UpdateUserBody {
-    name: string,
-    phoneNumber: string,
-    total: number,
-    payed: number,
-    debt: number,
-}
+// interface UpdateUserBody {
+//     name: string,
+//     phoneNumber: string,
+//     total: number,
+//     payed: number,
+//     debt: number,
+// }
 
-export const updateUser: RequestHandler<UpdateUserParams, unknown, UpdateUserBody, unknown> = async(req, res, next) => {
-    const userId = req.params.userId;
-    try
-    {
-        if (!mongoose.isValidObjectId(userId))
-        {
-            throw createHttpError(400, "Invalid user id");
-        }
-        const user = await UserModel.findById(userId).exec();
+// export const updateUser: RequestHandler<UpdateUserParams, unknown, UpdateUserBody, unknown> = async(req, res, next) => {
+//     const userId = req.params.userId;
+//     try
+//     {
+//         if (!mongoose.isValidObjectId(userId))
+//         {
+//             throw createHttpError(400, "Invalid user id");
+//         }
+//         const user = await UserModel.findById(userId).exec();
 
-        if (!user)
-        {
-            throw createHttpError(404, "user not found");
-        }
-        await UserModel.findByIdAndUpdate(userId,req.body);
+//         if (!user)
+//         {
+//             throw createHttpError(404, "user not found");
+//         }
+//         await UserModel.findByIdAndUpdate(userId,req.body);
 
-        res.status(200).json(updateUser);
+//         res.status(200).json(updateUser);
 
-    }
-    catch (error)
-    {
-        next(error);
-    }
-};
+//     }
+//     catch (error)
+//     {
+//         next(error);
+//     }
+// };
 
-// api delete
-export const deleteUser: RequestHandler = async(req, res, next) => {
-    const userId = req.params.userId;
-    try {
-        if (!mongoose.isValidObjectId(userId))
-        {
-            throw createHttpError(400, "Invalid user id");
-        }
+// // api delete
+// export const deleteUser: RequestHandler = async(req, res, next) => {
+//     const userId = req.params.userId;
+//     try {
+//         if (!mongoose.isValidObjectId(userId))
+//         {
+//             throw createHttpError(400, "Invalid user id");
+//         }
 
-        const user = await UserModel.findById(userId).exec();
+//         const user = await UserModel.findById(userId).exec();
 
-        if (!user) {
-            throw createHttpError(404, "user not found");
-        }
+//         if (!user) {
+//             throw createHttpError(404, "user not found");
+//         }
 
-        await user.deleteOne();
-        res.sendStatus(204);
+//         await user.deleteOne();
+//         res.sendStatus(204);
 
-    } catch (error) {
+//     } catch (error) {
         
-    }
-}
+//     }
+// }

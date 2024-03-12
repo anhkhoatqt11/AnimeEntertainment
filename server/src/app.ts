@@ -1,13 +1,22 @@
 import "dotenv/config";
-import express, {NextFunction, Request, Response} from "express";
+import express, {NextFunction, Request, RequestHandler, Response} from "express";
 // import morgan from "morgan"
 import createHttpError, {isHttpError} from "http-errors";
 import cors from "cors"
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import session from "express-session";
 //import route ---------------------------------------------------------
 import userRoutes from "./routes/user"
 import comicRoutes from "./routes/comics"
+import authRoutes from "./routes/auth"
 //----------------------------------------------------------------------
 const app = express();
+declare module 'express-session' {
+  interface SessionData {
+    user: string;
+  }
+}
 
 // app.use(morgan("dev"))
 
@@ -34,8 +43,22 @@ app.use(cors({
 
 }));
 
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(session({
+  secret: "subscribe",
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 60 * 60 * 24,
+  }
+}))
+
+app.use(cookieParser());
+// auth
+
 
 // use route -------------------------------------------------
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/comics", comicRoutes);
 
