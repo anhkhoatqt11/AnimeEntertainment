@@ -1,9 +1,6 @@
 import 'dart:convert';
 
 import 'package:anime_and_comic_entertainment/main.dart';
-import 'package:anime_and_comic_entertainment/model/user.dart';
-import 'package:anime_and_comic_entertainment/pages/home.dart';
-import 'package:anime_and_comic_entertainment/pages/login.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,19 +10,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthApi {
   static const baseUrl = "http://192.168.56.1:5000/api/auth/";
 
-  static login(BuildContext context, String username, String password) async {
+  static login(BuildContext context, String phone, String password) async {
     var url = Uri.parse(
       "${baseUrl}login",
     );
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     final navigator = Navigator.of(context);
-    var body = {"email": username, "password": password};
+    var body = {"phone": phone, "password": password};
     try {
       final res = await http.post(url, body: body);
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        // userProvider.setUser(res.body);
+        userProvider.setUserToken(data['authentication']['sessionToken']);
         await prefs.setString(
             'auth-session-token', data['authentication']['sessionToken']);
 
@@ -66,13 +63,39 @@ class AuthApi {
     }
   }
 
+  static register(BuildContext context, String phone, String password) async {
+    var url = Uri.parse(
+      "${baseUrl}register",
+    );
+    try {
+      final res = await http.post(
+        url,
+        body: {"phone": phone, "password": password},
+      );
+      if (res.statusCode == 200) {
+        print('Register successfully');
+        return true;
+      } else {
+        print("Failed to get response");
+        return false;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   static void signOut(BuildContext context) async {
     final navigator = Navigator.of(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('auth-session-token', '');
+    // ignore: use_build_context_synchronously
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.setUserToken("");
     navigator.pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) => const Login(),
+        builder: (context) => MyHomePage(
+          title: 'Skylark',
+        ),
       ),
       (route) => false,
     );

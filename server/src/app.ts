@@ -10,6 +10,7 @@ import session from "express-session";
 import userRoutes from "./routes/user"
 import comicRoutes from "./routes/comics"
 import authRoutes from "./routes/auth"
+import { isAuthenticated } from "./middlewares";
 //----------------------------------------------------------------------
 const app = express();
 declare module 'express-session' {
@@ -59,7 +60,9 @@ app.use(cookieParser());
 
 // use route -------------------------------------------------
 app.use("/api/auth", authRoutes);
-app.use("/api/users", userRoutes);
+// use middleware if routes need to be protected
+// app.use("/api/users", isAuthenticated,userRoutes);
+app.use("/api/users",userRoutes);
 app.use("/api/comics", comicRoutes);
 
 //------------------------------------------------------------

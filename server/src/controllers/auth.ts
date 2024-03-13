@@ -5,7 +5,7 @@ import UserModel from "../models/user"
 import { random, authentication } from "../utils/utils"
 
 export const getUsers = () => UserModel.find();
-export const getUserByEmail = (email: string) => UserModel.findOne({ email });
+export const getUserByPhone = (phone: string) => UserModel.findOne({ phone });
 export const getUserBySessionToken = (sessionToken: string) => UserModel.findOne({ 'authentication.sessionToken': sessionToken });
 export const getUserById = (id: string) => UserModel.findById(id);
 export const createUser = (values: Record<string, any>) => new UserModel(values).save().then((user) => user.toObject());
@@ -18,10 +18,10 @@ export const getLogin: RequestHandler = async (req,res) => {
         const result = await getUserBySessionToken(req.body.sessionToken);
         if (result)
         {
-            res.send({ loggedIn: true });
+            res.send({ loggedIn: true }).sendStatus(200);
         }
         else {
-            res.send({ loggedIn: false });
+            res.send({ loggedIn: false }).sendStatus(200);
         }
     }
     catch (error) {
@@ -32,12 +32,12 @@ export const getLogin: RequestHandler = async (req,res) => {
 
 export const postLogin: RequestHandler = async (req, res) => {
     try {
-        const {email, password} = req.body;
-        if (!email || !password) {
+        const {phone, password} = req.body;
+        if (!phone || !password ) {
             return res.sendStatus(400);
 
         }
-        const user = await getUserByEmail(email).select('+authentication.salt + authentication.password');
+        var user = await getUserByPhone(phone).select('+authentication.salt + authentication.password');
         if (!user)
         {
             return res.sendStatus(400);
@@ -53,11 +53,8 @@ export const postLogin: RequestHandler = async (req, res) => {
             return res.sendStatus(403);
         }
         else {
-            //cookie session
-            // req.session.username = email;
-            req.session.user = email;
+            req.session.user = phone;
             res.cookie("sessionId", req.sessionID);
-            console.log(req.session.user);
         }
 
         const salt = random();
@@ -77,19 +74,19 @@ export const postLogin: RequestHandler = async (req, res) => {
 export const register:RequestHandler = async (req, res)=>{
     try
     {
-        const {email, password, username} = req.body;
+        const {phone, password} = req.body;
 
-        if (!email || !password || !username) {
+        if (!phone || !password) {
             return res.sendStatus(400);
         }
-        const existingUser = await getUserByEmail(email);
+        const existingUser = await getUserByPhone(phone);
         if (existingUser) {
             return res.sendStatus(400);
         }
 
         const salt = random();
         const user = await createUser({
-            email,username,authentication:{
+            phone,authentication:{
                 salt,password: authentication(salt,password)
             }
         })
