@@ -47,6 +47,8 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   shared_preferences: ^2.2.2
   provider: ^6.1.2
+  pinput: ^4.0.0
+  intl_phone_number_input: ^0.7.4
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +74,10 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/skylark_logo.gif
+    - assets/images/logoImage.png
+    - assets/images/comiclist.jpg
+    - assets/images/otpicon.png
+    - assets/images/verifyicon.png
     - assets/
   #   - images/a_dot_ham.jpeg
 

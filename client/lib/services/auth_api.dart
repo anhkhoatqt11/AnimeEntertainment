@@ -100,4 +100,42 @@ class AuthApi {
       (route) => false,
     );
   }
+
+  static getOTP(String mobileNo) async {
+    var url = Uri.parse(
+      "${baseUrl}getOTP",
+    );
+    try {
+      final res = await http.post(
+        url,
+        body: {"phone": mobileNo},
+      );
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  static verify(String mobileNo, String otpHash, otpCode) async {
+    var url = Uri.parse(
+      "${baseUrl}verifyOTP",
+    );
+    try {
+      final res = await http.post(
+        url,
+        body: {"phone": mobileNo, "otp": otpCode, "hash": otpHash},
+      );
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 }

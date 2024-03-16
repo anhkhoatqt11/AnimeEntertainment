@@ -1,8 +1,12 @@
 import 'package:anime_and_comic_entertainment/pages/anime_home.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/otp_verify_page.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/password_page.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/register.dart';
 import 'package:anime_and_comic_entertainment/pages/comic_page.dart';
 // import 'package:anime_and_comic_entertainment/pages/home.dart';
-import 'package:anime_and_comic_entertainment/pages/login.dart';
-import 'package:anime_and_comic_entertainment/pages/profile.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/profile.dart';
 import 'package:anime_and_comic_entertainment/pages/splash.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 // import 'package:anime_and_comic_entertainment/pages/splash.dart';
@@ -34,7 +38,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'skylark',
-      home: Splash(),
+      home: OTPVerifyPage(),
     );
   }
 }
@@ -65,7 +69,7 @@ class _NavigationScreenState extends State<NavigationScreen>
       child: widget.navIndex == 1
           ? ComicPage()
           : widget.navIndex == 4
-              ? Profile()
+              ? Login()
               : AnimePage(),
     );
   }
