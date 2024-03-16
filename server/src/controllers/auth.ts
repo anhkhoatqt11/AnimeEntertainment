@@ -2,7 +2,9 @@ import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import UserModel from "../models/user"
-import { random, authentication } from "../utils/utils"
+import { random, authentication, hashOTP } from "../utils/utils"
+import otpGenerator from "otp-generator";
+
 
 export const getUsers = () => UserModel.find();
 export const getUserByPhone = (phone: string) => UserModel.findOne({ phone });
@@ -98,4 +100,52 @@ export const register:RequestHandler = async (req, res)=>{
         console.log(error);
         return res.sendStatus(400);
     }
+}
+
+export const createOtp:RequestHandler = async (req, res) => {
+    try
+    {
+        const {phone } = req.body;
+        const otp = otpGenerator.generate(4, {
+            lowerCaseAlphabets: false,
+            upperCaseAlphabets: false,
+            specialChars: false,
+        });
+    
+        const ttl = 5 * 60 * 1000;
+        const expires = Date.now() + ttl;
+        const data = `${phone}.${otp}.${expires}`;
+        const hash = hashOTP(data);
+        const fullHash = `${hash}.${expires}`;
+    
+        return res.status(200).send({message: "Success",data: fullHash});
+    }
+    catch (error){
+        console.log(error);
+        return res.sendStatus(400);
+    }
+    
+}
+
+export const verifyOTP:RequestHandler = async(req,res) => {
+    try {
+        const {hash,phone,otp } = req.body;
+        let [hashValue, expires] = hash.split('.');
+    
+        let now = Date.now();
+        if (now > parseInt(expires)) return res.status(200).send({message: "Success", data: "OTP expired"});
+        let data = `${phone}.${otp}.${expires}`;
+    
+        let newHash = hashOTP(data);
+        if (newHash === hashValue) {
+            return res.status(200).send({message: "Success", data: "Success"});
+        }
+        return res.status(200).send({message: "Success", data: "Invalid OTP"});
+    }
+    catch (error) {
+        console.log(error);
+        return res.sendStatus(400);
+    }
+    
+
 }
