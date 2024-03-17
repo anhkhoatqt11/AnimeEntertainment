@@ -1,4 +1,7 @@
+import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/password_page.dart';
+import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
@@ -9,8 +12,9 @@ import 'package:pinput/pinput.dart';
 class OTPVerifyPage extends StatefulWidget {
   final String? mobileNo;
   final String? otpHash;
+  final int? index;
 
-  const OTPVerifyPage({this.mobileNo, this.otpHash});
+  const OTPVerifyPage({this.mobileNo, this.otpHash, this.index});
 
   @override
   State<OTPVerifyPage> createState() => _OTPVerifyPageState();
@@ -19,18 +23,6 @@ class OTPVerifyPage extends StatefulWidget {
 class _OTPVerifyPageState extends State<OTPVerifyPage> {
   String _otpCode = "";
   final int _otpCodeLength = 4;
-  bool isAPICallProcess = false;
-  late FocusNode myFocusNode;
-
-  bool passwordVisible = false;
-  final myControllerPhone = TextEditingController();
-  final myControllerPass = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    passwordVisible = true;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +38,7 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Color.fromRGBO(114, 178, 238, 1)),
+      border: Border.all(color: Utils.primaryColor),
       borderRadius: BorderRadius.circular(8),
     );
 
@@ -55,44 +47,7 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
         color: Color.fromRGBO(234, 239, 243, 1),
       ),
     );
-    // return Container(
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     crossAxisAlignment: CrossAxisAlignment.center,
-    //     children: [
-    //       Image.network(
-    //         "",
-    //         height: 100,
-    //         fit: BoxFit.contain,
-    //       ),
-    //       Padding(
-    //         padding: const EdgeInsets.only(top: 20),
-    //         child: Text(
-    //           "OTP Verification",
-    //           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-    //         ),
-    //       ),
-    //       SizedBox(
-    //         height: 10,
-    //       ),
-    //       Center(
-    //         child: Text(
-    //           "Enter OTP code sent to your mobile",
-    //           textAlign: TextAlign.center,
-    //           style: TextStyle(fontSize: 14),
-    //         ),
-    //       ),
-    //       Padding(
-    //         padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-    //       ),
-    //       const SizedBox(
-    //         height: 20,
-    //       ),
 
-    //       ElevatedButton(onPressed: () {}, child: Text("Verify"))
-    //     ],
-    //   ),
-    // );
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: GFAppBar(
@@ -160,20 +115,40 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
                       defaultPinTheme: defaultPinTheme,
                       focusedPinTheme: focusedPinTheme,
                       submittedPinTheme: submittedPinTheme,
-                      validator: (s) {
-                        return s == '2222' ? null : 'Pin is incorrect';
-                      },
                       pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
                       showCursor: true,
-                      onCompleted: (pin) => print(pin),
+                      onCompleted: (pin) => _otpCode = pin,
+                      onChanged: (pin) => _otpCode = pin,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     GradientButton(
+                      disabled: false,
                       content: 'Tiếp tục',
-                      action: () {
-                        // _formKey.currentState?.validate();
+                      action: () async {
+                        var result = await AuthApi.verify(
+                            widget.mobileNo, widget.otpHash, _otpCode);
+                        if (result['data'] == 'Success') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PasswordPage(
+                                      mobileNo: widget.mobileNo,
+                                      index: widget.index,
+                                    )),
+                          );
+                          return;
+                        } else {
+                          _otpCode = "";
+                          showDialog(
+                              context: context,
+                              builder: (_) => CustomAlertDialog(
+                                    content: result['data'],
+                                    title: "Thông báo",
+                                    action: () {},
+                                  ));
+                        }
                       },
                       height: 50,
                       width: 200,
@@ -184,13 +159,5 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
         ),
       ]),
     );
-  }
-
-  @override
-  void dispose() {
-    myFocusNode.dispose();
-    myControllerPhone.dispose();
-    myControllerPass.dispose();
-    super.dispose();
   }
 }

@@ -6,7 +6,10 @@ class UserProvider extends ChangeNotifier {
       paymentHistories: [],
       authentication: {"password": "", "salt": "", "sessionToken": ""},
       bookmarkList: {},
-      histories: {});
+      histories: {},
+      username: '',
+      avatar: '',
+      coinPoint: 0);
 
   User get user => _user;
   void setUserToken(String token) {

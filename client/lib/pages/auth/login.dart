@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
-import 'dart:convert';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
-import 'package:anime_and_comic_entertainment/pages/auth/register.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -21,12 +19,10 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool passwordVisible = false;
-  final myControllerPhone = TextEditingController();
   final myControllerPass = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  // Store the selected phone number and ISO code
   PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'VN');
   @override
   void initState() {
@@ -36,7 +32,6 @@ class _LoginState extends State<Login> {
 
   @override
   void dispose() {
-    myControllerPhone.dispose();
     myControllerPass.dispose();
     super.dispose();
   }
@@ -116,9 +111,7 @@ class _LoginState extends State<Login> {
                         onInputChanged: (PhoneNumber number) {
                           _phoneNumber = number;
                         },
-                        onInputValidated: (bool value) {
-                          print(value);
-                        },
+                        onInputValidated: (bool value) {},
                         errorMessage: "Số điện thoại không hợp lệ",
                         autoValidateMode: AutovalidateMode.disabled,
                         ignoreBlank: false,
@@ -186,9 +179,22 @@ class _LoginState extends State<Login> {
                         height: 20,
                       ),
                       GradientButton(
+                        disabled: myControllerPass.text.isEmpty ||
+                            _phoneNumber.phoneNumber!.isEmpty,
                         content: 'Đăng nhập',
                         action: () {
                           _formKey.currentState?.validate();
+                          if (_formKey.currentState!.validate()) {
+                            if (myControllerPass.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Vui lòng nhập mật khẩu')),
+                              );
+                              return;
+                            }
+                            print(_phoneNumber.phoneNumber);
+                            print(myControllerPass.text);
+                          }
                         },
                         height: 50,
                         width: 200,
@@ -201,7 +207,9 @@ class _LoginState extends State<Login> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => GetOTPPage()),
+                                builder: (context) => GetOTPPage(
+                                      index: 0,
+                                    )),
                           );
                         },
                         child: Text(
@@ -228,8 +236,12 @@ class _LoginState extends State<Login> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Register()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => GetOTPPage(
+                              index: 1,
+                            )));
               },
               child: Text(
                 "Đăng ký ngay",

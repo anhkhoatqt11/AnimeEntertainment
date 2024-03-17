@@ -15,22 +15,19 @@ class Utils {
     return true;
   }
 
-  static String _validatePassword(String password) {
+  static String validatePassword(String password) {
     String _errorMessage = '';
-    if (password.length < 6) {
-      _errorMessage += 'Password must be longer than 6 characters.\n';
+    if (password.length <= 6) {
+      _errorMessage += 'Mật khẩu phải có tối thiểu 6 kí tự \n';
     }
     if (!password.contains(RegExp(r'[A-Z]'))) {
-      _errorMessage += '• Uppercase letter is missing.\n';
-    }
-    if (!password.contains(RegExp(r'[a-z]'))) {
-      _errorMessage += '• Lowercase letter is missing.\n';
+      _errorMessage += '• Chưa có kí tự in hoa.\n';
     }
     if (!password.contains(RegExp(r'[0-9]'))) {
-      _errorMessage += '• Digit is missing.\n';
+      _errorMessage += '• Chưa có kí tự số.\n';
     }
     if (!password.contains(RegExp(r'[!@#%^&*(),.?":{}|<>]'))) {
-      _errorMessage += '• Special character is missing.\n';
+      _errorMessage += '• Chưa có kí tự đặc biệt.\n';
     }
     return _errorMessage;
   }

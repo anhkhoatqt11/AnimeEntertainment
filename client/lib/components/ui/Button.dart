@@ -1,19 +1,18 @@
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/components/button/gf_button.dart';
-import 'package:getwidget/shape/gf_button_shape.dart';
-import 'package:getwidget/size/gf_size.dart';
 
 class GradientButton extends StatelessWidget {
   final String content;
   final Function action;
   final double height;
   final double width;
+  final bool disabled;
   const GradientButton(
       {required this.content,
       required this.action,
       required this.height,
-      required this.width});
+      required this.width,
+      required this.disabled});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +28,11 @@ class GradientButton extends StatelessWidget {
                 height: height,
                 width: width,
                 child: ElevatedButton(
-                  onPressed: () {
-                    action();
-                  },
+                  onPressed: disabled
+                      ? null
+                      : () {
+                          action();
+                        },
                   child: null,
                 ))),
         GestureDetector(
@@ -40,7 +41,7 @@ class GradientButton extends StatelessWidget {
             style: TextStyle(
                 fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
           ),
-          onTap: () => {action()},
+          onTap: disabled ? null : () => {action()},
         )
       ],
     );

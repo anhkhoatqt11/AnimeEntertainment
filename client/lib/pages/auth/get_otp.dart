@@ -1,4 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/otp_verify_page.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
@@ -9,7 +12,8 @@ import 'package:getwidget/types/gf_button_type.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class GetOTPPage extends StatefulWidget {
-  const GetOTPPage({super.key});
+  final int index;
+  const GetOTPPage({required this.index, super.key});
 
   @override
   State<GetOTPPage> createState() => _GetOTPPageState();
@@ -18,28 +22,9 @@ class GetOTPPage extends StatefulWidget {
 class _GetOTPPageState extends State<GetOTPPage> {
   @override
   Widget build(BuildContext context) {
-    String mobileNo = "";
-    bool isAPICallProcess = false;
-    bool passwordVisible = false;
-    final myControllerPhone = TextEditingController();
-    final myControllerPass = TextEditingController();
-
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-    // Store the selected phone number and ISO code
     PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'VN');
-    @override
-    void initState() {
-      super.initState();
-      passwordVisible = true;
-    }
-
-    @override
-    void dispose() {
-      myControllerPhone.dispose();
-      myControllerPass.dispose();
-      super.dispose();
-    }
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -87,14 +72,16 @@ class _GetOTPPageState extends State<GetOTPPage> {
               height: 10,
             ),
             Text(
-              "Quên mật khẩu",
+              widget.index == 0 ? "Quên mật khẩu" : "Sign-up",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.w600),
             ),
             Text(
-              "Nhập số điện thoại đã đăng ký để lấy lại mật khẩu",
+              widget.index == 0
+                  ? "Nhập số điện thoại đã đăng ký để lấy lại mật khẩu"
+                  : "Đăng ký tài khoản mới",
               style: TextStyle(
                 color: Colors.grey[300],
                 fontSize: 14,
@@ -114,9 +101,7 @@ class _GetOTPPageState extends State<GetOTPPage> {
                         onInputChanged: (PhoneNumber number) {
                           _phoneNumber = number;
                         },
-                        onInputValidated: (bool value) {
-                          print(value);
-                        },
+                        onInputValidated: (bool value) {},
                         errorMessage: "Số điện thoại không hợp lệ",
                         autoValidateMode: AutovalidateMode.disabled,
                         ignoreBlank: false,
@@ -135,13 +120,34 @@ class _GetOTPPageState extends State<GetOTPPage> {
                                 color: Colors.grey[400], fontSize: 14)),
                         formatInput: false,
                       ),
-                      SizedBox(
+                      Divider(
+                        height: .5,
+                      ),
+                      const SizedBox(
                         height: 20,
                       ),
                       GradientButton(
+                        disabled: false,
                         content: 'Xác nhận',
-                        action: () {
-                          _formKey.currentState?.validate();
+                        action: () async {
+                          if (_formKey.currentState!.validate()) {
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   const SnackBar(content: Text('Processing Data')),
+                            // );
+                            var result =
+                                await AuthApi.getOTP(_phoneNumber.phoneNumber);
+                            if (result != null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => OTPVerifyPage(
+                                          otpHash: result['data'],
+                                          mobileNo: _phoneNumber.phoneNumber,
+                                          index: widget.index,
+                                        )),
+                              );
+                            }
+                          }
                         },
                         height: 50,
                         width: 200,
@@ -151,70 +157,38 @@ class _GetOTPPageState extends State<GetOTPPage> {
             )
           ],
         ),
+        widget.index == 1
+            ? (Positioned(
+                bottom: 20,
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Đã có tài khoản?",
+                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Login()));
+                        },
+                        child: Text(
+                          "Đăng nhập ngay",
+                          style: TextStyle(
+                              color: Utils.primaryColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ]),
+              ))
+            : Container()
       ]),
     );
-    // return Container(
-    //   child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-    //     Image.network(
-    //       "sss",
-    //       height: 180,
-    //       fit: BoxFit.contain,
-    //     ),
-    //     Text('Login with mobile phone number'),
-    //     SizedBox(
-    //       height: 10,
-    //     ),
-    //     Text("Enter phone number"),
-    //     SizedBox(
-    //       height: 10,
-    //     ),
-    //     Padding(
-    //       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-    //       child: Row(
-    //         mainAxisAlignment: MainAxisAlignment.start,
-    //         crossAxisAlignment: CrossAxisAlignment.center,
-    //         children: [
-    //           Flexible(
-    //               child: Container(
-    //             height: 47,
-    //             width: 50,
-    //             margin: const EdgeInsets.fromLTRB(0, 10, 3, 30),
-    //             decoration: BoxDecoration(
-    //                 borderRadius: BorderRadius.circular(4),
-    //                 border: Border.all(color: Colors.grey)),
-    //             child: Center(
-    //                 child: Text(
-    //               "+91",
-    //               style: TextStyle(
-    //                   color: Colors.black, fontWeight: FontWeight.bold),
-    //             )),
-    //           )),
-    //           Flexible(
-    //             flex: 5,
-    //             child: TextFormField(
-    //               maxLines: 1,
-    //               maxLength: 10,
-    //               decoration: const InputDecoration(
-    //                 contentPadding: EdgeInsets.all(6),
-    //                 hintText: "Mobile phone",
-    //                 enabledBorder: OutlineInputBorder(
-    //                     borderSide: BorderSide(color: Colors.grey, width: 1)),
-    //                 border: OutlineInputBorder(
-    //                     borderSide: BorderSide(color: Colors.grey, width: 1)),
-    //                 focusedBorder: OutlineInputBorder(
-    //                     borderSide: BorderSide(color: Colors.black, width: 1)),
-    //               ),
-    //               keyboardType: TextInputType.number,
-    //               onChanged: (String value) {
-    //                 if (value.length > 9) {
-    //                   mobileNo = value;
-    //                 }
-    //               },
-    //             ),
-    //           )
-    //         ],
-    //       ),
-    //     ),
+
     //     Center(
     //         child: ElevatedButton(
     //       child: Text("Submit"),
@@ -225,21 +199,6 @@ class _GetOTPPageState extends State<GetOTPPage> {
     //           });
     //         }
 
-    //         var result = await AuthApi.getOTP(mobileNo);
-    //         setState(() {
-    //           isAPICallProcess = false;
-    //         });
-    //         print(result['data']);
-    //         if (result != null) {
-    //           Navigator.pushAndRemoveUntil(
-    //               context,
-    //               MaterialPageRoute(
-    //                   builder: (context) => OTPVerifyPage(
-    //                       otpHash: result['data'], mobileNo: mobileNo)),
-    //               (route) => false);
-    //         }
-    //       },
-    //     ))
     //   ]),
     // );
   }

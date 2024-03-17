@@ -63,7 +63,7 @@ class AuthApi {
     }
   }
 
-  static register(BuildContext context, String phone, String password) async {
+  static register(BuildContext context, String? phone, String? password) async {
     var url = Uri.parse(
       "${baseUrl}register",
     );
@@ -73,10 +73,8 @@ class AuthApi {
         body: {"phone": phone, "password": password},
       );
       if (res.statusCode == 200) {
-        print('Register successfully');
         return true;
       } else {
-        print("Failed to get response");
         return false;
       }
     } catch (e) {
@@ -101,7 +99,7 @@ class AuthApi {
     );
   }
 
-  static getOTP(String mobileNo) async {
+  static getOTP(String? mobileNo) async {
     var url = Uri.parse(
       "${baseUrl}getOTP",
     );
@@ -120,7 +118,7 @@ class AuthApi {
     }
   }
 
-  static verify(String mobileNo, String otpHash, otpCode) async {
+  static verify(String? mobileNo, String? otpHash, otpCode) async {
     var url = Uri.parse(
       "${baseUrl}verifyOTP",
     );
