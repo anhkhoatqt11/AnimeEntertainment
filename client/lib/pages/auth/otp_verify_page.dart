@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/password_page.dart';
@@ -29,10 +31,10 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
           fontSize: 20, color: Colors.black, fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
-        border: Border.all(color: Color.fromRGBO(234, 239, 243, 1)),
+        border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
         borderRadius: BorderRadius.circular(20),
       ),
     );
@@ -44,7 +46,7 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
 
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
-        color: Color.fromRGBO(234, 239, 243, 1),
+        color: const Color.fromRGBO(234, 239, 243, 1),
       ),
     );
 
@@ -55,7 +57,7 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
         backgroundColor: Colors.transparent,
         leading: GFIconButton(
           splashColor: Colors.transparent,
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Colors.white,
             size: 24,
@@ -90,10 +92,10 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
               height: 150,
               width: 150,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Text(
+            const Text(
               "Xác nhận OTP",
               style: TextStyle(
                   color: Colors.white,
@@ -128,7 +130,7 @@ class _OTPVerifyPageState extends State<OTPVerifyPage> {
                       content: 'Tiếp tục',
                       action: () async {
                         var result = await AuthApi.verify(
-                            widget.mobileNo, widget.otpHash, _otpCode);
+                            context, widget.mobileNo, widget.otpHash, _otpCode);
                         if (result['data'] == 'Success') {
                           Navigator.push(
                             context,

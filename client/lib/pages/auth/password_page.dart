@@ -6,7 +6,6 @@ import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
@@ -45,7 +44,7 @@ class _PasswordPageState extends State<PasswordPage> {
         backgroundColor: Colors.transparent,
         leading: GFIconButton(
           splashColor: Colors.transparent,
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Colors.white,
             size: 24,
@@ -80,10 +79,10 @@ class _PasswordPageState extends State<PasswordPage> {
               height: 100,
               width: 100,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Text(
+            const Text(
               "Hoàn thành",
               style: TextStyle(
                   color: Colors.white,
@@ -108,10 +107,11 @@ class _PasswordPageState extends State<PasswordPage> {
                         child: TextFormField(
                           controller: myControllerPass,
                           obscureText: passwordVisible,
-                          style: TextStyle(color: Colors.white, fontSize: 14),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 14),
                           cursorColor: Colors.white,
                           decoration: InputDecoration(
-                            border: UnderlineInputBorder(),
+                            border: const UnderlineInputBorder(),
                             hintText: "Mật khẩu",
                             hintStyle: TextStyle(color: Colors.grey[400]),
                             focusColor: Colors.white,
@@ -138,7 +138,7 @@ class _PasswordPageState extends State<PasswordPage> {
                           textInputAction: TextInputAction.done,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       SizedBox(
@@ -146,10 +146,11 @@ class _PasswordPageState extends State<PasswordPage> {
                         child: TextFormField(
                           controller: myControllerPassConfirm,
                           obscureText: passwordConfirmVisible,
-                          style: TextStyle(color: Colors.white, fontSize: 14),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 14),
                           cursorColor: Colors.white,
                           decoration: InputDecoration(
-                            border: UnderlineInputBorder(),
+                            border: const UnderlineInputBorder(),
                             hintText: "Xác nhận mật khẩu",
                             hintStyle: TextStyle(color: Colors.grey[400]),
                             focusColor: Colors.white,
@@ -189,7 +190,7 @@ class _PasswordPageState extends State<PasswordPage> {
                           textAlign: TextAlign.left,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       GradientButton(
@@ -210,14 +211,18 @@ class _PasswordPageState extends State<PasswordPage> {
                                           action: () {},
                                         ));
                               } else {
-                                var result = await AuthApi.register(context,
-                                    widget.mobileNo, myControllerPass.text);
+                                var result = widget.index == 0
+                                    ? await AuthApi.updatePassword(context,
+                                        widget.mobileNo, myControllerPass.text)
+                                    : await AuthApi.register(context,
+                                        widget.mobileNo, myControllerPass.text);
                                 if (result == false) {
                                   showDialog(
                                       context: context,
                                       builder: (_) => CustomAlertDialog(
-                                            content:
-                                                "Tài khoản đã tồn tại, vui lòng đăng ký tài khoản khác",
+                                            content: widget.index == 0
+                                                ? "Quá trình phát sinh lỗi, vui lòng kiểm tra lại"
+                                                : "Tài khoản đã tồn tại, vui lòng đăng ký tài khoản khác",
                                             title: 'Thông báo',
                                             action: () {
                                               Navigator.push(
@@ -240,7 +245,7 @@ class _PasswordPageState extends State<PasswordPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        GetOTPPage(
+                                                        const GetOTPPage(
                                                           index: 0,
                                                         )),
                                               );

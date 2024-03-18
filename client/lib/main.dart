@@ -6,6 +6,7 @@ import 'package:anime_and_comic_entertainment/pages/comic_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/profile.dart';
+import 'package:anime_and_comic_entertainment/pages/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/pages/splash.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/pages/splash.dart';
@@ -20,13 +21,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // Stripe.publishableKey = StripeApiKey.publishableKey;
-  // await Stripe.instance.applySettings();
-  // runApp(MultiProvider(providers: [
-  //   ChangeNotifierProvider(create: (context) => UserProvider()),
-  // ], child: const MyApp()));
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = StripeApiKey.publishableKey;
+  await Stripe.instance.applySettings();
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => UserProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -71,7 +71,7 @@ class _NavigationScreenState extends State<NavigationScreen>
       child: widget.navIndex == 1
           ? ComicPage()
           : widget.navIndex == 4
-              ? Login()
+              ? Profile()
               : AnimePage(),
     );
   }

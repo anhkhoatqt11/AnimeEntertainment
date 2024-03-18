@@ -132,7 +132,6 @@ export const updatePassword:RequestHandler = async (req,res) => {
         {
             return res.sendStatus(400);
         }
-
         const salt = random();
         user.authentication = {salt, password:authentication(salt,password)};
         await user.save();

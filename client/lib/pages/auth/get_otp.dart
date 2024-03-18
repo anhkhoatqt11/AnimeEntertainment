@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/otp_verify_page.dart';
@@ -33,7 +34,7 @@ class _GetOTPPageState extends State<GetOTPPage> {
         backgroundColor: Colors.transparent,
         leading: GFIconButton(
           splashColor: Colors.transparent,
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
             color: Colors.white,
             size: 24,
@@ -68,12 +69,12 @@ class _GetOTPPageState extends State<GetOTPPage> {
               height: 50,
               width: 50,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
               widget.index == 0 ? "Quên mật khẩu" : "Sign-up",
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                   fontWeight: FontWeight.w600),
@@ -96,7 +97,7 @@ class _GetOTPPageState extends State<GetOTPPage> {
                       InternationalPhoneNumberInput(
                         cursorColor: Colors.white,
                         inputBorder: InputBorder.none,
-                        textStyle: TextStyle(color: Colors.white),
+                        textStyle: const TextStyle(color: Colors.white),
                         countrySelectorScrollControlled: false,
                         onInputChanged: (PhoneNumber number) {
                           _phoneNumber = number;
@@ -105,7 +106,7 @@ class _GetOTPPageState extends State<GetOTPPage> {
                         errorMessage: "Số điện thoại không hợp lệ",
                         autoValidateMode: AutovalidateMode.disabled,
                         ignoreBlank: false,
-                        selectorConfig: SelectorConfig(
+                        selectorConfig: const SelectorConfig(
                           selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                           useBottomSheetSafeArea: true,
                         ),
@@ -120,7 +121,7 @@ class _GetOTPPageState extends State<GetOTPPage> {
                                 color: Colors.grey[400], fontSize: 14)),
                         formatInput: false,
                       ),
-                      Divider(
+                      const Divider(
                         height: .5,
                       ),
                       const SizedBox(
@@ -131,11 +132,23 @@ class _GetOTPPageState extends State<GetOTPPage> {
                         content: 'Xác nhận',
                         action: () async {
                           if (_formKey.currentState!.validate()) {
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //   const SnackBar(content: Text('Processing Data')),
-                            // );
-                            var result =
-                                await AuthApi.getOTP(_phoneNumber.phoneNumber);
+                            if (widget.index == 0) {
+                              var exist = await AuthApi.checkAccount(
+                                  context, _phoneNumber.phoneNumber);
+                              if (!exist) {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => CustomAlertDialog(
+                                          content:
+                                              "Số điện thoại này chưa được đăng ký",
+                                          title: "Thông báo",
+                                          action: () {},
+                                        ));
+                                return;
+                              }
+                            }
+                            var result = await AuthApi.getOTP(
+                                context, _phoneNumber.phoneNumber);
                             if (result != null) {
                               Navigator.push(
                                 context,
@@ -163,11 +176,11 @@ class _GetOTPPageState extends State<GetOTPPage> {
                 child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Đã có tài khoản?",
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       GestureDetector(
@@ -188,18 +201,5 @@ class _GetOTPPageState extends State<GetOTPPage> {
             : Container()
       ]),
     );
-
-    //     Center(
-    //         child: ElevatedButton(
-    //       child: Text("Submit"),
-    //       onPressed: () async {
-    //         if (mobileNo.length > 9) {
-    //           setState(() {
-    //             isAPICallProcess = true;
-    //           });
-    //         }
-
-    //   ]),
-    // );
   }
 }

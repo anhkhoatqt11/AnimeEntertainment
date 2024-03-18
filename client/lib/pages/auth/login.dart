@@ -167,7 +167,7 @@ class _LoginState extends State<Login> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "";
+                              return "Vui lòng nhập mật khẩu";
                             }
                             return null;
                           },
@@ -179,10 +179,9 @@ class _LoginState extends State<Login> {
                         height: 20,
                       ),
                       GradientButton(
-                        disabled: myControllerPass.text.isEmpty ||
-                            _phoneNumber.phoneNumber!.isEmpty,
+                        disabled: false,
                         content: 'Đăng nhập',
-                        action: () {
+                        action: () async {
                           _formKey.currentState?.validate();
                           if (_formKey.currentState!.validate()) {
                             if (myControllerPass.text.isEmpty) {
@@ -192,8 +191,10 @@ class _LoginState extends State<Login> {
                               );
                               return;
                             }
-                            print(_phoneNumber.phoneNumber);
-                            print(myControllerPass.text);
+                            await AuthApi.login(
+                                context,
+                                _phoneNumber.phoneNumber,
+                                myControllerPass.text);
                           }
                         },
                         height: 50,
@@ -254,26 +255,7 @@ class _LoginState extends State<Login> {
           ]),
           bottom: 20,
         )
-      ]
-          // width: double.infinity,
-          // height: double.infinity,
-          // color: Colors.blue,
-          // child: Column(children: [
-          //   ElevatedButton(
-          //       onPressed: () async {
-          //         await AuthApi.getLogin(context);
-          //       },
-          //       child: Text(textting)),
-          //   ElevatedButton(
-          //       onPressed: () async {
-          //         var result = await AuthApi.login(context, "0123456789", "123");
-          //         setState(() {
-          //           textting = "hehe";
-          //         });
-          //       },
-          //       child: Text('Sign in'))
-          // ]),
-          ),
+      ]),
     );
   }
 }
