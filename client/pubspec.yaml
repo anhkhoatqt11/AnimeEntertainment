@@ -79,6 +79,7 @@ flutter:
     - assets/images/comiclist.jpg
     - assets/images/otpicon.png
     - assets/images/verifyicon.png
+    - assets/images/error_network.png
     - assets/
   #   - images/a_dot_ham.jpeg
 

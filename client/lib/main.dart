@@ -3,7 +3,7 @@ import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/otp_verify_page.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/password_page.dart';
 import 'package:anime_and_comic_entertainment/pages/comic_page.dart';
-import 'package:anime_and_comic_entertainment/pages/home.dart';
+import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/profile.dart';
 import 'package:anime_and_comic_entertainment/pages/no_internet_page.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'skylark',
       home: Scaffold(
-        body: Login(),
+        body: TestPage(),
       ),
     );
   }

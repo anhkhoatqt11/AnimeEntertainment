@@ -5,13 +5,14 @@ import 'dart:convert';
 import 'package:anime_and_comic_entertainment/main.dart';
 import 'package:anime_and_comic_entertainment/pages/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthApi {
-  static const baseUrl = "http://192.168.56.1:5000/api/auth/";
+  static const baseUrl = "${UrlApi.urlLocalHost}/api/auth/";
 
   static login(BuildContext context, String? phone, String? password) async {
     var url = Uri.parse(

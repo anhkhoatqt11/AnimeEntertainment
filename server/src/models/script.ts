@@ -151,18 +151,30 @@ interface LikeRecords {
 interface Genres {
     _id: string,
     genreName: string,
-    comics: [
 
-    ],
-    animeMovies: [
+}
 
-    ]
+interface ComicAlbum {
+    _id: string,
+    albumName: string,
+    comicList: []
 }
 
 interface DonatePackage {
     _id: string,
     packageName: string,
     packageValue: number,
+}
+
+interface Banners {
+    _id: string,
+    type: string,
+    list: [
+        {
+            bannerImage: string,
+            urlId: string,
+        }
+    ]
 }
 
 
@@ -174,9 +186,7 @@ interface PaymentHistory {
 interface DonateRanking {
 
 }
-interface ComicAlbum {
 
-}
 
 interface AnimeAlbum {
 

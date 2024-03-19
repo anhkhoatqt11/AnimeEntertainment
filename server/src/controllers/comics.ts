@@ -2,13 +2,74 @@ import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import ComicsModel from "../models/comics"
+import BannerModel from "../models/banner"
+import ComicChapterModel from "../models/comicChapter"
+
+import ComicAlbumModel from "../models/comicAlbum"
 
 // api get
-export const getComics: RequestHandler = async (req, res, next)=>{
+export const getComicBanner: RequestHandler = async (req, res, next)=>{
     try
     {
-        const comics = await ComicsModel.find().exec();
-        console.log(comics);
+        const banners = await BannerModel.findOne({type: "Comic"});
+        res.status(200).json(banners);
+    }
+    catch (error)
+    {
+        next(error);
+    }
+}
+
+export const getComicAlbum: RequestHandler = async (req, res, next)=>{
+    try
+    {
+        const albums = await ComicAlbumModel.find().exec();
+        res.status(200).json(albums);
+    }
+    catch (error)
+    {
+        next(error);
+    }
+}
+
+export const getNewChapterComic: RequestHandler = async (req, res, next)=>{
+    try
+    {
+        const comics = await ComicChapterModel.aggregate([
+            {
+                $lookup: {
+                    from: "comics",
+                    localField: "_id",
+                    foreignField:"chapterList",
+                    as: "chapterOwner"
+
+                },
+            },
+            { $project : { publicTime : 1 ,"chapterOwner._id": 1, "chapterOwner.comicName": 1,"chapterOwner.coverImage": 1,"chapterOwner.genres": 1} },
+            {
+                $lookup: {
+                    from: "genres",
+                    localField: "chapterOwner.genres",
+                    foreignField:"_id",
+                    as: "genreName"
+
+                },
+            },
+            
+            {
+                $group: {
+                    _id: { chapterOwnerId : "$chapterOwner._id", coverImage: "$chapterOwner.coverImage", comicName: "$chapterOwner.comicName", genres: "$genreName" },
+                    publicTime: { $top:
+                    {
+                       output: [ "$publicTime" ],
+                       sortBy: { "publicTime": -1 }
+                    } }
+                }
+            },
+            { "$sort": { "publicTime": -1 } },
+            { $limit: 10 },
+            
+        ]);
         res.status(200).json(comics);
     }
     catch (error)
@@ -17,6 +78,45 @@ export const getComics: RequestHandler = async (req, res, next)=>{
     }
 }
 // api get one
+export const getComicInAlbum: RequestHandler = async (req, res, next)=>{
+    try
+    {
+        const response:string = req.body.idList;
+        const limit = req.body.limit;
+        const page = req.body.page;
+        var idList = response.replace('[','').replace(']','').replace(/\s/g, "").split(',').splice((page-1)*limit,limit);
+        const comics:any[] = [];
+        idList.forEach(async (element,index)=> {
+            await ComicsModel.aggregate([
+                {
+                    $match: { _id: new mongoose.Types.ObjectId(element) }
+                 },
+                {
+                    $lookup: {
+                        from: "genres",
+                        localField: "genres",
+                        foreignField:"_id",
+                        as: "genreName"
+                    }
+                },
+                {
+                    $project: { _id: 1, coverImage: 1, comicName: 1, genreName: 1}
+                }
+               
+            ]).then((item)=>{
+                comics.push(item);
+                if (index === idList.length - 1) {
+                    res.status(200).json(comics);
+                }
+            });
+        });
+    }
+    catch (error)
+    {
+        next(error);
+    }
+}
+
 export const getComic: RequestHandler = async (req, res, next) => {
     const comicId = req.params.comicId;
     try
@@ -47,33 +147,17 @@ export const getChapterOfComic: RequestHandler = async (req, res, next) => {
         {
             throw createHttpError(400, "Invalid comic id")
         }
-        // const comic = await ComicsModel.aggregate([
-        //     {
-        //         $lookup: {
-        //             from: "comicChapters",
-        //             as: "detailChapterList",
-        //             let: {comicId: "$_id"},
-        //             pipeline: [
-        //                 {
-        //                     $match: {
-        //                         $expr: {
-        //                             $and: [
-        //                                 {$eq: ["$chapterList","$$comicId"]}
-        //                             ]
-        //                         }
-        //                     }
-        //                 }
-        //             ]
-        //         }
-        //     }
-        // ]);
-
+        // Mỗi một comic có một field gọi là chapterList chứa id của các chapter 
         const comic = await ComicsModel.aggregate([
             {
                 $lookup: {
+                    // tên table comicChapter
                     from: "comicChapters",
+                    // tên field của chapterList trong table comic
                     localField: "chapterList",
+                    // khóa ngoại ở table comicChapter chính là _id
                     foreignField:"_id",
+                    // alias cho table join mới
                     as: "detailChapterList"
 
                 }
