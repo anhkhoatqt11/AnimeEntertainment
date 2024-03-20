@@ -1,15 +1,13 @@
-import 'package:anime_and_comic_entertainment/pages/anime_home.dart';
-import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
-import 'package:anime_and_comic_entertainment/pages/auth/otp_verify_page.dart';
-import 'package:anime_and_comic_entertainment/pages/auth/password_page.dart';
-import 'package:anime_and_comic_entertainment/pages/comic_page.dart';
+import 'package:anime_and_comic_entertainment/pages/anime/anime_page.dart';
+import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_page.dart';
+import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
-import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/profile.dart';
-import 'package:anime_and_comic_entertainment/pages/no_internet_page.dart';
-import 'package:anime_and_comic_entertainment/pages/splash.dart';
+import 'package:anime_and_comic_entertainment/pages/home/splash.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
-import 'package:anime_and_comic_entertainment/pages/splash.dart';
+import 'package:anime_and_comic_entertainment/providers/index_page_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,11 +33,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'skylark',
       home: Scaffold(
-        body: TestPage(),
+        body: MyHomePage(
+          title: 'skylark',
+        ),
       ),
     );
   }
@@ -68,11 +68,15 @@ class _NavigationScreenState extends State<NavigationScreen>
   Widget build(BuildContext context) {
     return Container(
       color: Color(0xFF141414),
-      child: widget.navIndex == 1
-          ? ComicPage()
-          : widget.navIndex == 4
-              ? Profile()
-              : AnimePage(),
+      child: widget.navIndex == 0
+          ? HomePage()
+          : widget.navIndex == 2
+              ? ComicPage()
+              : widget.navIndex == 3
+                  ? AnimePage()
+                  : widget.navIndex == 4
+                      ? ChallengePage()
+                      : ProfilePage(),
     );
   }
 }
@@ -149,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   child: Text(
                     titleList[index],
                     maxLines: 1,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                         fontSize: 10),
@@ -160,8 +164,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             ],
           );
         },
-        backgroundColor: Color(0XFF2D2D2D),
-        activeIndex: _bottomNavIndex,
+        backgroundColor: const Color(0XFF2D2D2D),
+        activeIndex:
+            Provider.of<IndexPageProvider>(context, listen: false).indexPage,
         splashColor: Utils.accentColor,
         splashSpeedInMilliseconds: 0,
         notchSmoothness: NotchSmoothness.defaultEdge,

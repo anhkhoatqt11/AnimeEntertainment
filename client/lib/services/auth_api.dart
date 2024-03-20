@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:anime_and_comic_entertainment/main.dart';
-import 'package:anime_and_comic_entertainment/pages/no_internet_page.dart';
+import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';

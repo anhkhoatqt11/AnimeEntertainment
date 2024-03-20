@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/model/banner.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
-import 'package:anime_and_comic_entertainment/pages/no_internet_page.dart';
+import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
