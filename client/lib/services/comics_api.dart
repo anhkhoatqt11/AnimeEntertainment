@@ -98,6 +98,7 @@ class ComicsApi {
         return [];
       }
     } catch (e) {
+      print(e.toString());
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
@@ -145,6 +146,38 @@ class ComicsApi {
               comicList: element['comicList']));
         });
         return comicAlbumArray;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static getComicAlbumContent(BuildContext context, idList, limit, page) async {
+    var url = Uri.parse(
+      "${baseUrl}getComicInAlbum",
+    );
+    try {
+      var body = {
+        "idList": idList,
+        "limit": limit,
+        "page": page,
+      };
+      print(body);
+      final res = await http.post(url, body: body);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<Comics> comicAlbumItemArray = [];
+        result.forEach((element) {
+          comicAlbumItemArray.add(Comics(
+              id: element[0]['_id'],
+              comicName: element[0]['comicName'],
+              coverImage: element[0]['coverImage'],
+              genres: element[0]['genreName']));
+        });
+        return comicAlbumItemArray;
       } else {
         return [];
       }

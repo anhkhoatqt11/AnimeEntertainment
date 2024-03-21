@@ -70,11 +70,11 @@ class _NavigationScreenState extends State<NavigationScreen>
       color: Color(0xFF141414),
       child: widget.navIndex == 0
           ? HomePage()
-          : widget.navIndex == 2
+          : widget.navIndex == 1
               ? ComicPage()
-              : widget.navIndex == 3
+              : widget.navIndex == 2
                   ? AnimePage()
-                  : widget.navIndex == 4
+                  : widget.navIndex == 3
                       ? ChallengePage()
                       : ProfilePage(),
     );
@@ -165,8 +165,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           );
         },
         backgroundColor: const Color(0XFF2D2D2D),
-        activeIndex:
-            Provider.of<IndexPageProvider>(context, listen: false).indexPage,
+        activeIndex: _bottomNavIndex,
         splashColor: Utils.accentColor,
         splashSpeedInMilliseconds: 0,
         notchSmoothness: NotchSmoothness.defaultEdge,

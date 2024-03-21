@@ -29,6 +29,7 @@ interface Comics {
     _id: string,
     //*
     coverImage: string,
+    landspaceImage: string,
     comicName: string,
     author: string,
     artist: string,
@@ -91,6 +92,7 @@ interface AnimeMovies {
     _id: string,
     // *
     coverImage: string,
+    landspaceImage: string,
     movieName: string,
     genres: [
         // list id of genres

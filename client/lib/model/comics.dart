@@ -3,6 +3,7 @@ import 'dart:ffi';
 class Comics {
   final String? id;
   final String? coverImage;
+  final String? landspaceImage;
   final String? comicName;
   final String? author;
   final String? artist;
@@ -16,6 +17,7 @@ class Comics {
   Comics(
       {this.id,
       this.coverImage,
+      this.landspaceImage,
       this.comicName,
       this.author,
       this.artist,

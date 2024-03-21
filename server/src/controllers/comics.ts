@@ -82,8 +82,8 @@ export const getComicInAlbum: RequestHandler = async (req, res, next)=>{
     try
     {
         const response:string = req.body.idList;
-        const limit = req.body.limit;
-        const page = req.body.page;
+        const limit = parseInt(req.body.limit);
+        const page = parseInt(req.body.page);
         var idList = response.replace('[','').replace(']','').replace(/\s/g, "").split(',').splice((page-1)*limit,limit);
         const comics:any[] = [];
         idList.forEach(async (element,index)=> {
@@ -105,11 +105,12 @@ export const getComicInAlbum: RequestHandler = async (req, res, next)=>{
                
             ]).then((item)=>{
                 comics.push(item);
-                if (index === idList.length - 1) {
+                if (comics.length === idList.length ) {
                     res.status(200).json(comics);
                 }
             });
         });
+        console.log("out");
     }
     catch (error)
     {
