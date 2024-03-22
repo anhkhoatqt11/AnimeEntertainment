@@ -1,13 +1,19 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_album_page.dart';
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ComicAlbumItem extends StatefulWidget {
-  final dynamic? idList;
+  final dynamic idList;
   const ComicAlbumItem({super.key, required this.idList});
 
   @override
@@ -20,14 +26,9 @@ class _ComicAlbumItemState extends State<ComicAlbumItem> {
   static const limit = 5;
   int page = 1;
   bool hasData = true;
-  // final PagingController<int, Comics> _pagingController =
-  //     PagingController(firstPageKey: 0);
 
   @override
   void initState() {
-    // _pagingController.addPageRequestListener((pageKey) {
-    //   _fetchPage(pageKey);
-    // });
     fetch();
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
@@ -39,7 +40,7 @@ class _ComicAlbumItemState extends State<ComicAlbumItem> {
 
   Future fetch() async {
     try {
-      if (!hasData) return;
+      if (hasData == false) return;
       var newItems = await ComicsApi.getComicAlbumContent(
           context, widget.idList, limit.toString(), page.toString());
       final isLastPage = newItems.length < limit;
@@ -69,6 +70,7 @@ class _ComicAlbumItemState extends State<ComicAlbumItem> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         controller: controller,
         itemCount: listComicItem.length + 1,
@@ -80,19 +82,19 @@ class _ComicAlbumItemState extends State<ComicAlbumItem> {
                 nameItem: item.comicName,
                 genres: item.genres);
           } else {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 32),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32),
+                child: hasData == true
+                    ? const Center(
+                        child: GFLoader(type: GFLoaderType.circle),
+                      )
+                    : null);
           }
         });
   }
 
   @override
   void dispose() {
-    // _pagingController.dispose();
     controller.dispose();
     super.dispose();
   }
@@ -118,7 +120,9 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
     getAllAlbum().then((value) => value.forEach((element) {
           setState(() {
             listAlbum.add(ComicAlbum(
-                albumName: element.albumName, comicList: element.comicList));
+                id: element.id,
+                albumName: element.albumName,
+                comicList: element.comicList));
           });
         }));
   }
@@ -126,55 +130,92 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
   @override
   Widget build(BuildContext context) {
     return listAlbum.isEmpty
-        ? ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 125,
-                      height: 187,
-                      color: Colors.blue,
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 125,
-                      height: 187,
-                      color: Colors.blue,
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 125,
-                      height: 187,
-                      color: Colors.blue,
-                    )),
-              ),
-            ],
+        ? SizedBox(
+            height: 256,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 125,
+                        height: 187,
+                        color: Colors.blue,
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 125,
+                        height: 187,
+                        color: Colors.blue,
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 125,
+                        height: 187,
+                        color: Colors.blue,
+                      )),
+                ),
+              ],
+            ),
           )
         : Column(
-            children: [
-              Text(
-                listAlbum[0].albumName!,
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(
-                  height: 242,
-                  child:
-                      ComicAlbumItem(idList: listAlbum[0].comicList.toString()))
-            ],
-          );
+            children: List.generate(listAlbum.length, (index) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ComicAlbumPage(
+                                    comicIdList: listAlbum[index].comicList,
+                                    albumName: listAlbum[index].albumName,
+                                  )),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            listAlbum[index].albumName!,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          const FaIcon(
+                            FontAwesomeIcons.chevronRight,
+                            color: Colors.white,
+                            size: 12,
+                          ),
+                        ],
+                      ),
+                    )),
+                SizedBox(
+                    height: 256,
+                    child: ComicAlbumItem(
+                        idList: listAlbum[index].comicList.toString()))
+              ],
+            );
+          }));
   }
 }

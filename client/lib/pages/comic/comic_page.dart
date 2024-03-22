@@ -74,21 +74,12 @@ class ComicPage extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-              child: SizedBox(height: 274, child: NewChapterList()),
+              child: SizedBox(height: 256, child: NewChapterList()),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: Text(
-                "Album truyện!",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
+
             Padding(
               padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-              child: SizedBox(height: 1000, child: ComicAlbumComponent()),
+              child: ComicAlbumComponent(),
             ),
           ],
         ));

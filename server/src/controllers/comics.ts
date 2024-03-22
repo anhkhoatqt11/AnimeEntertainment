@@ -84,9 +84,14 @@ export const getComicInAlbum: RequestHandler = async (req, res, next)=>{
         const response:string = req.body.idList;
         const limit = parseInt(req.body.limit);
         const page = parseInt(req.body.page);
-        var idList = response.replace('[','').replace(']','').replace(/\s/g, "").split(',').splice((page-1)*limit,limit);
         const comics:any[] = [];
-        idList.forEach(async (element,index)=> {
+        var idList = response.replace('[','').replace(']','').replace(/\s/g, "").split(',');
+        if ((page-1)*limit > idList.length-1) {
+          res.status(200).json(comics);  
+          return;
+        }
+        else idList = idList.splice((page-1)*limit,limit);
+        idList.forEach(async (element)=> {
             await ComicsModel.aggregate([
                 {
                     $match: { _id: new mongoose.Types.ObjectId(element) }
@@ -100,7 +105,7 @@ export const getComicInAlbum: RequestHandler = async (req, res, next)=>{
                     }
                 },
                 {
-                    $project: { _id: 1, coverImage: 1, comicName: 1, genreName: 1}
+                    $project: { _id: 1, coverImage: 1, comicName: 1, genreName: 1, description: 1}
                 }
                
             ]).then((item)=>{
@@ -110,7 +115,6 @@ export const getComicInAlbum: RequestHandler = async (req, res, next)=>{
                 }
             });
         });
-        console.log("out");
     }
     catch (error)
     {

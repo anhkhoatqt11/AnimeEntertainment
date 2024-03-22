@@ -98,7 +98,6 @@ class ComicsApi {
         return [];
       }
     } catch (e) {
-      print(e.toString());
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
@@ -165,17 +164,19 @@ class ComicsApi {
         "limit": limit,
         "page": page,
       };
-      print(body);
       final res = await http.post(url, body: body);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         List<Comics> comicAlbumItemArray = [];
         result.forEach((element) {
-          comicAlbumItemArray.add(Comics(
-              id: element[0]['_id'],
-              comicName: element[0]['comicName'],
-              coverImage: element[0]['coverImage'],
-              genres: element[0]['genreName']));
+          if (element.length > 0) {
+            comicAlbumItemArray.add(Comics(
+                id: element[0]['_id'],
+                comicName: element[0]['comicName'],
+                coverImage: element[0]['coverImage'],
+                genres: element[0]['genreName'],
+                description: element[0]['description']));
+          }
         });
         return comicAlbumItemArray;
       } else {
