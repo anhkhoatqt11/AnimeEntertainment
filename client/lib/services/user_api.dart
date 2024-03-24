@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:anime_and_comic_entertainment/model/user.dart';
+import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
-  static const baseUrl = "http://localhost:5000/api/users/";
+  static const baseUrl = "${UrlApi.urlLocalHost}/api/users/";
 
   static addUser(Map pdata) async {
     var url = Uri.parse("${baseUrl}createUser");

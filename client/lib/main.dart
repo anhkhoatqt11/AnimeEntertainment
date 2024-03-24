@@ -1,14 +1,16 @@
-import 'package:anime_and_comic_entertainment/pages/anime_home.dart';
-import 'package:anime_and_comic_entertainment/pages/comic_page.dart';
-// import 'package:anime_and_comic_entertainment/pages/home.dart';
-import 'package:anime_and_comic_entertainment/pages/login.dart';
-import 'package:anime_and_comic_entertainment/pages/profile.dart';
-import 'package:anime_and_comic_entertainment/pages/splash.dart';
+import 'package:anime_and_comic_entertainment/pages/anime/anime_page.dart';
+import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_page.dart';
+import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
+import 'package:anime_and_comic_entertainment/pages/test.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/profile.dart';
+import 'package:anime_and_comic_entertainment/pages/home/splash.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
-// import 'package:anime_and_comic_entertainment/pages/splash.dart';
+import 'package:anime_and_comic_entertainment/providers/index_page_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
-// import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,10 +33,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'skylark',
-      home: Splash(),
+      home: Scaffold(
+        body: MyHomePage(
+          title: 'skylark',
+        ),
+      ),
     );
   }
 }
@@ -62,11 +68,15 @@ class _NavigationScreenState extends State<NavigationScreen>
   Widget build(BuildContext context) {
     return Container(
       color: Color(0xFF141414),
-      child: widget.navIndex == 1
-          ? ComicPage()
-          : widget.navIndex == 4
-              ? Profile()
-              : AnimePage(),
+      child: widget.navIndex == 0
+          ? HomePage()
+          : widget.navIndex == 1
+              ? ComicPage()
+              : widget.navIndex == 2
+                  ? AnimePage()
+                  : widget.navIndex == 3
+                      ? ChallengePage()
+                      : ProfilePage(),
     );
   }
 }
@@ -143,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   child: Text(
                     titleList[index],
                     maxLines: 1,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
                         fontSize: 10),
@@ -154,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             ],
           );
         },
-        backgroundColor: Color(0XFF2D2D2D),
+        backgroundColor: const Color(0XFF2D2D2D),
         activeIndex: _bottomNavIndex,
         splashColor: Utils.accentColor,
         splashSpeedInMilliseconds: 0,

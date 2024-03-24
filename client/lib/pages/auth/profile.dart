@@ -1,3 +1,5 @@
+import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/providers/index_page_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,19 @@ class Profile extends StatelessWidget {
                 onPressed: () async {
                   await AuthApi.register(context, '1234557890', '123');
                 },
-                child: Text("Sign up"))
+                child: Text("Sign up")),
+            ElevatedButton(
+                onPressed: () {
+                  Provider.of<IndexPageProvider>(context, listen: false)
+                      .setIndexPage(2);
+                },
+                child: Text("forward")),
+            ElevatedButton(
+                onPressed: () {
+                  print(Provider.of<IndexPageProvider>(context, listen: false)
+                      .indexPage);
+                },
+                child: Text("print"))
           ],
         ));
   }
@@ -48,7 +62,8 @@ class _LoginOrProfileComponentState extends State<LoginOrProfileComponent> {
         : Container(
             child: ElevatedButton(
                 onPressed: () async {
-                  await AuthApi.login(context, "0123456789", "123");
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Login()));
                 },
                 child: Text('Log in')),
           );

@@ -2,6 +2,7 @@ import { InferSchemaType, model, Schema } from "mongoose";
 
 const comicsSchema = new Schema({
     coverImage: {type: String},
+    lanspaceImage: {type: String},
     comicName: {type: String},
     author: {type: String},
     artist: {type: String},

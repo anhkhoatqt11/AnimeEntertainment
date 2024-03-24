@@ -1,16 +1,20 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:anime_and_comic_entertainment/main.dart';
+import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthApi {
-  static const baseUrl = "http://192.168.56.1:5000/api/auth/";
+  static const baseUrl = "${UrlApi.urlLocalHost}/api/auth/";
 
-  static login(BuildContext context, String phone, String password) async {
+  static login(BuildContext context, String? phone, String? password) async {
     var url = Uri.parse(
       "${baseUrl}login",
     );
@@ -38,7 +42,8 @@ class AuthApi {
         return null;
       }
     } catch (e) {
-      debugPrint(e.toString());
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
   }
 
@@ -59,11 +64,12 @@ class AuthApi {
         userProvider.setUserToken(token.toString());
       }
     } catch (e) {
-      debugPrint(e.toString());
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
   }
 
-  static register(BuildContext context, String phone, String password) async {
+  static register(BuildContext context, String? phone, String? password) async {
     var url = Uri.parse(
       "${baseUrl}register",
     );
@@ -73,14 +79,13 @@ class AuthApi {
         body: {"phone": phone, "password": password},
       );
       if (res.statusCode == 200) {
-        print('Register successfully');
         return true;
       } else {
-        print("Failed to get response");
         return false;
       }
     } catch (e) {
-      debugPrint(e.toString());
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
   }
 
@@ -99,5 +104,85 @@ class AuthApi {
       ),
       (route) => false,
     );
+  }
+
+  static getOTP(BuildContext context, String? mobileNo) async {
+    var url = Uri.parse(
+      "${baseUrl}getOTP",
+    );
+    try {
+      final res = await http.post(
+        url,
+        body: {"phone": mobileNo},
+      );
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static verify(
+      BuildContext context, String? mobileNo, String? otpHash, otpCode) async {
+    var url = Uri.parse(
+      "${baseUrl}verifyOTP",
+    );
+    try {
+      final res = await http.post(
+        url,
+        body: {"phone": mobileNo, "otp": otpCode, "hash": otpHash},
+      );
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static checkAccount(BuildContext context, String? phone) async {
+    var url = Uri.parse(
+      "${baseUrl}findAccount",
+    );
+    try {
+      var body = {"phone": phone};
+      final res = await http.post(url, body: body);
+      if (res.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static updatePassword(
+      BuildContext context, String? phone, String? password) async {
+    var url = Uri.parse(
+      "${baseUrl}updatePassword",
+    );
+    try {
+      final res = await http.post(
+        url,
+        body: {"phone": phone, "password": password},
+      );
+      if (res.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
   }
 }
