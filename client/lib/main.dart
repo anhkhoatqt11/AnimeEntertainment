@@ -36,11 +36,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'skylark',
-      home: Scaffold(
-        body: MyHomePage(
-          title: 'skylark',
-        ),
-      ),
+      home: Scaffold(body: const TestPage()
+          // MyHomePage(
+          //   title: 'skylark',
+          // ),
+          ),
     );
   }
 }

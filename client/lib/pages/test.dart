@@ -1,4 +1,5 @@
 import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/services/user_api.dart';
 import 'package:flutter/material.dart';
@@ -13,19 +14,26 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       body: Container(
         width: double.infinity,
         color: Colors.blue,
         child: Column(children: [
           ElevatedButton(
-              onPressed: () async {
-                await ComicsApi.getComicAlbum(context);
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DetailComicPage(comicId: "65ec601305c5cb2ad67cfb37"),
+                  ),
+                );
               },
-              child: const Text("Text"))
+              child: const Text("Detail comic"))
         ]),
       ),
-    );
+    ));
   }
 }
 
