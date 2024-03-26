@@ -29,6 +29,9 @@ dependencies:
   intl_phone_number_input: ^0.7.4
   fluttertoast: ^8.2.4
   flutter_launcher_icons: ^0.9.0
+  chewie: ^1.7.5
+  video_player: ^2.8.3
+  miniplayer: ^1.0.1
 
 flutter_icons:
   android: true

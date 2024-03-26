@@ -10,6 +10,7 @@ import session from "express-session";
 import userRoutes from "./routes/user"
 import comicRoutes from "./routes/comics"
 import authRoutes from "./routes/auth"
+import animeRoutes from "./routes/animes"
 import { isAuthenticated } from "./middlewares";
 //----------------------------------------------------------------------
 const app = express();
@@ -64,6 +65,7 @@ app.use("/api/auth", authRoutes);
 // app.use("/api/users", isAuthenticated,userRoutes);
 app.use("/api/users",userRoutes);
 app.use("/api/comics", comicRoutes);
+app.use("/api/animes", animeRoutes);
 
 //------------------------------------------------------------
 

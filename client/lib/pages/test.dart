@@ -1,6 +1,4 @@
-import 'package:anime_and_comic_entertainment/model/comics.dart';
-import 'package:anime_and_comic_entertainment/services/comics_api.dart';
-import 'package:anime_and_comic_entertainment/services/user_api.dart';
+import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:flutter/material.dart';
 
 class TestPage extends StatefulWidget {
@@ -20,7 +18,7 @@ class _TestPageState extends State<TestPage> {
         child: Column(children: [
           ElevatedButton(
               onPressed: () async {
-                await ComicsApi.getComicAlbum(context);
+                await AnimesApi.getAllAnimes(context);
               },
               child: const Text("Text"))
         ]),
