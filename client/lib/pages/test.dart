@@ -18,7 +18,10 @@ class _TestPageState extends State<TestPage> {
         child: Column(children: [
           ElevatedButton(
               onPressed: () async {
-                await AnimesApi.getAllAnimes(context);
+                var res = await AnimesApi.getNewEpisodeAnime(context);
+                res.forEach((item) {
+                  print(item.movieOwner);
+                });
               },
               child: const Text("Text"))
         ]),

@@ -1,5 +1,8 @@
 import 'package:anime_and_comic_entertainment/components/HotSeries.dart';
 import 'package:anime_and_comic_entertainment/components/MainBanner.dart';
+import 'package:anime_and_comic_entertainment/components/animes/AnimeAlbum.dart';
+import 'package:anime_and_comic_entertainment/components/animes/AnimeBanner.dart';
+import 'package:anime_and_comic_entertainment/components/animes/NewEpisodeList.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
@@ -17,98 +20,78 @@ class AnimePage extends StatefulWidget {
 }
 
 class _AnimePageState extends State<AnimePage> {
-  List<Animes> listAnimes = [];
-  Future<List<Animes>> getAllAnimes() async {
-    var result = await AnimesApi.getAllAnimes(context);
-    return result;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getAllAnimes().then((value) => value.forEach((element) {
-          print(element.genres);
-          setState(() {
-            listAnimes.add(Animes(
-                id: element.id,
-                coverImage: element.coverImage,
-                movieName: element.movieName,
-                genres: element.genres));
-          });
-        }));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: GFAppBar(
           elevation: 0,
-          backgroundColor: Colors.transparent,
-          leading: GFIconButton(
-            splashColor: Colors.transparent,
-            icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
-              color: Colors.white,
-              size: 24,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            type: GFButtonType.transparent,
+          backgroundColor: const Color(0xFF141414),
+          title: const Text(
+            "Anime",
+            style: TextStyle(
+                color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600),
           ),
+          actions: <Widget>[
+            GFIconButton(
+              icon: const Icon(
+                Icons.favorite,
+                color: Colors.white,
+              ),
+              onPressed: () {},
+              type: GFButtonType.transparent,
+            ),
+          ],
         ),
         backgroundColor: Color(0xFF141414),
-        body: listAnimes.isEmpty
-            ? ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                    child: Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
-                        child: Container(
-                          width: 125,
-                          height: 187,
-                          color: Colors.blue,
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                    child: Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
-                        child: Container(
-                          width: 125,
-                          height: 187,
-                          color: Colors.blue,
-                        )),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                    child: Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
-                        child: Container(
-                          width: 125,
-                          height: 187,
-                          color: Colors.blue,
-                        )),
-                  ),
-                ],
-              )
-            : ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: listAnimes.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {},
-                    child: ComicItem(
-                        urlImage: listAnimes[index].coverImage,
-                        nameItem: listAnimes[index].movieName,
-                        genres: listAnimes[index].genres),
-                  );
-                }));
+        body: ListView(
+          children: [
+            AnimeBanner(),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+            //   child: Text(
+            //     "Đọc tiếp",
+            //     style: TextStyle(
+            //         color: Colors.white,
+            //         fontSize: 20,
+            //         fontWeight: FontWeight.w600),
+            //   ),
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+            //   child: SizedBox(
+            //     height: 228,
+            //     child: CurrentReadingUser(),
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text(
+                "Tập mới, xem ngay!",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+              child: SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.9 * 9 / 16 + 86,
+                  child: NewEpisodeList()),
+            ),
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+              child: AnimeAlbumComponent(),
+            ),
+          ],
+        ));
   }
 }

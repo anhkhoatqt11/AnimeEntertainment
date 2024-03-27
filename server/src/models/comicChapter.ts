@@ -7,7 +7,7 @@ const comicChaptersSchema = new Schema({
     // *
     content: {type: Array},
     comments: {type: Array},
-    likes: {type: String}, // id of likerecord
+    likes: {type: Array}, // list user id liked
     views: {type: Number},
     unlockPrice: {type: Number},
     userUnlocked: {type: Array},
