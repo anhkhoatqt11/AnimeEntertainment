@@ -7,6 +7,7 @@ import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
@@ -40,6 +41,8 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
 
   @override
   Widget build(BuildContext context) {
+    List<int> listEpisode = [1, 1, 1, 1];
+    List<String> listGenre = ['Giả tưởng', 'Học đường'];
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: GFAppBar(
@@ -140,44 +143,130 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                                   Wrap(
                                     spacing: 8.0,
                                     children: [
-                                      Chip(
-                                        label: const Text(
-                                          "Gia tuong",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12),
+                                      Column(children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.solidThumbsUp,
+                                          color: Colors.grey,
+                                          size: 20,
                                         ),
-                                        backgroundColor: Color(0xFF282727),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(32)),
-                                      ),
-                                      Chip(
-                                        label: const Text(
-                                          "Gia tuong",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12),
+                                        const SizedBox(
+                                          height: 4,
                                         ),
-                                        backgroundColor: Color(0xFF282727),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(32)),
-                                      ),
-                                      Chip(
-                                        label: const Text(
-                                          "Gia tuong",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12),
+                                        Wrap(
+                                          children: [
+                                            ShaderMask(
+                                              shaderCallback: (rect) =>
+                                                  LinearGradient(
+                                                colors: Utils.gradientColors,
+                                                begin: Alignment.topCenter,
+                                              ).createShader(rect),
+                                              child: Text(
+                                                "176",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 13),
+                                              ),
+                                            ),
+                                            Text(
+                                              " luot thich",
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 13),
+                                            )
+                                          ],
+                                        )
+                                      ]),
+                                      Column(children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.solidEye,
+                                          color: Colors.grey,
+                                          size: 20,
                                         ),
-                                        backgroundColor: Color(0xFF282727),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(32)),
-                                      )
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        Wrap(
+                                          children: [
+                                            ShaderMask(
+                                              shaderCallback: (rect) =>
+                                                  LinearGradient(
+                                                colors: Utils.gradientColors,
+                                                begin: Alignment.topCenter,
+                                              ).createShader(rect),
+                                              child: Text(
+                                                "234",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 13),
+                                              ),
+                                            ),
+                                            Text(
+                                              " luot xem",
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 13),
+                                            )
+                                          ],
+                                        )
+                                      ]),
+                                      Column(children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.clipboardList,
+                                          color: Colors.grey,
+                                          size: 20,
+                                        ),
+                                        const SizedBox(
+                                          height: 4,
+                                        ),
+                                        Wrap(
+                                          children: [
+                                            ShaderMask(
+                                              shaderCallback: (rect) =>
+                                                  LinearGradient(
+                                                colors: Utils.gradientColors,
+                                                begin: Alignment.topCenter,
+                                              ).createShader(rect),
+                                              child: Text(
+                                                "176",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 13),
+                                              ),
+                                            ),
+                                            Text(
+                                              " luot thich",
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 13),
+                                            )
+                                          ],
+                                        )
+                                      ]),
                                     ],
                                   ),
+                                  const SizedBox(
+                                    height: 2,
+                                  ),
+                                  Wrap(
+                                      spacing: 8.0,
+                                      children: List.generate(
+                                        listGenre.length,
+                                        (index) => Chip(
+                                          label: Text(
+                                            listGenre[index],
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12),
+                                          ),
+                                          backgroundColor: Color(0xFF282727),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(32)),
+                                        ),
+                                      )),
                                   const SizedBox(
                                     height: 8,
                                   ),
@@ -236,7 +325,7 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                                     ],
                                   ),
                                   const SizedBox(
-                                    height: 2,
+                                    height: 8,
                                   ),
                                 ],
                               ),
@@ -278,136 +367,113 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                         const SizedBox(
                           height: 10,
                         ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
-                        Image.network(
-                          "https://imgupscaler.com/images/samples/animal-before.webp",
-                          height: 100,
-                          width: 100,
-                        ),
+                        Column(
+                            children:
+                                List.generate(listEpisode.length, (index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Row(
+                              children: [
+                                Container(
+                                  color: Colors.transparent,
+                                  height: 80,
+                                  child: AspectRatio(
+                                    aspectRatio: 16 / 9,
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                          "https://www.shutterstock.com/image-vector/anime-girl-kindhearted-spirit-befriends-600nw-2323507949.jpg",
+                                      placeholder: (context, url) => Container(
+                                        width: 125,
+                                        color: Colors.blue,
+                                        child: Shimmer.fromColors(
+                                          baseColor: Colors.grey.shade300,
+                                          highlightColor: Colors.grey.shade100,
+                                          child: Container(
+                                            width: 125,
+                                            color: Colors.yellow,
+                                          ),
+                                        ),
+                                      ),
+                                      imageBuilder: (context, imageProvider) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              image: DecorationImage(
+                                                  image: imageProvider,
+                                                  fit: BoxFit.fill)),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                      height: 80,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Tập 24 - Ngày anhs sáng thiên thần hoàng gia thiên la hoàng gia thiên la thiên la hoàng gia thiên la",
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  FaIcon(
+                                                    FontAwesomeIcons.clock,
+                                                    color: Colors.grey,
+                                                    size: 12,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 4,
+                                                  ),
+                                                  Text(
+                                                    "66:99",
+                                                    style: TextStyle(
+                                                        color: Colors.grey),
+                                                  )
+                                                ],
+                                              ),
+                                              ShaderMask(
+                                                  shaderCallback: (rect) =>
+                                                      LinearGradient(
+                                                        colors: Utils
+                                                            .gradientColors,
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                      ).createShader(rect),
+                                                  child: FaIcon(
+                                                    FontAwesomeIcons
+                                                        .solidBookmark,
+                                                    color: Colors.white,
+                                                    size: 16,
+                                                  ))
+                                            ],
+                                          )
+                                        ],
+                                      )),
+                                )
+                              ],
+                            ),
+                          );
+                        })),
+                        const SizedBox(
+                          height: 30,
+                        )
                       ],
                     ),
                   ),

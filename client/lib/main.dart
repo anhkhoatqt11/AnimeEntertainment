@@ -4,6 +4,7 @@ import 'package:anime_and_comic_entertainment/components/animes/VideoComponent.d
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/anime_page.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/detail_anime_page.dart';
+import 'package:anime_and_comic_entertainment/pages/anime/tabview.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_page.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'skylark',
         color: const Color(0xFF141414),
-        home: DetailAnimePage());
+        home: TabBarDemo());
   }
 }
 
