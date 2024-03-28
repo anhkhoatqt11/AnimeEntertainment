@@ -101,4 +101,66 @@ export const getNewEpisodeAnime: RequestHandler = async (req, res, next)=>{
 
 
 
+export const getRankingTable: RequestHandler = async (req, res, next)=>{
+    try
+    {
+        const animes = await AnimeEpisodeModel.aggregate( [
+            // {
+            //   $group: {
+            //      _id: "$_id",
+            //      result: { $sum: { $multiply: [ "$views", "$totalTime" ] } }
+            //   }
+            // },
+
+            // 21600 stand for meaning reset ranking table each 6 hours
+            { "$addFields": {
+                "timestamp": { "$toLong": "$publicTime" },
+                "begintimestamp": { "$toLong": (new Date("2024-01-01T17:00:00.000+00:00")) },  
+            }},
+            { "$addFields": {
+                "seconds": { $subtract: [ "$timestamp", "$begintimestamp" ] },
+                "sign":  { $cond: [ { $gt: ["$views",0] }, 1, 0 ] } ,
+                "n": { $cond: [ { $gte: [{ $abs: "$views" },1] }, {$abs: "$views"}, 1] }  ,
+            }},
+            {
+                "$addFields": {
+                    "ratepoint": { $sum: [{ $log: [ "$n", 10 ] },  { $divide: [ { $multiply: [ "$sign", "$seconds"  ] }, 21600 ] }] }
+            }
+            },
+            {
+                $sort : { "ratepoint": -1 }
+            },
+            {
+                $lookup: {
+                    from: "animes",
+                    localField: "_id",
+                    foreignField:"episodes",
+                    as: "movieOwner"
+                }
+            },
+            // { $project : {"ratepoint":1,"_id":1,"movieOwner.movieName":1} },
+
+            {
+                $group: {
+                    _id: { movieOwnerId : "$movieOwner._id", coverImage: "$movieOwner.coverImage", movieName: "$movieOwner.movieName" },
+                    ratepoint: { $top:
+                    {
+                       output: [ "$ratepoint" ],
+                       sortBy: { "ratepoint": -1 }
+                    } }
+                }
+            },
+            { "$sort": { "ratepoint": -1 } },
+            // { $limit: 10 },
+          ] );
+        res.status(200).json(animes);
+    }
+    catch (error)
+    {
+        next(error);
+    }
+}
+
+
+
 
