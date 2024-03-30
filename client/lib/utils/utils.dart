@@ -6,6 +6,14 @@ class Utils {
   static final accentColor = Color(0xFFA958FE);
   static final primaryColor = Color(0xFFDA5EF0);
 
+  static final top1gradientColors = List<Color>.from(
+      [Color.fromARGB(0, 88, 88, 88), Color.fromARGB(255, 218, 94, 240)]);
+  static final top2gradientColors = List<Color>.from(
+      [Color.fromARGB(0, 88, 88, 88), Color.fromARGB(255, 63, 255, 130)]);
+  static final top3gradientColors = List<Color>.from(
+      [Color.fromARGB(0, 88, 88, 88), Color.fromARGB(255, 63, 172, 255)]);
+  static final topgradientColors = List<Color>.from(
+      [Color.fromARGB(0, 88, 88, 88), Color.fromARGB(255, 163, 163, 163)]);
   static bool validateNumberPhone(String str) {
     String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
     RegExp regExp = new RegExp(patttern);

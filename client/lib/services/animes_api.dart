@@ -122,4 +122,31 @@ class AnimesApi {
           MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
   }
+
+  static getRankingTable(BuildContext context) async {
+    var url = Uri.parse(
+      "${baseUrl}getRankingTable",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<Animes> rankingArray = [];
+        result.forEach((element) {
+          rankingArray.add(Animes(
+              id: element['_id']['movieOwnerId'][0],
+              coverImage: element['_id']['coverImage'][0],
+              movieName: element['_id']['movieName'][0],
+              landspaceImage: element['_id']['landspaceImage'][0]));
+        });
+        return rankingArray;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(e.toString());
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
 }

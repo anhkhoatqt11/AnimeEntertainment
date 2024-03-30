@@ -1,14 +1,18 @@
-import express from "express"
-import * as AnimeController from "../controllers/animes"
+import express from "express";
+import * as AnimeController from "../controllers/animes";
 const router = express.Router();
 
-router.get("/getAnimeBanner",AnimeController.getAnimeBanner);
+router.get("/getAnimeBanner", AnimeController.getAnimeBanner);
 
-router.get("/getAnimeAlbum",AnimeController.getAnimeAlbum);
+router.get("/getAnimeAlbum", AnimeController.getAnimeAlbum);
 
-router.post("/getAnimeInAlbum",AnimeController.getAnimeInAlbum);
+router.post("/getAnimeInAlbum", AnimeController.getAnimeInAlbum);
 
-router.get("/getNewEpisodeAnime",AnimeController.getNewEpisodeAnime);
+router.get("/getNewEpisodeAnime", AnimeController.getNewEpisodeAnime);
 
-router.get("/getRankingTable",AnimeController.getRankingTable);
+router.get("/getRankingTable", AnimeController.getRankingTable);
+
+router.get("/getTopViewAnime", AnimeController.getTopViewAnime);
+
+router.post("/getAnimeChapterById", AnimeController.getAnimeChapterById);
 export default router;

@@ -6,12 +6,15 @@ import 'package:miniplayer/miniplayer.dart';
 class MiniPlayerControllerProvider extends ChangeNotifier {
   final MiniplayerController _miniController = MiniplayerController();
   double _percent = 1.0;
+  bool isMax = false;
   // WatchAnimePage animePage = WatchAnimePage(videoId: "");
 
   MiniplayerController get state => _miniController;
+  bool get height => isMax;
   double get percent => _percent;
   // WatchAnimePage get page => animePage;
   void setMiniController(PanelState item) {
+    isMax = !isMax;
     _miniController.animateToHeight(state: item);
     notifyListeners();
   }

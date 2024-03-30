@@ -3,9 +3,11 @@ import 'package:anime_and_comic_entertainment/components/MainBanner.dart';
 import 'package:anime_and_comic_entertainment/components/animes/AnimeAlbum.dart';
 import 'package:anime_and_comic_entertainment/components/animes/AnimeBanner.dart';
 import 'package:anime_and_comic_entertainment/components/animes/NewEpisodeList.dart';
+import 'package:anime_and_comic_entertainment/components/animes/TopRankingAnime.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
@@ -90,6 +92,20 @@ class _AnimePageState extends State<AnimePage> {
             Padding(
               padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
               child: AnimeAlbumComponent(),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text(
+                "️🏆 Bảng xếp hạng",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+              child: SizedBox(height: 300, child: TopRankingAnime()),
             ),
           ],
         ));
