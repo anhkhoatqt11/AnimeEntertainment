@@ -5,6 +5,8 @@ import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
 import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/pages/anime/anime_album_page.dart';
+import 'package:anime_and_comic_entertainment/pages/anime/top_view_detail_page.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_album_page.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
@@ -205,14 +207,15 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                               padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                               child: GestureDetector(
                                 onTap: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) => ComicAlbumPage(
-                                  //             comicIdList: listAlbum[index].comicList,
-                                  //             albumName: listAlbum[index].albumName,
-                                  //           )),
-                                  // );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AnimeAlbumPage(
+                                              albumId: listAlbum[index].id,
+                                              albumName:
+                                                  listAlbum[index].albumName,
+                                            )),
+                                  );
                                 },
                                 child: Row(
                                   children: [
@@ -253,14 +256,15 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                               padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                               child: GestureDetector(
                                 onTap: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) => ComicAlbumPage(
-                                  //             comicIdList: listAlbum[index].comicList,
-                                  //             albumName: listAlbum[index].albumName,
-                                  //           )),
-                                  // );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TopViewDetailPage(
+                                              animeId: listTopView[index].id,
+                                              movieName:
+                                                  listTopView[index].movieName,
+                                            )),
+                                  );
                                 },
                                 child: Row(
                                   children: [

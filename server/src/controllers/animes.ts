@@ -228,3 +228,91 @@ export const getAnimeChapterById: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getAnimeDetailById: RequestHandler = async (req, res, next) => {
+  const animeId = req.body.animeId;
+  try {
+    if (!mongoose.isValidObjectId(animeId)) {
+      throw createHttpError(400, "Invalid anime id");
+    }
+    // Mỗi một comic có một field gọi là chapterList chứa id của các chapter
+    const anime = await AnimesModel.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(animeId) },
+      },
+      {
+        $lookup: {
+          from: "animeepisodes",
+          localField: "episodes",
+          foreignField: "_id",
+          pipeline: [
+            {
+              $addFields: {
+                likeCount: { $size: "$likes" },
+              },
+            },
+          ],
+          as: "detailEpisodeList",
+        },
+      },
+      {
+        $lookup: {
+          from: "genres",
+          localField: "genres",
+          foreignField: "_id",
+          as: "genreNames",
+        },
+      },
+      {
+        $addFields: {
+          totalViews: {
+            $sum: "$detailEpisodeList.views",
+          },
+        },
+      },
+      {
+        $addFields: {
+          totalLikes: {
+            $sum: "$detailEpisodeList.likeCount",
+          },
+        },
+      },
+    ]);
+
+    if (!anime) {
+      throw createHttpError(404, "anime not found");
+    }
+    res.status(200).json(anime);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getEpisodeById: RequestHandler = async (req, res, next) => {
+  const animeId = req.body.animeId;
+  try {
+    if (!mongoose.isValidObjectId(animeId)) {
+      throw createHttpError(400, "Invalid anime id");
+    }
+    // Mỗi một comic có một field gọi là chapterList chứa id của các chapter
+    const anime = await AnimeEpisodeModel.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(animeId) },
+      },
+      {
+        $addFields: {
+          totalLikes: {
+            $sum: [{ $size: "$likes" }, { $size: "$comments" }],
+          },
+        },
+      },
+    ]);
+
+    if (!anime) {
+      throw createHttpError(404, "anime not found");
+    }
+    res.status(200).json(anime);
+  } catch (error) {
+    next(error);
+  }
+};

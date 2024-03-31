@@ -12,18 +12,19 @@ class Animes {
   final String? description;
   final List? episodes;
   final int? totalView;
+  final int? totalLike;
 
-  Animes({
-    this.id,
-    this.coverImage,
-    this.landspaceImage,
-    this.movieName,
-    this.genres,
-    this.publishTime,
-    this.ageFor,
-    this.publisher,
-    this.description,
-    this.episodes,
-    this.totalView,
-  });
+  Animes(
+      {this.id,
+      this.coverImage,
+      this.landspaceImage,
+      this.movieName,
+      this.genres,
+      this.publishTime,
+      this.ageFor,
+      this.publisher,
+      this.description,
+      this.episodes,
+      this.totalView,
+      this.totalLike});
 }

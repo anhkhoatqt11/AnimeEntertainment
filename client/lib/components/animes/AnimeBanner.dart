@@ -1,4 +1,5 @@
 import 'package:anime_and_comic_entertainment/model/banner.dart';
+import 'package:anime_and_comic_entertainment/pages/anime/detail_anime_page.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
@@ -58,7 +59,14 @@ class _AnimeBannerState extends State<AnimeBanner> {
             items: listBanner.map(
               (listItem) {
                 return GestureDetector(
-                    onTap: () => {print(listItem)},
+                    onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DetailAnimePage(animeId: listItem.urlId)),
+                          )
+                        },
                     child: Container(
                       margin: EdgeInsets.all(8.0),
                       child: ClipRRect(

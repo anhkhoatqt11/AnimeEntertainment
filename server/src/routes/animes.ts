@@ -15,4 +15,8 @@ router.get("/getRankingTable", AnimeController.getRankingTable);
 router.get("/getTopViewAnime", AnimeController.getTopViewAnime);
 
 router.post("/getAnimeChapterById", AnimeController.getAnimeChapterById);
+
+router.post("/getAnimeDetailById", AnimeController.getAnimeDetailById);
+
+router.post("/getEpisodeById", AnimeController.getEpisodeById);
 export default router;

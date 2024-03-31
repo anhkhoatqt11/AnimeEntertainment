@@ -25,6 +25,10 @@ class Utils {
     return true;
   }
 
+  static String convertTotalTime(int value) {
+    return "${(value / 60).round()}:${(value % 60)}";
+  }
+
   static String formatNumberWithDots(int number) {
     var formatter = NumberFormat.decimalPattern('vi_VN');
     return (formatter.format(number));

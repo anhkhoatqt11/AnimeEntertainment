@@ -1,5 +1,8 @@
+import 'package:anime_and_comic_entertainment/components/animes/AnimeAlbumItem.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ComicLandspaceItem.dart';
+import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 
 import 'package:flutter/material.dart';
@@ -9,20 +12,20 @@ import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
 
-class ComicAlbumPage extends StatefulWidget {
-  final dynamic comicIdList;
+class AnimeAlbumPage extends StatefulWidget {
+  final dynamic albumId;
   final String? albumName;
-  const ComicAlbumPage(
-      {super.key, required this.comicIdList, required this.albumName});
+  const AnimeAlbumPage(
+      {super.key, required this.albumId, required this.albumName});
 
   @override
-  State<ComicAlbumPage> createState() => _ComicAlbumPageState();
+  State<AnimeAlbumPage> createState() => _AnimeAlbumPageState();
 }
 
-class _ComicAlbumPageState extends State<ComicAlbumPage> {
-  List<Comics> listComicItem = [];
+class _AnimeAlbumPageState extends State<AnimeAlbumPage> {
+  List<Animes> listAnimeItem = [];
   final controller = ScrollController();
-  static const limit = 5;
+  static const limit = 6;
   int page = 1;
   bool hasData = true;
 
@@ -40,17 +43,16 @@ class _ComicAlbumPageState extends State<ComicAlbumPage> {
   Future fetch() async {
     try {
       if (hasData == false) return;
-      var newItems = await ComicsApi.getComicAlbumContent(context,
-          widget.comicIdList.toString(), limit.toString(), page.toString());
+      var newItems = await AnimesApi.getAnimeAlbumContent(context,
+          widget.albumId.toString(), limit.toString(), page.toString());
       final isLastPage = newItems.length < limit;
       newItems.forEach((item) {
         setState(() {
-          listComicItem.add(Comics(
-              id: item.id,
-              coverImage: item.coverImage,
-              comicName: item.comicName,
-              genres: item.genres,
-              description: item.description));
+          listAnimeItem.add(Animes(
+            id: item.id,
+            coverImage: item.coverImage,
+            movieName: item.movieName,
+          ));
         });
       });
       if (isLastPage) {
@@ -94,33 +96,38 @@ class _ComicAlbumPageState extends State<ComicAlbumPage> {
                   fontWeight: FontWeight.w500,
                   fontSize: 20),
             )),
-        body: listComicItem.isEmpty
+        body: listAnimeItem.isEmpty
             ? const Center(
                 child: GFLoader(type: GFLoaderType.circle),
               )
-            : ListView.builder(
-                scrollDirection: Axis.vertical,
+            : ListView(
                 controller: controller,
-                itemCount: listComicItem.length + 1,
-                itemBuilder: (context, index) {
-                  if (index < listComicItem.length) {
-                    final item = listComicItem[index];
-                    return ComicLandspaceItem(
-                      urlImage: item.coverImage,
-                      nameItem: item.comicName,
-                      genres: item.genres,
-                      description: item.description,
-                    );
-                  } else {
-                    return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 32),
-                        child: hasData == true
-                            ? const Center(
-                                child: GFLoader(type: GFLoaderType.circle),
-                              )
-                            : null);
-                  }
-                }));
+                scrollDirection: Axis.vertical,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      children: List.generate(listAnimeItem.length, (index) {
+                        if (index < listAnimeItem.length) {
+                          return AnimeAlbumItem(
+                              urlImage: listAnimeItem[index].coverImage,
+                              nameItem: listAnimeItem[index].movieName);
+                        } else {
+                          return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 32),
+                              child: hasData == true
+                                  ? const Center(
+                                      child:
+                                          GFLoader(type: GFLoaderType.circle),
+                                    )
+                                  : null);
+                        }
+                      }),
+                    ),
+                  )
+                ],
+              ));
   }
 
   @override

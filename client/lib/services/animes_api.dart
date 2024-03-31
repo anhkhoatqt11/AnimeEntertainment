@@ -207,4 +207,39 @@ class AnimesApi {
           MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
   }
+
+  static getAnimeDetailById(BuildContext context, animeId) async {
+    var url = Uri.parse(
+      "${baseUrl}getAnimeDetailById",
+    );
+    try {
+      var body = {
+        "animeId": animeId,
+      };
+      final res = await http.post(url, body: body);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        Animes animeDetail = Animes(
+          id: result[0]['_id'],
+          coverImage: result[0]['coverImage'],
+          landspaceImage: result[0]['landspaceImage'],
+          movieName: result[0]['movieName'],
+          genres: result[0]['genreNames'],
+          publishTime: result[0]['publishTime'],
+          ageFor: result[0]['ageFor'],
+          publisher: result[0]['publisher'],
+          description: result[0]['description'],
+          episodes: result[0]['detailEpisodeList'],
+          totalView: result[0]['totalViews'],
+          totalLike: result[0]['totalLikes'],
+        );
+        return animeDetail;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
 }
