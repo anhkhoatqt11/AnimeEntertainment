@@ -179,6 +179,7 @@ export const getTopViewAnime: RequestHandler = async (req, res, next) => {
         },
       },
       { $sort: { totalView: -1 } },
+      { $limit: 10 },
     ]);
     res.status(200).json(animes);
   } catch (error) {
@@ -188,6 +189,8 @@ export const getTopViewAnime: RequestHandler = async (req, res, next) => {
 
 export const getAnimeChapterById: RequestHandler = async (req, res, next) => {
   const animeId = req.body.animeId;
+  const limit = parseInt(req.body.limit);
+  const page = parseInt(req.body.page);
   try {
     if (!mongoose.isValidObjectId(animeId)) {
       throw createHttpError(400, "Invalid anime id");
@@ -201,6 +204,7 @@ export const getAnimeChapterById: RequestHandler = async (req, res, next) => {
           from: "animeepisodes",
           localField: "episodes",
           foreignField: "_id",
+          pipeline: [{ $skip: (page - 1) * limit }, { $limit: limit }],
           as: "movieEpisodes",
         },
       },
@@ -211,6 +215,7 @@ export const getAnimeChapterById: RequestHandler = async (req, res, next) => {
           "movieEpisodes._id": 1,
           "movieEpisodes.coverImage": 1,
           "movieEpisodes.episodeName": 1,
+          "movieEpisodes.views": 1,
         },
       },
     ]);

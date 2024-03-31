@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
@@ -192,12 +193,16 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                       },
                       child: Row(
                         children: [
-                          Text(
-                            listAlbum[index].albumName!,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600),
+                          Flexible(
+                            child: Text(
+                              listAlbum[index].albumName!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
                           const SizedBox(
                             width: 5,

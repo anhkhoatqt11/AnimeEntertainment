@@ -144,7 +144,65 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      print(e.toString());
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static getTopViewAnime(BuildContext context) async {
+    var url = Uri.parse(
+      "${baseUrl}getTopViewAnime",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<Animes> topArray = [];
+        result.forEach((element) {
+          topArray.add(Animes(
+              id: element['_id']['movieOwnerId'][0],
+              movieName: element['_id']['movieName'][0],
+              totalView: element['totalView']));
+        });
+        return topArray;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static getAnimeChapterById(BuildContext context, animeId, limit, page) async {
+    var url = Uri.parse(
+      "${baseUrl}getAnimeChapterById",
+    );
+    try {
+      var body = {
+        "animeId": animeId,
+        "limit": limit,
+        "page": page,
+      };
+      final res = await http.post(url, body: body);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<AnimeEpisodes> animeEpisode = [];
+        result[0]['movieEpisodes'].forEach((element) {
+          if (element.length > 0) {
+            animeEpisode.add(AnimeEpisodes(
+              id: element['_id'],
+              coverImage: element['coverImage'],
+              episodeName: element['episodeName'],
+              views: element['views'],
+            ));
+          }
+        });
+        return animeEpisode;
+      } else {
+        return [];
+      }
+    } catch (e) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }

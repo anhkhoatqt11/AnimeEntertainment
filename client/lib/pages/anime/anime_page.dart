@@ -69,9 +69,9 @@ class _AnimePageState extends State<AnimePage> {
             //     child: CurrentReadingUser(),
             //   ),
             // ),
-            // SizedBox(
-            //   height: 10,
-            // ),
+            SizedBox(
+              height: 10,
+            ),
             Padding(
               padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
               child: Text(
@@ -92,20 +92,6 @@ class _AnimePageState extends State<AnimePage> {
             Padding(
               padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
               child: AnimeAlbumComponent(),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: Text(
-                "️🏆 Bảng xếp hạng",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-              child: SizedBox(height: 300, child: TopRankingAnime()),
             ),
           ],
         ));

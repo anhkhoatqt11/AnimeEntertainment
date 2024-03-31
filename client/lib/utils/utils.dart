@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:intl/intl.dart';
+
 class Utils {
   static final gradientColors =
       List<Color>.from([Color(0xFFA958FE), Color(0xFFDA5EF0)]);
@@ -21,6 +23,11 @@ class Utils {
       return false;
     }
     return true;
+  }
+
+  static String formatNumberWithDots(int number) {
+    var formatter = NumberFormat.decimalPattern('vi_VN');
+    return (formatter.format(number));
   }
 
   static String validatePassword(String password) {

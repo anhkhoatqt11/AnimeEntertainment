@@ -11,6 +11,7 @@ class Animes {
   final String? publisher;
   final String? description;
   final List? episodes;
+  final int? totalView;
 
   Animes({
     this.id,
@@ -23,5 +24,6 @@ class Animes {
     this.publisher,
     this.description,
     this.episodes,
+    this.totalView,
   });
 }
