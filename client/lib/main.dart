@@ -50,9 +50,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'skylark',
         color: const Color(0xFF141414),
-        home: MyHomePage(
-          title: '',
-        ));
+        home: MyHomePage(title: 'title'));
   }
 }
 
@@ -149,7 +147,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       backgroundColor: const Color(0xFF141414),
       body: Consumer(
         builder: (context, watch, _) {
-          final res = Provider.of<VideoProvider>(context).anime;
+          final anime = Provider.of<VideoProvider>(context).anime;
+          final episode = Provider.of<VideoProvider>(context).episode;
           final miniPlayerController =
               Provider.of<MiniPlayerControllerProvider>(context).state;
 
@@ -160,15 +159,17 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             _buildOffstageNavigator("Page4"),
             _buildOffstageNavigator("Page5"),
             Offstage(
-              offstage: res.id == null,
+              offstage: anime.id == null || episode.id == null,
               child: Miniplayer(
                   controller: miniPlayerController,
                   minHeight: _playerMinHeight,
                   maxHeight: MediaQuery.of(context).size.height,
                   builder: (height, percentage) {
-                    if (res.id == null) return const SizedBox.shrink();
+                    if (anime.id == null || episode.id == null)
+                      return const SizedBox.shrink();
                     return WatchAnimePage(
-                        videoId: res.id,
+                        animeId: anime.id,
+                        videoId: episode.id,
                         height: height,
                         percent: percentage,
                         maxHeight: MediaQuery.of(context).size.height);

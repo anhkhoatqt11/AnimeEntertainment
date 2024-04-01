@@ -18,5 +18,15 @@ router.post("/getAnimeChapterById", AnimeController.getAnimeChapterById);
 
 router.post("/getAnimeDetailById", AnimeController.getAnimeDetailById);
 
-router.post("/getEpisodeById", AnimeController.getEpisodeById);
+router.get("/getSomeTopViewEpisodes", AnimeController.getSomeTopViewEpisodes);
+
+router.post(
+  "/getAnimeEpisodeDetailById",
+  AnimeController.getAnimeEpisodeDetailById
+);
+
+router.post(
+  "/getAnimeDetailInEpisodePageById",
+  AnimeController.getAnimeDetailInEpisodePageById
+);
 export default router;

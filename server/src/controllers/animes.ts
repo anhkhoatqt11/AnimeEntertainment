@@ -288,22 +288,86 @@ export const getAnimeDetailById: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const getEpisodeById: RequestHandler = async (req, res, next) => {
+export const getSomeTopViewEpisodes: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const animes = await AnimeEpisodeModel.aggregate([
+      { $sort: { views: -1 } },
+      { $project: { _id: 1, coverImage: 1, episodeName: 1, totalTime: 1 } },
+      { $limit: 12 },
+    ]);
+    res.status(200).json(animes);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAnimeEpisodeDetailById: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const episodeId = req.body.episodeId;
+  try {
+    if (!mongoose.isValidObjectId(episodeId)) {
+      throw createHttpError(400, "Invalid episode id");
+    }
+    const episode = await AnimeEpisodeModel.findById(episodeId);
+
+    if (!episode) {
+      throw createHttpError(404, "episode not found");
+    }
+    res.status(200).json(episode);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAnimeDetailInEpisodePageById: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   const animeId = req.body.animeId;
   try {
     if (!mongoose.isValidObjectId(animeId)) {
       throw createHttpError(400, "Invalid anime id");
     }
-    // Mỗi một comic có một field gọi là chapterList chứa id của các chapter
-    const anime = await AnimeEpisodeModel.aggregate([
+    const anime = await AnimesModel.aggregate([
       {
         $match: { _id: new mongoose.Types.ObjectId(animeId) },
       },
       {
-        $addFields: {
-          totalLikes: {
-            $sum: [{ $size: "$likes" }, { $size: "$comments" }],
-          },
+        $lookup: {
+          from: "genres",
+          localField: "genres",
+          foreignField: "_id",
+          as: "genreNames",
+        },
+      },
+      {
+        $lookup: {
+          from: "animeepisodes",
+          localField: "episodes",
+          foreignField: "_id",
+          as: "listEpisodes",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          movieName: 1,
+          publishTime: 1,
+          ageFor: 1,
+          publisher: 1,
+          genreNames: 1,
+          "listEpisodes._id": 1,
+          "listEpisodes.coverImage": 1,
+          "listEpisodes.episodeName": 1,
+          "listEpisodes.totalTime": 1,
         },
       },
     ]);

@@ -18,9 +18,9 @@ class _TestPageState extends State<TestPage> {
         child: Column(children: [
           ElevatedButton(
               onPressed: () async {
-                var res = await AnimesApi.getAnimeDetailById(
+                var res = await AnimesApi.getAnimeDetailInEpisodePageById(
                     context, "65fbe3717e4914bdd8125052");
-                print(res.genre);
+                // print(res[0].episodeName);
               },
               child: const Text("Text"))
         ]),

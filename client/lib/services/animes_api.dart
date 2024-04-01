@@ -242,4 +242,92 @@ class AnimesApi {
           MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
   }
+
+  static getAnimeEpisodeDetailById(BuildContext context, episodeId) async {
+    var url = Uri.parse(
+      "${baseUrl}getAnimeEpisodeDetailById",
+    );
+    try {
+      var body = {
+        "episodeId": episodeId,
+      };
+      final res = await http.post(url, body: body);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        AnimeEpisodes episodeDetail = AnimeEpisodes(
+            id: result['_id'],
+            advertising: result['advertising'],
+            content: result['content'],
+            episodeName: result['episodeName'],
+            likes: result['likes'],
+            totalTime: result['totalTime'],
+            views: result['views'],
+            adLink: result['adLink'],
+            comments: result['comments']);
+
+        return episodeDetail;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static getSomeTopViewEpisodes(BuildContext context) async {
+    var url = Uri.parse(
+      "${baseUrl}getSomeTopViewEpisodes",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<AnimeEpisodes> animeEpisode = [];
+        result.forEach((element) {
+          animeEpisode.add(AnimeEpisodes(
+              id: element['_id'],
+              coverImage: element['coverImage'],
+              episodeName: element['episodeName'],
+              totalTime: element['totalTime']));
+        });
+        return animeEpisode;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static getAnimeDetailInEpisodePageById(BuildContext context, animeId) async {
+    var url = Uri.parse(
+      "${baseUrl}getAnimeDetailInEpisodePageById",
+    );
+    try {
+      var body = {
+        "animeId": animeId,
+      };
+      final res = await http.post(url, body: body);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        Animes animeDetail = Animes(
+          id: result[0]['_id'],
+          movieName: result[0]['movieName'],
+          genres: result[0]['genreNames'],
+          publishTime: result[0]['publishTime'],
+          ageFor: result[0]['ageFor'],
+          publisher: result[0]['publisher'],
+          episodes: result[0]['listEpisodes'],
+        );
+        return animeDetail;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
 }

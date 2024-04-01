@@ -1,4 +1,5 @@
 import 'package:anime_and_comic_entertainment/components/animes/TopRankingAnime.dart';
+import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/anime_page.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
@@ -46,37 +47,23 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // GestureDetector(
-          //   onTap: () {
-          //     Provider.of<VideoProvider>(context, listen: false)
-          //         .setAnime(Animes(
-          //       id: "asss",
-          //       movieName: "aallla",
-          //     ));
-          //     Provider.of<MiniPlayerControllerProvider>(context, listen: false)
-          //         .setMiniController(PanelState.MAX);
-          //   },
-          //   child: Container(
-          //     height: 100,
-          //     width: 200,
-          //     color: Colors.green,
-          //     child: const Text("Home"),
-          //   ),
-          // ),
-          // GestureDetector(
-          //   onTap: () {
-          //     Provider.of<VideoProvider>(context, listen: false)
-          //         .setAnime(Animes(id: "bsss", movieName: "aallla"));
-          //     Provider.of<MiniPlayerControllerProvider>(context, listen: false)
-          //         .setMiniController(PanelState.MAX);
-          //   },
-          //   child: Container(
-          //     height: 100,
-          //     width: 200,
-          //     color: Colors.blue,
-          //     child: const Text("Home"),
-          //   ),
-          // ),
+          GestureDetector(
+            onTap: () {
+              Provider.of<VideoProvider>(context, listen: false).setAnime(
+                  Animes(
+                    id: "65fbe3717e4914bdd8125052",
+                  ),
+                  AnimeEpisodes(id: "65ffea9c65ac19bed872183c"));
+              Provider.of<MiniPlayerControllerProvider>(context, listen: false)
+                  .setMiniController(PanelState.MAX);
+            },
+            child: Container(
+              height: 100,
+              width: 200,
+              color: Colors.green,
+              child: const Text("Home"),
+            ),
+          ),
         ],
       ),
     );
