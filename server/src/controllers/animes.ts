@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import AnimesModel from "../models/anime";
 import BannerModel from "../models/banner";
 import AnimeEpisodeModel from "../models/animeEpisode";
-
+import UserModel from "../models/user";
 import AnimeAlbumModel from "../models/animeAlbum";
 
 export const getAnimeBanner: RequestHandler = async (req, res, next) => {
@@ -376,6 +376,100 @@ export const getAnimeDetailInEpisodePageById: RequestHandler = async (
       throw createHttpError(404, "anime not found");
     }
     res.status(200).json(anime);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateEpisodeView: RequestHandler = async (req, res, next) => {
+  try {
+    const { episodeId } = req.body;
+    var episode = await AnimeEpisodeModel.findById(episodeId);
+    if (!episode) {
+      return res.sendStatus(400);
+    }
+    episode.views = episode.views! + 1;
+    await episode?.save();
+    return res.status(200).json(episode).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateUserLikeEpisode: RequestHandler = async (req, res, next) => {
+  try {
+    const { episodeId, userId } = req.body;
+    var episode = await AnimeEpisodeModel.findById(episodeId);
+    if (!episode) {
+      return res.sendStatus(400);
+    }
+    var check = episode.likes.filter((item) => item.toString() === userId);
+    if (check.length === 0) {
+      episode.likes.push(new mongoose.Types.ObjectId(userId));
+    } else {
+      episode.likes = episode.likes.filter(
+        (item) => item.toString() !== userId
+      );
+    }
+    await episode?.save();
+    return res.status(200).json(episode).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateUserSaveEpisode: RequestHandler = async (req, res, next) => {
+  try {
+    const { episodeId, userId } = req.body;
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+    var checkSave = user.bookmarkList!["movies"].filter(
+      (item) => item.toString() === episodeId
+    );
+    if (checkSave.length === 0) {
+      user.bookmarkList!["movies"].push(new mongoose.Types.ObjectId(episodeId));
+    } else {
+      user.bookmarkList!["movies"] = user.bookmarkList!["movies"].filter(
+        (item) => item.toString() !== episodeId
+      );
+    }
+    await user?.save();
+    return res.status(200).json(user).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkUserHasLikeOrSaveEpisode: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const { episodeId, userId } = req.body;
+    // check like
+    var episode = await AnimeEpisodeModel.findById(episodeId);
+    if (!episode) {
+      return res.sendStatus(400);
+    }
+    var check = episode.likes.filter((item) => item.toString() === userId);
+    // check bookmark
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+    var checkSave = user.bookmarkList!["movies"].filter(
+      (item) => item.toString() === episodeId
+    );
+    return res
+      .status(200)
+      .json({
+        like: check.length === 0 ? false : true,
+        bookmark: checkSave.length === 0 ? false : true,
+      })
+      .end();
   } catch (error) {
     next(error);
   }

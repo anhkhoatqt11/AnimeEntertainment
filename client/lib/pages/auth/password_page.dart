@@ -245,9 +245,7 @@ class _PasswordPageState extends State<PasswordPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const GetOTPPage(
-                                                          index: 0,
-                                                        )),
+                                                        const Login()),
                                               );
                                             },
                                           ));

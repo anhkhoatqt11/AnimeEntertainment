@@ -1,5 +1,9 @@
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
+import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({super.key});
@@ -18,34 +22,31 @@ class _TestPageState extends State<TestPage> {
         child: Column(children: [
           ElevatedButton(
               onPressed: () async {
-                var res = await AnimesApi.getAnimeDetailInEpisodePageById(
-                    context, "65fbe3717e4914bdd8125052");
-                // print(res[0].episodeName);
+                var userId =
+                    Provider.of<UserProvider>(context, listen: false).user.id;
+                print(userId == "" ? "not" : "oke");
+                if (userId == "") return;
+                // var userId =
+                //     Provider.of<UserProvider>(context, listen: false).user.id;
+                // if (userId == "") {
+                //   print("chua dang nhap");
+                //   return;
+                // }
+                // ;
+                // var result = await AnimesApi.checkUserHasLikeOrSaveEpisode(
+                //     context, "65ffea9c65ac19bed872183c", userId);
+                // print(result);
+                // AnimesApi.checkUserHasLikeOrSaveEpisode(context,
+                //     "65ffea9c65ac19bed872183c", "65ec67ad05c5cb2ad67cfb3f");
               },
-              child: const Text("Text"))
+              child: Text("test")),
+          ElevatedButton(
+              onPressed: () async {
+                AuthApi.login(context, '+84979683590', 'Dangthaison@123');
+              },
+              child: Text('login'))
         ]),
       ),
     );
   }
 }
-
-  // ElevatedButton(
-  //             onPressed: () async {
-  //               var pdata = {
-  //                 "name": "User1",
-  //                 "phoneNumber": "01234",
-  //                 "total": "10",
-  //                 "payed": "1",
-  //                 "debt": "0"
-  //               };
-  //               await Api.addUser(pdata);
-  //             },
-  //             child: Text("CREATE")),
-  //         ElevatedButton(
-  //             onPressed: () async {
-  //               // var res =
-  //                   // await ComicsApi.getChapterComic("65ec601305c5cb2ad67cfb37");
-  //             },
-  //             child: Text("READ")),
-  //         ElevatedButton(onPressed: () async {}, child: Text("UPDATE")),
-  //         ElevatedButton(onPressed: () async {}, child: Text("DELETE")),

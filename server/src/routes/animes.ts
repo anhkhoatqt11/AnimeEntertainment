@@ -29,4 +29,15 @@ router.post(
   "/getAnimeDetailInEpisodePageById",
   AnimeController.getAnimeDetailInEpisodePageById
 );
+
+router.post("/updateEpisodeView", AnimeController.updateEpisodeView);
+
+router.post("/updateUserLikeEpisode", AnimeController.updateUserLikeEpisode);
+
+router.post("/updateUserSaveEpisode", AnimeController.updateUserSaveEpisode);
+
+router.post(
+  "/checkUserHasLikeOrSaveEpisode",
+  AnimeController.checkUserHasLikeOrSaveEpisode
+);
 export default router;

@@ -50,7 +50,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'skylark',
         color: const Color(0xFF141414),
-        home: MyHomePage(title: 'title'));
+        home: MyHomePage(
+          title: '',
+        ));
   }
 }
 
@@ -165,8 +167,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   minHeight: _playerMinHeight,
                   maxHeight: MediaQuery.of(context).size.height,
                   builder: (height, percentage) {
-                    if (anime.id == null || episode.id == null)
+                    if (anime.id == null || episode.id == null) {
                       return const SizedBox.shrink();
+                    }
                     return WatchAnimePage(
                         animeId: anime.id,
                         videoId: episode.id,
@@ -249,73 +252,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               }),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     backgroundColor: Color(0xFF141414),
-  //     extendBody: true,
-  //     body: NotificationListener<ScrollNotification>(
-  //       child: NavigationScreen(_bottomNavIndex),
-  //     ),
-  //     bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-  //       height: 60,
-  //       itemCount: iconList.length,
-  //       tabBuilder: (int index, bool isActive) {
-  //         final whiteColors = List<Color>.from([
-  //           Color.fromARGB(255, 255, 255, 255),
-  //           Color.fromARGB(255, 239, 239, 239)
-  //         ]);
-  //         final finalColor = isActive ? Utils.gradientColors : whiteColors;
-  //         return Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             ShaderMask(
-  //               shaderCallback: (rect) => LinearGradient(
-  //                 colors: finalColor,
-  //                 begin: Alignment.topCenter,
-  //               ).createShader(rect),
-  //               child: FaIcon(
-  //                 iconList[index],
-  //                 color: Colors.white,
-  //                 size: 20,
-  //               ),
-  //             ),
-  //             const SizedBox(height: 2),
-  //             Padding(
-  //               padding: const EdgeInsets.symmetric(horizontal: 8),
-  //               child: ShaderMask(
-  //                 shaderCallback: (rect) => LinearGradient(
-  //                   colors: finalColor,
-  //                   begin: Alignment.topCenter,
-  //                 ).createShader(rect),
-  //                 child: Text(
-  //                   titleList[index],
-  //                   maxLines: 1,
-  //                   style: const TextStyle(
-  //                       color: Colors.white,
-  //                       fontWeight: FontWeight.w500,
-  //                       fontSize: 10),
-  //                   // group: autoSizeGroup,
-  //                 ),
-  //               ),
-  //             )
-  //           ],
-  //         );
-  //       },
-  //       backgroundColor: const Color(0XFF2D2D2D),
-  //       activeIndex: _bottomNavIndex,
-  //       splashColor: Utils.accentColor,
-  //       splashSpeedInMilliseconds: 0,
-  //       notchSmoothness: NotchSmoothness.defaultEdge,
-  //       gapLocation: GapLocation.none,
-  //       leftCornerRadius: 24,
-  //       rightCornerRadius: 24,
-  //       onTap: (index) => setState(() => _bottomNavIndex = index),
-  //     ),
-  //   );
-  // }
 
   Widget _buildOffstageNavigator(String tabItem) {
     return Offstage(

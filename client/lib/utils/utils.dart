@@ -7,6 +7,8 @@ class Utils {
       List<Color>.from([Color(0xFFA958FE), Color(0xFFDA5EF0)]);
   static final accentColor = Color(0xFFA958FE);
   static final primaryColor = Color(0xFFDA5EF0);
+  static final greenColor = Color.fromARGB(255, 63, 255, 130);
+  static final blueColor = Color.fromARGB(255, 63, 172, 255);
 
   static final top1gradientColors = List<Color>.from(
       [Color.fromARGB(0, 88, 88, 88), Color.fromARGB(255, 218, 94, 240)]);

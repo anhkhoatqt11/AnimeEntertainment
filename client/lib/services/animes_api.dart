@@ -330,4 +330,65 @@ class AnimesApi {
           MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
   }
+
+  static updateEpisodeView(BuildContext context, episodeId) async {
+    var url = Uri.parse(
+      "${baseUrl}updateEpisodeView",
+    );
+    try {
+      var body = {
+        "episodeId": episodeId,
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static updateUserLikeEpisode(BuildContext context, episodeId, userId) async {
+    var url = Uri.parse(
+      "${baseUrl}updateUserLikeEpisode",
+    );
+    try {
+      var body = {"episodeId": episodeId, "userId": userId};
+      await http.post(url, body: body);
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static updateUserSaveEpisode(BuildContext context, episodeId, userId) async {
+    var url = Uri.parse(
+      "${baseUrl}updateUserSaveEpisode",
+    );
+    try {
+      var body = {"episodeId": episodeId, "userId": userId};
+      await http.post(url, body: body);
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static checkUserHasLikeOrSaveEpisode(
+      BuildContext context, episodeId, userId) async {
+    var url = Uri.parse(
+      "${baseUrl}checkUserHasLikeOrSaveEpisode",
+    );
+    try {
+      var body = {"episodeId": episodeId, "userId": userId};
+      final res = await http.post(url, body: body);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        return result;
+      } else {
+        return {};
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
 }

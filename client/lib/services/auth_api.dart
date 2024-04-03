@@ -2,8 +2,11 @@
 
 import 'dart:convert';
 
+import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/main.dart';
+import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
+import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
@@ -27,18 +30,17 @@ class AuthApi {
         var data = jsonDecode(res.body);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         userProvider.setUserToken(data['authentication']['sessionToken']);
+        userProvider.setUserId(data['_id']);
         await prefs.setString(
             'auth-session-token', data['authentication']['sessionToken']);
-
-        navigator.pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => MyHomePage(
-              title: 'Skylark',
-            ),
-          ),
-          (route) => false,
-        );
+        navigator.popUntil((route) => route.isFirst);
       } else {
+        showDialog(
+            context: context,
+            builder: (_) => CustomAlertDialog(
+                content: "Thông tin tài khoản không tồn tại",
+                title: 'Thông báo',
+                action: () {}));
         return null;
       }
     } catch (e) {
@@ -62,6 +64,7 @@ class AuthApi {
       final res = await http.post(url, body: body);
       if (jsonDecode(res.body)['loggedIn'] == true) {
         userProvider.setUserToken(token.toString());
+        userProvider.setUserId(jsonDecode(res.body)['id']);
       }
     } catch (e) {
       Navigator.push(context,
