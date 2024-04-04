@@ -1,4 +1,5 @@
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
@@ -52,6 +53,8 @@ class _LoginOrProfileComponentState extends State<LoginOrProfileComponent> {
         : Container(
             child: ElevatedButton(
                 onPressed: () async {
+                  Provider.of<NavigatorProvider>(context, listen: false)
+                      .setShow(false);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Login()));
                 },

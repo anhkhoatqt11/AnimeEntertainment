@@ -2,6 +2,7 @@
 
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -51,6 +52,8 @@ class _LoginState extends State<Login> {
             size: 24,
           ),
           onPressed: () {
+            Provider.of<NavigatorProvider>(context, listen: false)
+                .setShow(true);
             Navigator.of(context).pop();
           },
           type: GFButtonType.transparent,

@@ -4,13 +4,18 @@ import 'dart:convert';
 
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/main.dart';
+import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
+import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
+import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +38,8 @@ class AuthApi {
         userProvider.setUserId(data['_id']);
         await prefs.setString(
             'auth-session-token', data['authentication']['sessionToken']);
+        await Provider.of<VideoProvider>(context, listen: false)
+            .setLikeSave(data['_id'], context);
         navigator.popUntil((route) => route.isFirst);
       } else {
         showDialog(

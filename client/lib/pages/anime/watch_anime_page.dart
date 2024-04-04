@@ -62,8 +62,6 @@ class _WatchAnimePageState extends State<WatchAnimePage>
   late AnimeEpisodes detailAnimeEpisode = AnimeEpisodes();
   late List<int> bufferWatchRecord = [];
   late bool viewDone = false;
-  late bool hadLiked = false;
-  late bool hadSaved = false;
   late bool isLogedIn = false;
 
   Future<void> _launchUrl(String urlAd) async {
@@ -107,10 +105,8 @@ class _WatchAnimePageState extends State<WatchAnimePage>
     var userId = Provider.of<UserProvider>(context, listen: false).user.id;
     if (userId == "") return;
     isLogedIn = true;
-    var result = await AnimesApi.checkUserHasLikeOrSaveEpisode(
-        context, widget.videoId, userId);
-    hadLiked = result['like'];
-    hadSaved = result['bookmark'];
+    Provider.of<VideoProvider>(context, listen: false)
+        .setLikeSave(userId, context);
   }
 
   _handleTabSelection() {
@@ -298,9 +294,67 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                                   Padding(
                                                     padding: const EdgeInsets
                                                         .fromLTRB(10, 0, 0, 10),
-                                                    child: AdTiming(
-                                                        content:
-                                                            'Quảng cáo: ${(value.position.inSeconds)}.0/${value.duration.inSeconds}.0s'),
+                                                    child: Column(
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            if (_controllerAd!
+                                                                .value
+                                                                .isPlaying) {
+                                                              _controllerAd!
+                                                                  .pause();
+                                                            } else {
+                                                              _controllerAd!
+                                                                  .play();
+                                                            }
+                                                          },
+                                                          child: Container(
+                                                            width: 40,
+                                                            height: 40,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.4),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            360)),
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .fromLTRB(
+                                                                      4,
+                                                                      2,
+                                                                      0,
+                                                                      0),
+                                                              child: Center(
+                                                                  child: ShaderMask(
+                                                                      shaderCallback: (rect) => LinearGradient(
+                                                                            colors:
+                                                                                Utils.gradientColors,
+                                                                            begin:
+                                                                                Alignment.topCenter,
+                                                                          ).createShader(rect),
+                                                                      child: FaIcon(
+                                                                        _controllerAd!.value.isPlaying
+                                                                            ? FontAwesomeIcons.pause
+                                                                            : FontAwesomeIcons.play,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        size:
+                                                                            18,
+                                                                      ))),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 2),
+                                                        AdTiming(
+                                                            content:
+                                                                'Quảng cáo: ${(value.position.inSeconds)}.0/${value.duration.inSeconds}.0s'),
+                                                      ],
+                                                    ),
                                                   )
                                                 ],
                                               )
@@ -463,113 +517,133 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                 const SizedBox(
                                   height: 8,
                                 ),
-                                Center(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          if (Provider.of<UserProvider>(context,
-                                                          listen: false)
-                                                      .user
-                                                      .authentication[
-                                                  'sessionToken'] !=
-                                              "") {
-                                            AnimesApi.updateUserLikeEpisode(
-                                                context,
-                                                widget.videoId,
-                                                Provider.of<UserProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .user
-                                                    .id);
-                                            setState(
-                                              () {
-                                                hadLiked = !hadLiked;
-                                              },
-                                            );
-                                          } else {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const Login()));
-                                          }
-                                        },
-                                        child: Column(children: [
-                                          FaIcon(
-                                            FontAwesomeIcons.solidThumbsUp,
-                                            color: hadLiked
-                                                ? Utils.primaryColor
-                                                : Colors.grey,
-                                            size: 20,
-                                          ),
-                                          const SizedBox(
-                                            height: 4,
-                                          ),
-                                          Text(
-                                            "Thích",
-                                            style: TextStyle(
+                                Consumer(
+                                  builder: (BuildContext context, value,
+                                      Widget? child) {
+                                    final hadLiked =
+                                        Provider.of<VideoProvider>(context)
+                                            .hadLiked;
+                                    final hadSaved =
+                                        Provider.of<VideoProvider>(context)
+                                            .hadSaved;
+                                    return Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (Provider.of<UserProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .user
+                                                          .authentication[
+                                                      'sessionToken'] !=
+                                                  "") {
+                                                AnimesApi.updateUserLikeEpisode(
+                                                    context,
+                                                    widget.videoId,
+                                                    Provider.of<UserProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .user
+                                                        .id);
+                                                setState(
+                                                  () {
+                                                    Provider.of<VideoProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .setLiked();
+                                                  },
+                                                );
+                                              } else {
+                                                _controllerAd!.pause();
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const Login()));
+                                              }
+                                            },
+                                            child: Column(children: [
+                                              FaIcon(
+                                                FontAwesomeIcons.solidThumbsUp,
                                                 color: hadLiked
                                                     ? Utils.primaryColor
                                                     : Colors.grey,
-                                                fontSize: 12),
-                                          )
-                                        ]),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          if (Provider.of<UserProvider>(context,
-                                                          listen: false)
-                                                      .user
-                                                      .authentication[
-                                                  'sessionToken'] !=
-                                              "") {
-                                            AnimesApi.updateUserSaveEpisode(
-                                                context,
-                                                widget.videoId,
-                                                Provider.of<UserProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .user
-                                                    .id);
-                                            setState(
-                                              () {
-                                                hadSaved = !hadSaved;
-                                              },
-                                            );
-                                          } else {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const Login()));
-                                          }
-                                        },
-                                        child: Column(children: [
-                                          FaIcon(
-                                            FontAwesomeIcons.solidBookmark,
-                                            color: hadSaved
-                                                ? Utils.accentColor
-                                                : Colors.grey,
-                                            size: 18,
+                                                size: 20,
+                                              ),
+                                              const SizedBox(
+                                                height: 4,
+                                              ),
+                                              Text(
+                                                "Thích",
+                                                style: TextStyle(
+                                                    color: hadLiked
+                                                        ? Utils.primaryColor
+                                                        : Colors.grey,
+                                                    fontSize: 12),
+                                              )
+                                            ]),
                                           ),
-                                          const SizedBox(
-                                            height: 4,
-                                          ),
-                                          Text(
-                                            "Lưu phim",
-                                            style: TextStyle(
+                                          GestureDetector(
+                                            onTap: () {
+                                              if (Provider.of<UserProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .user
+                                                          .authentication[
+                                                      'sessionToken'] !=
+                                                  "") {
+                                                AnimesApi.updateUserSaveEpisode(
+                                                    context,
+                                                    widget.videoId,
+                                                    Provider.of<UserProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .user
+                                                        .id);
+                                                setState(
+                                                  () {
+                                                    Provider.of<VideoProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .setSaved();
+                                                  },
+                                                );
+                                              } else {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const Login()));
+                                              }
+                                            },
+                                            child: Column(children: [
+                                              FaIcon(
+                                                FontAwesomeIcons.solidBookmark,
                                                 color: hadSaved
                                                     ? Utils.accentColor
                                                     : Colors.grey,
-                                                fontSize: 12),
-                                          )
-                                        ]),
+                                                size: 18,
+                                              ),
+                                              const SizedBox(
+                                                height: 4,
+                                              ),
+                                              Text(
+                                                "Lưu phim",
+                                                style: TextStyle(
+                                                    color: hadSaved
+                                                        ? Utils.accentColor
+                                                        : Colors.grey,
+                                                    fontSize: 12),
+                                              )
+                                            ]),
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    );
+                                  },
                                 ),
                                 const SizedBox(
                                   height: 2,
@@ -695,7 +769,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                 text: "Danh sách tập",
                               ),
                               Tab(
-                                text: "Bình luận",
+                                text: "Xem thêm",
                               ),
                             ],
                           ),
@@ -729,7 +803,8 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                             borderRadius:
                                                 BorderRadius.circular(8)),
                                         child: Padding(
-                                          padding: const EdgeInsets.all(8),
+                                          padding: const EdgeInsets.fromLTRB(
+                                              8, 8, 12, 8),
                                           child: Row(
                                             children: [
                                               Container(

@@ -15,6 +15,7 @@ import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/profile.dart';
 import 'package:anime_and_comic_entertainment/pages/home/splash.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/tab_navigator.dart';
@@ -36,7 +37,8 @@ void main() async {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => UserProvider()),
     ChangeNotifierProvider(create: (context) => VideoProvider()),
-    ChangeNotifierProvider(create: (context) => MiniPlayerControllerProvider())
+    ChangeNotifierProvider(create: (context) => MiniPlayerControllerProvider()),
+    ChangeNotifierProvider(create: (context) => NavigatorProvider())
   ], child: const MyApp()));
 }
 
@@ -145,112 +147,118 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF141414),
-      body: Consumer(
-        builder: (context, watch, _) {
-          final anime = Provider.of<VideoProvider>(context).anime;
-          final episode = Provider.of<VideoProvider>(context).episode;
-          final miniPlayerController =
-              Provider.of<MiniPlayerControllerProvider>(context).state;
+    return Consumer(builder: (BuildContext context, value, Widget? child) {
+      final isStack = Provider.of<NavigatorProvider>(context).isShowNavigator;
+      return Scaffold(
+        backgroundColor: const Color(0xFF141414),
+        body: Consumer(
+          builder: (context, watch, _) {
+            final anime = Provider.of<VideoProvider>(context).anime;
+            final episode = Provider.of<VideoProvider>(context).episode;
+            final miniPlayerController =
+                Provider.of<MiniPlayerControllerProvider>(context).state;
 
-          return Stack(children: <Widget>[
-            _buildOffstageNavigator("Page1"),
-            _buildOffstageNavigator("Page2"),
-            _buildOffstageNavigator("Page3"),
-            _buildOffstageNavigator("Page4"),
-            _buildOffstageNavigator("Page5"),
-            Offstage(
-              offstage: anime.id == null || episode.id == null,
-              child: Miniplayer(
-                  controller: miniPlayerController,
-                  minHeight: _playerMinHeight,
-                  maxHeight: MediaQuery.of(context).size.height,
-                  builder: (height, percentage) {
-                    if (anime.id == null || episode.id == null) {
-                      return const SizedBox.shrink();
-                    }
-                    return WatchAnimePage(
-                        animeId: anime.id,
-                        videoId: episode.id,
-                        height: height,
-                        percent: percentage,
-                        maxHeight: MediaQuery.of(context).size.height);
-                  }),
-            ),
-          ]);
-        },
-      ),
-      bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-          height: 60,
-          itemCount: iconList.length,
-          tabBuilder: (int index, bool isActive) {
-            final whiteColors = List<Color>.from([
-              const Color.fromARGB(255, 255, 255, 255),
-              const Color.fromARGB(255, 239, 239, 239)
+            return Stack(children: <Widget>[
+              _buildOffstageNavigator("Page1"),
+              _buildOffstageNavigator("Page2"),
+              _buildOffstageNavigator("Page3"),
+              _buildOffstageNavigator("Page4"),
+              _buildOffstageNavigator("Page5"),
+              Offstage(
+                offstage: anime.id == null || episode.id == null,
+                child: Miniplayer(
+                    controller: miniPlayerController,
+                    minHeight: _playerMinHeight,
+                    maxHeight: MediaQuery.of(context).size.height,
+                    builder: (height, percentage) {
+                      if (anime.id == null || episode.id == null) {
+                        return const SizedBox.shrink();
+                      }
+                      return WatchAnimePage(
+                          animeId: anime.id,
+                          videoId: episode.id,
+                          height: height,
+                          percent: percentage,
+                          maxHeight: MediaQuery.of(context).size.height);
+                    }),
+              ),
             ]);
-            final finalColor = isActive ? Utils.gradientColors : whiteColors;
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ShaderMask(
-                  shaderCallback: (rect) => LinearGradient(
-                    colors: finalColor,
-                    begin: Alignment.topCenter,
-                  ).createShader(rect),
-                  child: FaIcon(
-                    iconList[index],
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: ShaderMask(
-                    shaderCallback: (rect) => LinearGradient(
-                      colors: finalColor,
-                      begin: Alignment.topCenter,
-                    ).createShader(rect),
-                    child: Text(
-                      titleList[index],
-                      maxLines: 1,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 10),
-                      // group: autoSizeGroup,
-                    ),
-                  ),
-                )
-              ],
-            );
           },
-          backgroundColor: const Color(0XFF2D2D2D),
-          activeIndex: _bottomNavIndex,
-          splashColor: Utils.accentColor,
-          splashSpeedInMilliseconds: 0,
-          notchSmoothness: NotchSmoothness.defaultEdge,
-          gapLocation: GapLocation.none,
-          leftCornerRadius: 24,
-          rightCornerRadius: 24,
-          // onTap: (index) => setState(() => _bottomNavIndex = index),
-          onTap: (index) => {
-                if (Provider.of<MiniPlayerControllerProvider>(context,
-                        listen: false)
-                    .isMax)
-                  {
-                    Provider.of<MiniPlayerControllerProvider>(context,
-                            listen: false)
-                        .setMiniController(PanelState.MIN)
-                  },
-                setState(() => _selectTab(pageKeys[index], index)),
-                setState(() {
-                  _bottomNavIndex = index;
-                })
-              }),
-    );
+        ),
+        bottomNavigationBar: isStack
+            ? AnimatedBottomNavigationBar.builder(
+                height: 60,
+                itemCount: iconList.length,
+                tabBuilder: (int index, bool isActive) {
+                  final whiteColors = List<Color>.from([
+                    const Color.fromARGB(255, 255, 255, 255),
+                    const Color.fromARGB(255, 239, 239, 239)
+                  ]);
+                  final finalColor =
+                      isActive ? Utils.gradientColors : whiteColors;
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ShaderMask(
+                        shaderCallback: (rect) => LinearGradient(
+                          colors: finalColor,
+                          begin: Alignment.topCenter,
+                        ).createShader(rect),
+                        child: FaIcon(
+                          iconList[index],
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ShaderMask(
+                          shaderCallback: (rect) => LinearGradient(
+                            colors: finalColor,
+                            begin: Alignment.topCenter,
+                          ).createShader(rect),
+                          child: Text(
+                            titleList[index],
+                            maxLines: 1,
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 10),
+                            // group: autoSizeGroup,
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                },
+                backgroundColor: const Color(0XFF2D2D2D),
+                activeIndex: _bottomNavIndex,
+                splashColor: Utils.accentColor,
+                splashSpeedInMilliseconds: 0,
+                notchSmoothness: NotchSmoothness.defaultEdge,
+                gapLocation: GapLocation.none,
+                leftCornerRadius: 24,
+                rightCornerRadius: 24,
+                // onTap: (index) => setState(() => _bottomNavIndex = index),
+                onTap: (index) => {
+                      if (Provider.of<MiniPlayerControllerProvider>(context,
+                              listen: false)
+                          .isMax)
+                        {
+                          Provider.of<MiniPlayerControllerProvider>(context,
+                                  listen: false)
+                              .setMiniController(PanelState.MIN)
+                        },
+                      setState(() => _selectTab(pageKeys[index], index)),
+                      setState(() {
+                        _bottomNavIndex = index;
+                      })
+                    })
+            : const SizedBox.shrink(),
+      );
+    });
   }
 
   Widget _buildOffstageNavigator(String tabItem) {
