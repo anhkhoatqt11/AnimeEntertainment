@@ -1,5 +1,7 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicChapter.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
+import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -11,6 +13,13 @@ class DetailComicPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<int> ListChapters = [1, 2, 3, 4, 5, 6];
+    late Comics comic = Comics();
+    Future<Comics> getAnimeDetailById() async {
+      var result = await ComicsApi.getComicDetailById(context, comicId);
+      return result;
+    }
+
+    getAnimeDetailById().then((value) => {comic = value});
 
     return Scaffold(
         backgroundColor: const Color(0xFF141414),
@@ -34,8 +43,7 @@ class DetailComicPage extends StatelessWidget {
             Stack(children: [
               Column(
                 children: [
-                  Image.network(
-                      'https://popsimg.akamaized.net/api/v2/containers/file2/cms_thumbnails/nuphu2021_thumb_1280x720-9d156e7dfc82-1685355429130-YqX7xfOm.jpg?v=0&maxW=600&format=jpg'),
+                  Image.network(comic.landspaceImage ?? ""),
                   const SizedBox(
                     height: 25,
                   )
@@ -55,97 +63,95 @@ class DetailComicPage extends StatelessWidget {
             ]),
             Column(
               children: [
-                const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 5, 0, 15),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 15),
                     child: Text(
-                      'Nhật ký nữ phụ huấn luyện em trai',
-                      style: TextStyle(
+                      comic.comicName ?? "",
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                     )),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
                         children: [
-                          FaIcon(
+                          const FaIcon(
                             FontAwesomeIcons.bookOpenReader,
                             color: Colors.white,
                           ),
-                          Text(
+                          const Text(
                             'Lượt xem',
                             style: TextStyle(color: Colors.white),
                           ),
                           Text(
-                            '100K',
-                            style: TextStyle(color: Colors.yellow),
+                            comic.totalView.toString(),
+                            style: const TextStyle(color: Colors.yellow),
                           )
                         ],
                       ),
                       Column(
                         children: [
-                          FaIcon(
+                          const FaIcon(
                             FontAwesomeIcons.solidThumbsUp,
                             color: Colors.white,
                           ),
-                          Text(
+                          const Text(
                             'Lượt thích',
                             style: TextStyle(color: Colors.white),
                           ),
                           Text(
-                            '100K',
-                            style: TextStyle(color: Colors.yellow),
+                            comic.totalLike.toString(),
+                            style: const TextStyle(color: Colors.yellow),
                           )
                         ],
                       ),
                       Column(
                         children: [
-                          FaIcon(
+                          const FaIcon(
                             FontAwesomeIcons.solidFile,
                             color: Colors.white,
                           ),
-                          Text(
+                          const Text(
                             'Số chương',
                             style: TextStyle(color: Colors.white),
                           ),
                           Text(
-                            '100',
-                            style: TextStyle(color: Colors.yellow),
+                            comic.chapterList!.length.toString(),
+                            style: const TextStyle(color: Colors.yellow),
                           )
                         ],
                       )
                     ],
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 15),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        'Tác giả: ',
-                        style: TextStyle(color: Colors.white),
+                        'Tác giả: ${comic.author}',
+                        style: const TextStyle(color: Colors.white),
                       ),
                       Text(
-                        'Họa sĩ: ',
-                        style: TextStyle(color: Colors.white),
+                        'Họa sĩ: ${comic.artist}',
+                        style: const TextStyle(color: Colors.white),
                       ),
-                      Text(
+                      const Text(
                         'Thể loại: ',
                         style: TextStyle(color: Colors.white),
                       ),
-                      Text(
+                      const Text(
                         'Nội dung bởi: ',
                         style: TextStyle(color: Colors.white),
                       ),
                       Text(
-                        'Mô tả: Doraemon - chú mèo máy đến từ thế kỷ 22 - đã dùng cỗ '
-                        'máy thời gian trở về thế kỷ 20 để làm bạn với Nobita, '
-                        'một cậu bé hậu đậu, vụng về nhưng giàu lòng nhân ái...',
-                        style: TextStyle(color: Colors.white),
+                        'Mô tả: ${comic.description}',
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ],
                   ),

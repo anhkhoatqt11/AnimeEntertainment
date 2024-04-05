@@ -13,6 +13,8 @@ class Comics {
   final String? description;
   final String? newChapterTime;
   final List? chapterList;
+  final int? totalView;
+  final int? totalLike;
 
   Comics(
       {this.id,
@@ -26,5 +28,7 @@ class Comics {
       this.publisher,
       this.description,
       this.newChapterTime,
-      this.chapterList});
+      this.chapterList,
+      this.totalView,
+      this.totalLike});
 }
