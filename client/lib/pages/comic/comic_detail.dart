@@ -1,9 +1,6 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicChapter.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
-import 'package:anime_and_comic_entertainment/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class DetailComicPage extends StatelessWidget {

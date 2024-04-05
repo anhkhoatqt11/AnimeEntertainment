@@ -179,3 +179,66 @@ export const getChapterOfComic: RequestHandler = async (req, res, next) => {
         next(error)
     }
 }
+
+export const getDetailComicById: RequestHandler = async (req, res, next) => {
+    const comicId = req.body.comicId;
+    try
+    {
+        if (!mongoose.isValidObjectId(comicId))
+        {
+            throw createHttpError(400, "Invalid comic id")
+        }
+        // Mỗi một comic có một field gọi là chapterList chứa id của các chapter 
+        const comic = await ComicsModel.aggregate([
+            {
+                $match: { _id: new mongoose.Types.ObjectId(comicId)}
+            },
+            {
+                $lookup: {
+                  from: "comicchapters",
+                  localField: "chapterList",
+                  foreignField: "_id",
+                  pipeline: [
+                    {
+                      $addFields: {
+                        likeCount: { $size: "$likes" },
+                      },
+                    },
+                  ],
+                  as: "detailChapterList",
+                },
+              },
+              {
+                $lookup: {
+                  from: "genres",
+                  localField: "genres",
+                  foreignField: "_id",
+                  as: "genreNames",
+                },
+              },
+              {
+                $addFields: {
+                  totalViews: {
+                    $sum: "$detailChapterList.views",
+                  },
+                },
+              },
+              {
+                $addFields: {
+                  totalLikes: {
+                    $sum: "$detailChapterList.likeCount",
+                  },
+                },
+              },
+        ])
+
+        if (!comic) {
+            throw createHttpError(404, "comic not found")
+        }
+        res.status(200).json(comic);
+    }
+    catch (error)
+    {
+        next(error)
+    }
+}

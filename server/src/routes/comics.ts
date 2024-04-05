@@ -14,4 +14,6 @@ router.get("/getNewChapterComic", ComicsController.getNewChapterComic);
 
 router.post("/getComicInAlbum", ComicsController.getComicInAlbum);
 
+router.post("/getDetailComicById", ComicsController.getDetailComicById);
+
 export default router;
