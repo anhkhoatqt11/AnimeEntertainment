@@ -296,7 +296,15 @@ export const getSomeTopViewEpisodes: RequestHandler = async (
   try {
     const animes = await AnimeEpisodeModel.aggregate([
       { $sort: { views: -1 } },
-      { $project: { _id: 1, coverImage: 1, episodeName: 1, totalTime: 1 } },
+      {
+        $project: {
+          _id: 1,
+          coverImage: 1,
+          episodeName: 1,
+          totalTime: 1,
+          views: 1,
+        },
+      },
       { $limit: 12 },
     ]);
     res.status(200).json(animes);
@@ -368,6 +376,7 @@ export const getAnimeDetailInEpisodePageById: RequestHandler = async (
           "listEpisodes.coverImage": 1,
           "listEpisodes.episodeName": 1,
           "listEpisodes.totalTime": 1,
+          "listEpisodes.views": 1,
         },
       },
     ]);
@@ -470,6 +479,105 @@ export const checkUserHasLikeOrSaveEpisode: RequestHandler = async (
         bookmark: checkSave.length === 0 ? false : true,
       })
       .end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkUserHistoryHadSeenEpisode: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const episodeId = req.body.episodeId;
+  const userId = req.body.userId;
+  try {
+    if (!mongoose.isValidObjectId(episodeId)) {
+      throw createHttpError(400, "Invalid episode id");
+    }
+    const userInfo = await UserModel.findById(userId).select("histories");
+    var check = userInfo?.histories?.watchingMovie.find(
+      (item) => item.episodeId.toString() === episodeId
+    );
+    res.status(200).json(check === undefined ? {} : check);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateUserHistoryHadSeenEpisode: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const episodeId = req.body.episodeId;
+  const userId = req.body.userId;
+  const position = parseInt(req.body.position);
+  try {
+    if (!mongoose.isValidObjectId(userId)) {
+      throw createHttpError(400, "Invalid user id");
+    }
+    const userInfo = await UserModel.findById(userId).select("histories");
+    var check = userInfo?.histories?.watchingMovie.find(
+      (item) => item.episodeId.toString() === episodeId
+    );
+    if (check === undefined) {
+      userInfo?.histories?.watchingMovie.push({
+        episodeId: new mongoose.Types.ObjectId(episodeId),
+        position: position,
+      });
+    } else {
+      const indexOfItem = userInfo?.histories?.watchingMovie.indexOf(check);
+      if (indexOfItem !== undefined) {
+        userInfo?.histories?.watchingMovie.splice(indexOfItem, 1, {
+          episodeId: new mongoose.Types.ObjectId(episodeId),
+          position: position,
+        });
+      }
+    }
+    await userInfo?.save();
+    res.status(200).json(userInfo);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getWatchingHistories: RequestHandler = async (req, res, next) => {
+  const userId = req.body.userId;
+  const limit = parseInt(req.body.limit);
+  const page = parseInt(req.body.page);
+  try {
+    if (!mongoose.isValidObjectId(userId)) {
+      throw createHttpError(400, "Invalid user id");
+    }
+    const histories = await UserModel.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(userId) },
+      },
+      {
+        $project: { histories: 1 },
+      },
+      {
+        $lookup: {
+          from: "animeepisodes",
+          localField: "histories.watchingMovie.episodeId",
+          foreignField: "_id",
+          pipeline: [{ $skip: (page - 1) * limit }, { $limit: limit }],
+          as: "detailHistories",
+        },
+      },
+      {
+        $project: {
+          histories: 1,
+          "detailHistories._id": 1,
+          "detailHistories.episodeName": 1,
+          "detailHistories.coverImage": 1,
+          "detailHistories.totalTime": 1,
+          "detailHistories.position": 1,
+        },
+      },
+    ]);
+    res.status(200).json(histories);
   } catch (error) {
     next(error);
   }

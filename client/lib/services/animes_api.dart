@@ -7,6 +7,7 @@ import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/model/banner.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/model/watchingHistories.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
@@ -289,7 +290,8 @@ class AnimesApi {
               id: element['_id'],
               coverImage: element['coverImage'],
               episodeName: element['episodeName'],
-              totalTime: element['totalTime']));
+              totalTime: element['totalTime'],
+              views: element['views']));
         });
         return animeEpisode;
       } else {
@@ -383,6 +385,37 @@ class AnimesApi {
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         return result;
+      } else {
+        return {};
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static getWatchingHistories(BuildContext context, userId, limit, page) async {
+    var url = Uri.parse(
+      "${baseUrl}getWatchingHistories",
+    );
+    try {
+      var body = {"userId": userId, "limit": limit, "page": page};
+      final res = await http.post(url, body: body);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        var index = 0;
+        List<WatchingHistories> histories = [];
+        result[0]['detailHistories'].forEach((element) {
+          histories.add(WatchingHistories(
+              id: element['_id'],
+              coverImage: element['coverImage'],
+              episodeName: element['episodeName'],
+              totalTime: element['totalTime'],
+              position: result[0]['histories']['watchingMovie'][index]
+                  ['position']));
+          index++;
+        });
+        return histories;
       } else {
         return {};
       }

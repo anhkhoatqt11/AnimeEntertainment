@@ -63,6 +63,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
   late List<int> bufferWatchRecord = [];
   late bool viewDone = false;
   late bool isLogedIn = false;
+  late String userId = "";
 
   Future<void> _launchUrl(String urlAd) async {
     if (!await launchUrl(Uri.parse(urlAd))) {
@@ -102,7 +103,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
   }
 
   void checkUserHasLikeOrSaveEpisode() async {
-    var userId = Provider.of<UserProvider>(context, listen: false).user.id;
+    userId = Provider.of<UserProvider>(context, listen: false).user.id;
     if (userId == "") return;
     isLogedIn = true;
     Provider.of<VideoProvider>(context, listen: false)
@@ -145,6 +146,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
             videoPlayerController: _controller!,
             autoPlay: false,
             looping: false,
+            startAt: Duration(seconds: 2),
             materialProgressColors: ChewieProgressColors(
               playedColor: Utils.primaryColor,
               handleColor: Utils.primaryColor,
@@ -170,6 +172,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                   videoPlayerController: _controllerAd!,
                   autoPlay: true,
                   looping: false,
+                  startAt: Duration(seconds: 10),
                   showControls: false);
               _playerWidgetAd = Chewie(controller: _chewieControllerAd!);
               setState(() {
@@ -827,9 +830,14 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                                         highlightColor: Colors
                                                             .grey.shade100,
                                                         child: Container(
-                                                          width: 125,
-                                                          color: Colors.yellow,
-                                                        ),
+                                                            width: 125,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors
+                                                                    .yellow,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            4))),
                                                       ),
                                                     ),
                                                     imageBuilder: (context,
@@ -890,7 +898,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                                                       .clock,
                                                                   color: Colors
                                                                       .grey,
-                                                                  size: 12,
+                                                                  size: 11,
                                                                 ),
                                                                 const SizedBox(
                                                                   width: 4,
@@ -903,27 +911,22 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                                                           'totalTime']),
                                                                   style: const TextStyle(
                                                                       color: Colors
-                                                                          .grey),
+                                                                          .grey,
+                                                                      fontSize:
+                                                                          11),
                                                                 )
                                                               ],
                                                             ),
-                                                            ShaderMask(
-                                                                shaderCallback: (rect) =>
-                                                                    LinearGradient(
-                                                                      colors: Utils
-                                                                          .gradientColors,
-                                                                      begin: Alignment
-                                                                          .topCenter,
-                                                                    ).createShader(
-                                                                        rect),
-                                                                child:
-                                                                    const FaIcon(
-                                                                  FontAwesomeIcons
-                                                                      .solidBookmark,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 16,
-                                                                ))
+                                                            Text(
+                                                              "${Utils.formatNumberWithDots(detailAnime.episodes![index]['views'])} lượt xem",
+                                                              style: TextStyle(
+                                                                  color: Utils
+                                                                      .primaryColor,
+                                                                  fontSize: 11,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
                                                           ],
                                                         )
                                                       ],
@@ -949,7 +952,10 @@ class _WatchAnimePageState extends State<WatchAnimePage>
   }
 
   @override
-  void dispose() {
+  void dispose() async {
+    if (isLogedIn) {
+      print("ket thuc tai " + _controller!.value.position.inSeconds.toString());
+    }
     _tabController.dispose();
     _controller!.dispose();
     _chewieController!.dispose();

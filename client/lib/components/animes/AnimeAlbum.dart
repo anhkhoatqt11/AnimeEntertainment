@@ -151,7 +151,7 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
   Widget build(BuildContext context) {
     return listAlbum.isEmpty
         ? SizedBox(
-            height: 256,
+            height: 187,
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -164,7 +164,9 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                       child: Container(
                         width: 125,
                         height: 187,
-                        color: Colors.blue,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
                       )),
                 ),
                 Padding(
@@ -175,7 +177,9 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                       child: Container(
                         width: 125,
                         height: 187,
-                        color: Colors.blue,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
                       )),
                 ),
                 Padding(
@@ -186,7 +190,9 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                       child: Container(
                         width: 125,
                         height: 187,
-                        color: Colors.blue,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
                       )),
                 ),
               ],
@@ -194,12 +200,13 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
           )
         : Column(
             children: List.generate(
-                listAlbum.length > listTopView.length
-                    ? listAlbum.length
-                    : listTopView.length, (index) {
+                (listAlbum.length / 2).round() >
+                        (listTopView.length / 2).round()
+                    ? (listAlbum.length / 2).round()
+                    : (listTopView.length / 2).round(), (index) {
             return Column(
               children: [
-                index < listAlbum.length
+                2 * index < listAlbum.length
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -211,9 +218,9 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => AnimeAlbumPage(
-                                              albumId: listAlbum[index].id,
-                                              albumName:
-                                                  listAlbum[index].albumName,
+                                              albumId: listAlbum[2 * index].id,
+                                              albumName: listAlbum[2 * index]
+                                                  .albumName,
                                             )),
                                   );
                                 },
@@ -221,7 +228,7 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        listAlbum[index].albumName!,
+                                        listAlbum[2 * index].albumName!,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
@@ -243,12 +250,63 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                               )),
                           SizedBox(
                               height: 256,
-                              child:
-                                  AnimeAlbumItem(animeId: listAlbum[index].id))
+                              child: AnimeAlbumItem(
+                                  animeId: listAlbum[2 * index].id))
                         ],
                       )
                     : Container(),
-                index < listTopView.length
+                2 * index + 1 < listAlbum.length
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AnimeAlbumPage(
+                                              albumId:
+                                                  listAlbum[2 * index + 1].id,
+                                              albumName:
+                                                  listAlbum[2 * index + 1]
+                                                      .albumName,
+                                            )),
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        listAlbum[2 * index + 1].albumName!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    const FaIcon(
+                                      FontAwesomeIcons.chevronRight,
+                                      color: Colors.white,
+                                      size: 12,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          SizedBox(
+                              height: 256,
+                              child: AnimeAlbumItem(
+                                  animeId: listAlbum[2 * index + 1].id))
+                        ],
+                      )
+                    : Container(),
+                index * 2 < listTopView.length
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -260,9 +318,10 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => TopViewDetailPage(
-                                              animeId: listTopView[index].id,
-                                              movieName:
-                                                  listTopView[index].movieName,
+                                              animeId:
+                                                  listTopView[index * 2].id,
+                                              movieName: listTopView[index * 2]
+                                                  .movieName,
                                             )),
                                   );
                                 },
@@ -270,7 +329,7 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        listTopView[index].movieName!,
+                                        listTopView[index * 2].movieName!,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
@@ -297,7 +356,62 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                           SizedBox(
                               height: 180,
                               child: TopViewEpisodeList(
-                                  animeId: listTopView[index].id))
+                                  animeId: listTopView[index * 2].id))
+                        ],
+                      )
+                    : Container(),
+                index * 2 + 1 < listTopView.length
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TopViewDetailPage(
+                                              animeId:
+                                                  listTopView[index * 2 + 1].id,
+                                              movieName:
+                                                  listTopView[index * 2 + 1]
+                                                      .movieName,
+                                            )),
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        listTopView[index * 2 + 1].movieName!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            height: 1,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    const FaIcon(
+                                      FontAwesomeIcons.chevronRight,
+                                      color: Colors.white,
+                                      size: 12,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                              height: 180,
+                              child: TopViewEpisodeList(
+                                  animeId: listTopView[index * 2 + 1].id))
                         ],
                       )
                     : Container(),

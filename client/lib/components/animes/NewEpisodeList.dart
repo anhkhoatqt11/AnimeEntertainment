@@ -49,7 +49,9 @@ class _NewEpisodeListState extends State<NewEpisodeList> {
                     child: Container(
                       width: 191,
                       height: 108,
-                      color: Colors.blue,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(4)),
                     )),
               ),
               Padding(
@@ -60,7 +62,9 @@ class _NewEpisodeListState extends State<NewEpisodeList> {
                     child: Container(
                       width: 191,
                       height: 108,
-                      color: Colors.blue,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(4)),
                     )),
               ),
               Padding(
@@ -71,7 +75,9 @@ class _NewEpisodeListState extends State<NewEpisodeList> {
                     child: Container(
                       width: 191,
                       height: 108,
-                      color: Colors.blue,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(4)),
                     )),
               ),
             ],

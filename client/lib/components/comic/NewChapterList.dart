@@ -44,9 +44,11 @@ class _NewChapterListState extends State<NewChapterList> {
                     baseColor: Colors.grey.shade300,
                     highlightColor: Colors.grey.shade100,
                     child: Container(
-                      width: 125,
+                      width: 191,
                       height: 187,
-                      color: Colors.blue,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(4)),
                     )),
               ),
               Padding(
@@ -55,9 +57,11 @@ class _NewChapterListState extends State<NewChapterList> {
                     baseColor: Colors.grey.shade300,
                     highlightColor: Colors.grey.shade100,
                     child: Container(
-                      width: 125,
+                      width: 191,
                       height: 187,
-                      color: Colors.blue,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(4)),
                     )),
               ),
               Padding(
@@ -66,9 +70,11 @@ class _NewChapterListState extends State<NewChapterList> {
                     baseColor: Colors.grey.shade300,
                     highlightColor: Colors.grey.shade100,
                     child: Container(
-                      width: 125,
+                      width: 191,
                       height: 187,
-                      color: Colors.blue,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(4)),
                     )),
               ),
             ],

@@ -10,6 +10,7 @@ import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
@@ -36,10 +37,12 @@ class AuthApi {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         userProvider.setUserToken(data['authentication']['sessionToken']);
         userProvider.setUserId(data['_id']);
+
         await prefs.setString(
             'auth-session-token', data['authentication']['sessionToken']);
         await Provider.of<VideoProvider>(context, listen: false)
             .setLikeSave(data['_id'], context);
+        Provider.of<NavigatorProvider>(context, listen: false).setShow(true);
         navigator.popUntil((route) => route.isFirst);
       } else {
         showDialog(
@@ -106,14 +109,7 @@ class AuthApi {
     // ignore: use_build_context_synchronously
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     userProvider.setUserToken("");
-    navigator.pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (context) => MyHomePage(
-          title: 'Skylark',
-        ),
-      ),
-      (route) => false,
-    );
+    userProvider.setUserId("");
   }
 
   static getOTP(BuildContext context, String? mobileNo) async {

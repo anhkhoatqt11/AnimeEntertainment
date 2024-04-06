@@ -40,4 +40,16 @@ router.post(
   "/checkUserHasLikeOrSaveEpisode",
   AnimeController.checkUserHasLikeOrSaveEpisode
 );
+
+router.post(
+  "/updateUserHistoryHadSeenEpisode",
+  AnimeController.updateUserHistoryHadSeenEpisode
+);
+
+router.post(
+  "/checkUserHistoryHadSeenEpisode",
+  AnimeController.checkUserHistoryHadSeenEpisode
+);
+
+router.post("/getWatchingHistories", AnimeController.getWatchingHistories);
 export default router;

@@ -33,7 +33,8 @@ class _SuggestionByViewState extends State<SuggestionByView> {
                 id: element.id,
                 coverImage: element.coverImage,
                 totalTime: element.totalTime,
-                episodeName: element.episodeName));
+                episodeName: element.episodeName,
+                views: element.views));
           });
         }));
   }
@@ -55,7 +56,7 @@ class _SuggestionByViewState extends State<SuggestionByView> {
                       color: Colors.white.withOpacity(0.05),
                       borderRadius: BorderRadius.circular(8)),
                   child: Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
                     child: Row(
                       children: [
                         Container(
@@ -73,7 +74,9 @@ class _SuggestionByViewState extends State<SuggestionByView> {
                                   highlightColor: Colors.grey.shade100,
                                   child: Container(
                                     width: 125,
-                                    color: Colors.yellow,
+                                    decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                        borderRadius: BorderRadius.circular(4)),
                                   ),
                                 ),
                               ),
@@ -117,7 +120,7 @@ class _SuggestionByViewState extends State<SuggestionByView> {
                                           const FaIcon(
                                             FontAwesomeIcons.clock,
                                             color: Colors.grey,
-                                            size: 12,
+                                            size: 11,
                                           ),
                                           const SizedBox(
                                             width: 4,
@@ -127,21 +130,18 @@ class _SuggestionByViewState extends State<SuggestionByView> {
                                                 listEpisodeItem[index]
                                                     .totalTime!),
                                             style: const TextStyle(
-                                                color: Colors.grey),
+                                                color: Colors.grey,
+                                                fontSize: 11),
                                           )
                                         ],
                                       ),
-                                      ShaderMask(
-                                          shaderCallback: (rect) =>
-                                              LinearGradient(
-                                                colors: Utils.gradientColors,
-                                                begin: Alignment.topCenter,
-                                              ).createShader(rect),
-                                          child: const FaIcon(
-                                            FontAwesomeIcons.solidBookmark,
-                                            color: Colors.white,
-                                            size: 16,
-                                          ))
+                                      Text(
+                                        "${Utils.formatNumberWithDots(listEpisodeItem[index].views!)} lượt xem",
+                                        style: TextStyle(
+                                            color: Utils.primaryColor,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w500),
+                                      ),
                                     ],
                                   )
                                 ],

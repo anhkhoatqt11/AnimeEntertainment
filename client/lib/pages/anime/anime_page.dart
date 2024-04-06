@@ -4,14 +4,17 @@ import 'package:anime_and_comic_entertainment/components/animes/AnimeAlbum.dart'
 import 'package:anime_and_comic_entertainment/components/animes/AnimeBanner.dart';
 import 'package:anime_and_comic_entertainment/components/animes/NewEpisodeList.dart';
 import 'package:anime_and_comic_entertainment/components/animes/TopRankingAnime.dart';
+import 'package:anime_and_comic_entertainment/components/animes/WatchingHistoriesList.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/types/gf_button_type.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AnimePage extends StatefulWidget {
@@ -49,6 +52,32 @@ class _AnimePageState extends State<AnimePage> {
         body: ListView(
           children: [
             AnimeBanner(),
+            Consumer(builder: (context, watch, _) {
+              final user = Provider.of<UserProvider>(context).user;
+              return user.authentication['sessionToken'] != ""
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text(
+                            "Bạn đang xem",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 160,
+                          child: WatchingHistoriesList(
+                            userId: user.id,
+                          ),
+                        ),
+                      ],
+                    )
+                  : SizedBox.shrink();
+            }),
             // SizedBox(
             //   height: 10,
             // ),

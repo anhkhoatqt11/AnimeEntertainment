@@ -140,8 +140,8 @@ class _TopRankingAnimeState extends State<TopRankingAnime> {
                               )),
                             ),
                             Positioned(
-                              left: 3,
-                              bottom: -20,
+                              left: 6,
+                              bottom: -12,
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
@@ -163,12 +163,12 @@ class _TopRankingAnimeState extends State<TopRankingAnime> {
                                               ),
                                             ],
                                             color: Colors.white,
-                                            fontSize: 69,
+                                            fontSize: 54,
                                             fontWeight: FontWeight.w900),
                                       )),
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 6, bottom: 22),
+                                        left: 6, bottom: 16),
                                     child: SizedBox(
                                       width: 130,
                                       child: Text(
@@ -247,8 +247,8 @@ class _TopRankingAnimeState extends State<TopRankingAnime> {
                               )),
                             ),
                             Positioned(
-                                left: 3,
-                                bottom: -20,
+                                left: 6,
+                                bottom: -12,
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
@@ -278,12 +278,12 @@ class _TopRankingAnimeState extends State<TopRankingAnime> {
                                                 ),
                                               ],
                                               color: Colors.white,
-                                              fontSize: 69,
+                                              fontSize: 54,
                                               fontWeight: FontWeight.w900),
                                         )),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 6, bottom: 22),
+                                          left: 6, bottom: 16),
                                       child: SizedBox(
                                         width: 186,
                                         child: Text(
@@ -356,8 +356,8 @@ class _TopRankingAnimeState extends State<TopRankingAnime> {
                               )),
                             ),
                             Positioned(
-                                left: 3,
-                                bottom: -20,
+                                left: 6,
+                                bottom: -12,
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
@@ -387,12 +387,12 @@ class _TopRankingAnimeState extends State<TopRankingAnime> {
                                                 ),
                                               ],
                                               color: Colors.white,
-                                              fontSize: 69,
+                                              fontSize: 54,
                                               fontWeight: FontWeight.w900),
                                         )),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 6, bottom: 22),
+                                          left: 6, bottom: 16),
                                       child: SizedBox(
                                         width: 186,
                                         child: Text(

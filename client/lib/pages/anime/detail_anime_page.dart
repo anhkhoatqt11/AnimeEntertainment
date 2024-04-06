@@ -2,6 +2,7 @@ import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
@@ -132,15 +133,15 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                                       )),
                                     ),
                                     Container(
-                                      width: 100,
-                                      height: 100,
+                                      width: 80,
+                                      height: 80,
                                       decoration: BoxDecoration(
                                           color: Colors.white.withOpacity(0.6),
                                           borderRadius:
                                               BorderRadius.circular(360)),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            6, 0, 0, 0),
+                                            6, 2, 0, 0),
                                         child: Center(
                                             child: ShaderMask(
                                                 shaderCallback: (rect) =>
@@ -153,7 +154,7 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                                                 child: const FaIcon(
                                                   FontAwesomeIcons.play,
                                                   color: Colors.white,
-                                                  size: 50,
+                                                  size: 40,
                                                 ))),
                                       ),
                                     ),
@@ -445,6 +446,7 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                             Column(
                                 children: List.generate(
                                     detailAnime.episodes!.length, (index) {
+                              late bool savedVideo = false;
                               return Padding(
                                 padding: const EdgeInsets.only(top: 12),
                                 child: Container(
@@ -452,7 +454,8 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                                       color: Colors.white.withOpacity(0.05),
                                       borderRadius: BorderRadius.circular(8)),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(8),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(8, 8, 12, 8),
                                     child: Row(
                                       children: [
                                         Container(
@@ -529,7 +532,7 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                                                             FontAwesomeIcons
                                                                 .clock,
                                                             color: Colors.grey,
-                                                            size: 12,
+                                                            size: 11,
                                                           ),
                                                           const SizedBox(
                                                             width: 4,
@@ -542,26 +545,22 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                                                             style:
                                                                 const TextStyle(
                                                                     color: Colors
-                                                                        .grey),
+                                                                        .grey,
+                                                                    fontSize:
+                                                                        11),
                                                           )
                                                         ],
                                                       ),
-                                                      ShaderMask(
-                                                          shaderCallback:
-                                                              (rect) =>
-                                                                  LinearGradient(
-                                                                    colors: Utils
-                                                                        .gradientColors,
-                                                                    begin: Alignment
-                                                                        .topCenter,
-                                                                  ).createShader(
-                                                                      rect),
-                                                          child: const FaIcon(
-                                                            FontAwesomeIcons
-                                                                .solidBookmark,
-                                                            color: Colors.white,
-                                                            size: 16,
-                                                          ))
+                                                      Text(
+                                                        "${Utils.formatNumberWithDots(detailAnime.episodes![index]['views'])} lượt xem",
+                                                        style: TextStyle(
+                                                            color: Utils
+                                                                .primaryColor,
+                                                            fontSize: 11,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
                                                     ],
                                                   )
                                                 ],

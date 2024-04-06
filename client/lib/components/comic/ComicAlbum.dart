@@ -132,7 +132,7 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
   Widget build(BuildContext context) {
     return listAlbum.isEmpty
         ? SizedBox(
-            height: 256,
+            height: 193,
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -145,7 +145,9 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                       child: Container(
                         width: 125,
                         height: 187,
-                        color: Colors.blue,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
                       )),
                 ),
                 Padding(
@@ -156,7 +158,9 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                       child: Container(
                         width: 125,
                         height: 187,
-                        color: Colors.blue,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
                       )),
                 ),
                 Padding(
@@ -167,7 +171,9 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                       child: Container(
                         width: 125,
                         height: 187,
-                        color: Colors.blue,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
                       )),
                 ),
               ],

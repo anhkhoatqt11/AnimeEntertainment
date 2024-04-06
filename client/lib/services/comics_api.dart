@@ -187,4 +187,31 @@ class ComicsApi {
           MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
   }
+
+  static getRankingTable(BuildContext context) async {
+    var url = Uri.parse(
+      "${baseUrl}getRankingTable",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<Comics> rankingArray = [];
+        result.forEach((element) {
+          rankingArray.add(Comics(
+              id: element['_id']['comicOwnerId'][0],
+              coverImage: element['_id']['coverImage'][0],
+              comicName: element['_id']['comicName'][0],
+              landspaceImage: element['_id']['landspaceImage'][0],
+              genres: element['_id']['genres']));
+        });
+        return rankingArray;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
 }
