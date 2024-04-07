@@ -26,18 +26,14 @@ class _TestPageState extends State<TestPage> {
         child: Column(children: [
           ElevatedButton(
               onPressed: () async {
-                // var userId =
-                //     Provider.of<UserProvider>(context, listen: false).user.id;
-                // if (userId == "") {
-                //   print("chua dang nhap");
-                //   return;
-                // }
-                // ;
-                // var result = await AnimesApi.checkUserHasLikeOrSaveEpisode(
-                //     context, "65ffea9c65ac19bed872183c", userId);
-                // print(result);
-                // AnimesApi.checkUserHasLikeOrSaveEpisode(context,
-                //     "65ffea9c65ac19bed872183c", "65ec67ad05c5cb2ad67cfb3f");
+                var result = await AnimesApi.checkUserHistoryHadSeenEpisode(
+                    context,
+                    "65ffea9c65ac19bed872183c",
+                    "65f709463fafb1d0bdce1bb0");
+                print(result);
+                if (result['position'] != null) {
+                  print(result['position']);
+                }
               },
               child: Text("test")),
           ElevatedButton(
@@ -45,29 +41,6 @@ class _TestPageState extends State<TestPage> {
                 AuthApi.login(context, '+84979683590', 'Dangthaison@123');
               },
               child: Text('login')),
-          user.id != ""
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                      child: Text(
-                        "Bạn đang xem",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 160,
-                      child: WatchingHistoriesList(
-                        userId: user.id,
-                      ),
-                    ),
-                  ],
-                )
-              : SizedBox.shrink(),
         ]),
       );
     }));

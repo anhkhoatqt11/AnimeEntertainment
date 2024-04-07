@@ -64,6 +64,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
   late bool viewDone = false;
   late bool isLogedIn = false;
   late String userId = "";
+  late int positionInit = 0;
 
   Future<void> _launchUrl(String urlAd) async {
     if (!await launchUrl(Uri.parse(urlAd))) {
@@ -96,13 +97,21 @@ class _WatchAnimePageState extends State<WatchAnimePage>
     return result;
   }
 
+  Future<void> checkUserHistoryHadSeenEpisode() async {
+    userId = Provider.of<UserProvider>(context, listen: false).user.id;
+    if (userId == "") return;
+    positionInit = await AnimesApi.checkUserHistoryHadSeenEpisode(
+        context, widget.videoId, userId);
+    return;
+  }
+
   Future<AnimeEpisodes> getAnimeEpisodeDetailById() async {
     var result =
         await AnimesApi.getAnimeEpisodeDetailById(context, widget.videoId);
     return result;
   }
 
-  void checkUserHasLikeOrSaveEpisode() async {
+  void checkUserHasLikeOrSaveAndWatchEpisode() async {
     userId = Provider.of<UserProvider>(context, listen: false).user.id;
     if (userId == "") return;
     isLogedIn = true;
@@ -127,58 +136,60 @@ class _WatchAnimePageState extends State<WatchAnimePage>
     _tabController.addListener(() {
       _handleTabSelection();
     });
-    checkUserHasLikeOrSaveEpisode();
-    getAnimeEpisodeDetailById().then((value) {
-      setState(() {
-        detailAnimeEpisode = value;
-        isLoadingEpisodeDetail = false;
-      });
-      getAnimeDetailInEpisodePageById().then((value) => setState(() {
-            detailAnime = value;
-            isLoadingAnimeDetail = false;
-          }));
-
-      _controller = VideoPlayerController.networkUrl(Uri.parse(
-          "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"))
-        ..initialize().then((_) {
-          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-          _chewieController = ChewieController(
-            videoPlayerController: _controller!,
-            autoPlay: false,
-            looping: false,
-            startAt: Duration(seconds: 2),
-            materialProgressColors: ChewieProgressColors(
-              playedColor: Utils.primaryColor,
-              handleColor: Utils.primaryColor,
-            ),
-            optionsTranslation: OptionsTranslation(
-              playbackSpeedButtonText: 'Tốc độ phát',
-              subtitlesButtonText: 'Phụ đề',
-              cancelButtonText: 'Hủy',
-            ),
-          );
-          _playerWidget = Chewie(controller: _chewieController!);
-          _controller!.addListener(() {
-            _handleVideoPlaying();
-          });
-          setState(() {
-            completeInitContent = true;
-          });
+    checkUserHasLikeOrSaveAndWatchEpisode();
+    checkUserHistoryHadSeenEpisode().then((value) {
+      getAnimeEpisodeDetailById().then((value) {
+        setState(() {
+          detailAnimeEpisode = value;
+          isLoadingEpisodeDetail = false;
         });
-      _controllerAd =
-          VideoPlayerController.networkUrl(Uri.parse(value.advertising!))
-            ..initialize().then((_) {
-              _chewieControllerAd = ChewieController(
-                  videoPlayerController: _controllerAd!,
-                  autoPlay: true,
-                  looping: false,
-                  startAt: Duration(seconds: 10),
-                  showControls: false);
-              _playerWidgetAd = Chewie(controller: _chewieControllerAd!);
-              setState(() {
-                completeInitAd = true;
-              });
+        getAnimeDetailInEpisodePageById().then((value) => setState(() {
+              detailAnime = value;
+              isLoadingAnimeDetail = false;
+            }));
+
+        _controller = VideoPlayerController.networkUrl(Uri.parse(
+            "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"))
+          ..initialize().then((_) {
+            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+            _chewieController = ChewieController(
+              videoPlayerController: _controller!,
+              autoPlay: false,
+              looping: false,
+              startAt: Duration(seconds: positionInit),
+              materialProgressColors: ChewieProgressColors(
+                playedColor: Utils.primaryColor,
+                handleColor: Utils.primaryColor,
+              ),
+              optionsTranslation: OptionsTranslation(
+                playbackSpeedButtonText: 'Tốc độ phát',
+                subtitlesButtonText: 'Phụ đề',
+                cancelButtonText: 'Hủy',
+              ),
+            );
+            _playerWidget = Chewie(controller: _chewieController!);
+            _controller!.addListener(() {
+              _handleVideoPlaying();
             });
+            setState(() {
+              completeInitContent = true;
+            });
+          });
+        _controllerAd =
+            VideoPlayerController.networkUrl(Uri.parse(value.advertising!))
+              ..initialize().then((_) {
+                _chewieControllerAd = ChewieController(
+                    videoPlayerController: _controllerAd!,
+                    autoPlay: true,
+                    looping: false,
+                    startAt: Duration(seconds: 10),
+                    showControls: false);
+                _playerWidgetAd = Chewie(controller: _chewieControllerAd!);
+                setState(() {
+                  completeInitAd = true;
+                });
+              });
+      });
     });
   }
 
@@ -953,14 +964,15 @@ class _WatchAnimePageState extends State<WatchAnimePage>
 
   @override
   void dispose() async {
+    super.dispose();
     if (isLogedIn) {
-      print("ket thuc tai " + _controller!.value.position.inSeconds.toString());
+      await AnimesApi.updateUserHistoryHadSeenEpisode(context, widget.videoId,
+          userId, _controller!.value.position.inSeconds.toString());
     }
     _tabController.dispose();
     _controller!.dispose();
     _chewieController!.dispose();
     _controllerAd!.dispose();
     _chewieControllerAd!.dispose();
-    super.dispose();
   }
 }

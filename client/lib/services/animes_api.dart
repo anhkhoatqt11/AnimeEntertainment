@@ -424,4 +424,45 @@ class AnimesApi {
           MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }
   }
+
+  static checkUserHistoryHadSeenEpisode(
+      BuildContext context, episodeId, userId) async {
+    var url = Uri.parse(
+      "${baseUrl}checkUserHistoryHadSeenEpisode",
+    );
+    try {
+      var body = {"episodeId": episodeId, "userId": userId};
+      final res = await http.post(url, body: body);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        if (result['position'] != null) {
+          return result['position'];
+        }
+        return 0;
+      } else {
+        return {};
+      }
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
+
+  static updateUserHistoryHadSeenEpisode(
+      BuildContext context, episodeId, userId, position) async {
+    var url = Uri.parse(
+      "${baseUrl}updateUserHistoryHadSeenEpisode",
+    );
+    try {
+      var body = {
+        "episodeId": episodeId,
+        "userId": userId,
+        "position": position
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
 }
