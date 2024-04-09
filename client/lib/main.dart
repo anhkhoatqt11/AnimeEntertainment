@@ -1,19 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:anime_and_comic_entertainment/components/animes/VideoComponent.dart';
-import 'package:anime_and_comic_entertainment/model/animes.dart';
-import 'package:anime_and_comic_entertainment/pages/anime/anime_page.dart';
-import 'package:anime_and_comic_entertainment/pages/anime/detail_anime_page.dart';
-import 'package:anime_and_comic_entertainment/pages/anime/tabview.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
-import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
-import 'package:anime_and_comic_entertainment/pages/comic/comic_page.dart';
-import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
-import 'package:anime_and_comic_entertainment/pages/payment.dart';
-import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
+import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
-import 'package:anime_and_comic_entertainment/pages/auth/profile.dart';
-import 'package:anime_and_comic_entertainment/pages/home/splash.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -21,7 +10,6 @@ import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/tab_navigator.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -48,51 +36,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'skylark',
-        color: const Color(0xFF141414),
-        home: MyHomePage(title: "title"));
+    return RestartWidget(
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'skylark',
+          color: Color(0xFF141414),
+          home: MyHomePage(
+            title: "",
+          )),
+    );
   }
 }
-
-// set up navigation here --------------------------------------------------------------- //
-
-// class NavigationScreen extends StatefulWidget {
-//   final int navIndex;
-
-//   NavigationScreen(this.navIndex) : super();
-
-//   @override
-//   _NavigationScreenState createState() => _NavigationScreenState();
-// }
-
-// class _NavigationScreenState extends State<NavigationScreen>
-//     with TickerProviderStateMixin {
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-//   // right here ...
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       color: Color(0xFF141414),
-//       child: widget.navIndex == 0
-//           ? HomePage()
-//           : widget.navIndex == 1
-//               ? ComicPage()
-//               : widget.navIndex == 2
-//                   ? AnimePage()
-//                   : widget.navIndex == 3
-//                       ? ChallengePage()
-//                       : ProfilePage(),
-//     );
-//   }
-// }
-
-// ------------------------------------------------------------------------------------- //
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -266,6 +220,37 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         navigatorKey: _navigatorKeys[tabItem]!,
         tabItem: tabItem,
       ),
+    );
+  }
+}
+
+class RestartWidget extends StatefulWidget {
+  RestartWidget({required this.child});
+
+  final Widget child;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_RestartWidgetState>()?.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: key,
+      child: widget.child,
     );
   }
 }

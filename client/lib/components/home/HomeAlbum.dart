@@ -1,116 +1,37 @@
-import 'package:anime_and_comic_entertainment/components/animes/AnimeItem.dart';
-import 'package:anime_and_comic_entertainment/components/animes/EpisodeItem.dart';
+import 'package:anime_and_comic_entertainment/components/animes/AnimeAlbum.dart';
 import 'package:anime_and_comic_entertainment/components/animes/TopRankingAnime.dart';
+import 'package:anime_and_comic_entertainment/components/comic/ComicAlbum.dart';
+import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
-import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/anime_album_page.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/top_view_detail_page.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_album_page.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:flutter/material.dart';
 
 import 'package:anime_and_comic_entertainment/model/album.dart';
+import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:getwidget/components/loader/gf_loader.dart';
-import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:shimmer/shimmer.dart';
 
-class AnimeAlbumItem extends StatefulWidget {
-  final dynamic animeId;
-  const AnimeAlbumItem({super.key, required this.animeId});
+class HomeAlbumComponent extends StatefulWidget {
+  const HomeAlbumComponent({super.key});
 
   @override
-  State<AnimeAlbumItem> createState() => _AnimeAlbumItemState();
+  State<HomeAlbumComponent> createState() => _HomeAlbumComponentState();
 }
 
-class _AnimeAlbumItemState extends State<AnimeAlbumItem> {
-  List<Animes> listAnimeItem = [];
-  final controller = ScrollController();
-  static const limit = 5;
-  int page = 1;
-  bool hasData = true;
-
-  @override
-  void initState() {
-    fetch();
-    controller.addListener(() {
-      if (controller.position.maxScrollExtent == controller.offset) {
-        fetch();
-      }
-    });
-    super.initState();
+class _HomeAlbumComponentState extends State<HomeAlbumComponent> {
+  List<ComicAlbum> listComicAlbum = [];
+  Future<List<ComicAlbum>> getAllComicAlbum() async {
+    var result = await ComicsApi.getComicAlbum(context);
+    return result;
   }
 
-  Future fetch() async {
-    try {
-      if (hasData == false) return;
-      var newItems = await AnimesApi.getAnimeAlbumContent(
-          context, widget.animeId, limit.toString(), page.toString());
-      final isLastPage = newItems.length < limit;
-      newItems.forEach((item) {
-        setState(() {
-          listAnimeItem.add(Animes(
-              id: item.id,
-              coverImage: item.coverImage,
-              movieName: item.movieName));
-        });
-      });
-      if (isLastPage) {
-        setState(() {
-          hasData = false;
-        });
-      } else {
-        setState(() {
-          page++;
-        });
-      }
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        controller: controller,
-        itemCount: listAnimeItem.length + 1,
-        itemBuilder: (context, index) {
-          if (index < listAnimeItem.length) {
-            final item = listAnimeItem[index];
-            return AnimeItem(
-                urlImage: item.coverImage, nameItem: item.movieName);
-          } else {
-            return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32),
-                child: hasData == true
-                    ? const Center(
-                        child: GFLoader(type: GFLoaderType.circle),
-                      )
-                    : null);
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-}
-
-class AnimeAlbumComponent extends StatefulWidget {
-  const AnimeAlbumComponent({super.key});
-
-  @override
-  State<AnimeAlbumComponent> createState() => _AnimeAlbumComponentState();
-}
-
-class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
-  List<AnimeAlbum> listAlbum = [];
+  List<AnimeAlbum> listAnimeAlbum = [];
   List<Animes> listTopView = [];
-  Future<List<AnimeAlbum>> getAllAlbum() async {
+  Future<List<AnimeAlbum>> getAllAnimeAlbum() async {
     var result = await AnimesApi.getAnimeAlbum(context);
     return result;
   }
@@ -123,9 +44,17 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
   @override
   void initState() {
     super.initState();
-    getAllAlbum().then((value) => value.forEach((element) {
+    getAllComicAlbum().then((value) => value.forEach((element) {
           setState(() {
-            listAlbum.add(AnimeAlbum(
+            listComicAlbum.add(ComicAlbum(
+                id: element.id,
+                albumName: element.albumName,
+                comicList: element.comicList));
+          });
+        }));
+    getAllAnimeAlbum().then((value) => value.forEach((element) {
+          setState(() {
+            listAnimeAlbum.add(AnimeAlbum(
                 id: element.id,
                 albumName: element.albumName,
                 animeList: element.animeList));
@@ -143,9 +72,9 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return listAlbum.isEmpty
+    return listComicAlbum.isEmpty || listAnimeAlbum.isEmpty
         ? SizedBox(
-            height: 187,
+            height: 193,
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -194,13 +123,19 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
           )
         : Column(
             children: List.generate(
-                (listAlbum.length / 2).round() >
+                (listAnimeAlbum.length / 2).round() >
                         (listTopView.length / 2).round()
-                    ? (listAlbum.length / 2).round()
-                    : (listTopView.length / 2).round(), (index) {
+                    ? ((listAnimeAlbum.length / 2).round() >
+                            listComicAlbum.length
+                        ? (listAnimeAlbum.length / 2).round()
+                        : listComicAlbum.length)
+                    : ((listTopView.length / 2).round() > listComicAlbum.length
+                        ? (listTopView.length / 2).round()
+                        : listComicAlbum.length), (index) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                2 * index < listAlbum.length
+                index < listComicAlbum.length
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -211,9 +146,10 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => AnimeAlbumPage(
-                                              albumId: listAlbum[2 * index].id,
-                                              albumName: listAlbum[2 * index]
+                                        builder: (context) => ComicAlbumPage(
+                                              comicIdList: listComicAlbum[index]
+                                                  .comicList,
+                                              albumName: listComicAlbum[index]
                                                   .albumName,
                                             )),
                                   );
@@ -222,7 +158,7 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        listAlbum[2 * index].albumName!,
+                                        listComicAlbum[index].albumName!,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
@@ -244,12 +180,14 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                               )),
                           SizedBox(
                               height: 256,
-                              child: AnimeAlbumItem(
-                                  animeId: listAlbum[2 * index].id))
+                              child: ComicAlbumItem(
+                                  idList: listComicAlbum[index]
+                                      .comicList
+                                      .toString()))
                         ],
                       )
                     : Container(),
-                2 * index + 1 < listAlbum.length
+                2 * index < listAnimeAlbum.length
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -262,9 +200,9 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                                     MaterialPageRoute(
                                         builder: (context) => AnimeAlbumPage(
                                               albumId:
-                                                  listAlbum[2 * index + 1].id,
+                                                  listAnimeAlbum[2 * index].id,
                                               albumName:
-                                                  listAlbum[2 * index + 1]
+                                                  listAnimeAlbum[2 * index]
                                                       .albumName,
                                             )),
                                   );
@@ -273,7 +211,7 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                                   children: [
                                     Flexible(
                                       child: Text(
-                                        listAlbum[2 * index + 1].albumName!,
+                                        listAnimeAlbum[2 * index].albumName!,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
@@ -296,7 +234,60 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                           SizedBox(
                               height: 256,
                               child: AnimeAlbumItem(
-                                  animeId: listAlbum[2 * index + 1].id))
+                                  animeId: listAnimeAlbum[2 * index].id))
+                        ],
+                      )
+                    : Container(),
+                2 * index + 1 < listAnimeAlbum.length
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AnimeAlbumPage(
+                                              albumId:
+                                                  listAnimeAlbum[2 * index + 1]
+                                                      .id,
+                                              albumName:
+                                                  listAnimeAlbum[2 * index + 1]
+                                                      .albumName,
+                                            )),
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        listAnimeAlbum[2 * index + 1]
+                                            .albumName!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    const FaIcon(
+                                      FontAwesomeIcons.chevronRight,
+                                      color: Colors.white,
+                                      size: 12,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                          SizedBox(
+                              height: 256,
+                              child: AnimeAlbumItem(
+                                  animeId: listAnimeAlbum[2 * index + 1].id))
                         ],
                       )
                     : Container(),
@@ -409,28 +400,6 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                         ],
                       )
                     : Container(),
-                index == 2
-                    ? const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: Text(
-                              "️🏆 Bảng xếp hạng",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-                            child:
-                                SizedBox(height: 300, child: TopRankingAnime()),
-                          ),
-                        ],
-                      )
-                    : Container(),
                 index == 1
                     ? const Padding(
                         padding: EdgeInsets.all(8.0),
@@ -439,7 +408,7 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                         ),
                       )
                     : const SizedBox.shrink(),
-                index == 3
+                index == 2
                     ? const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: DonateBannerHome(
@@ -447,97 +416,20 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                         ),
                       )
                     : const SizedBox.shrink(),
+                index == 3
+                    ? const Padding(
+                        padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+                        child: SizedBox(height: 300, child: TopRankingAnime()),
+                      )
+                    : Container(),
+                index == 4
+                    ? const Padding(
+                        padding: EdgeInsets.fromLTRB(3, 10, 0, 10),
+                        child: TopRankingComic(),
+                      )
+                    : Container(),
               ],
             );
           }));
-  }
-}
-
-class TopViewEpisodeList extends StatefulWidget {
-  final dynamic animeId;
-  const TopViewEpisodeList({super.key, required this.animeId});
-
-  @override
-  State<TopViewEpisodeList> createState() => _TopViewEpisodeListState();
-}
-
-class _TopViewEpisodeListState extends State<TopViewEpisodeList> {
-  List<AnimeEpisodes> listAnimeEpisodeItem = [];
-  final controller = ScrollController();
-  static const limit = 5;
-  int page = 1;
-  bool hasData = true;
-
-  @override
-  void initState() {
-    fetch();
-    controller.addListener(() {
-      if (controller.position.maxScrollExtent == controller.offset) {
-        fetch();
-      }
-    });
-    super.initState();
-  }
-
-  Future fetch() async {
-    try {
-      if (hasData == false) return;
-      var newItems = await AnimesApi.getAnimeChapterById(
-          context, widget.animeId, limit.toString(), page.toString());
-      final isLastPage = newItems.length < limit;
-      newItems.forEach((item) {
-        setState(() {
-          listAnimeEpisodeItem.add(AnimeEpisodes(
-              id: item.id,
-              coverImage: item.coverImage,
-              episodeName: item.episodeName,
-              views: item.views));
-        });
-      });
-      if (isLastPage) {
-        setState(() {
-          hasData = false;
-        });
-      } else {
-        setState(() {
-          page++;
-        });
-      }
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        controller: controller,
-        itemCount: listAnimeEpisodeItem.length + 1,
-        itemBuilder: (context, index) {
-          if (index < listAnimeEpisodeItem.length) {
-            final item = listAnimeEpisodeItem[index];
-            return EpisodeItem(
-              urlImage: item.coverImage,
-              nameItem: item.episodeName,
-              views: item.views,
-            );
-          } else {
-            return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32),
-                child: hasData == true
-                    ? const Center(
-                        child: GFLoader(type: GFLoaderType.circle),
-                      )
-                    : null);
-          }
-        });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
   }
 }

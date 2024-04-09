@@ -35,49 +35,52 @@ class _NewChapterListState extends State<NewChapterList> {
   @override
   Widget build(BuildContext context) {
     return listComic.isEmpty
-        ? ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 191,
-                      height: 187,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(4)),
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 191,
-                      height: 187,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(4)),
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 191,
-                      height: 187,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(4)),
-                    )),
-              ),
-            ],
+        ? Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 191,
+                        height: 187,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 191,
+                        height: 187,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 191,
+                        height: 187,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
+                      )),
+                ),
+              ],
+            ),
           )
         : ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -90,30 +93,3 @@ class _NewChapterListState extends State<NewChapterList> {
             });
   }
 }
-
-// ListView(
-//             scrollDirection: Axis.horizontal,
-//             children: [
-//               ComicItem(
-//                 urlImage:
-//                     'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_topic/_t_p_m_i_tagline-da6dcb8f74a8-1686305754531-gCwpREbI.png?v=0&maxW=260',
-//                 nameItem: "Detective Conan",
-//                 genres: null,
-//               ),
-//               ComicItem(
-//                   urlImage:
-//                       'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_topic/phim_moi-fdc866c73fd2-1708663384221-h3BlLVOZ.png?v=0&maxW=260',
-//                   nameItem: "Doraemon",
-//                   genres: null),
-//               ComicItem(
-//                   urlImage:
-//                       'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_topic/vertical_poster-6edb1870a631-1708400087928-NOgvY5n0.png?v=0&maxW=260',
-//                   nameItem: "Boruto",
-//                   genres: null),
-//               ComicItem(
-//                   urlImage:
-//                       'https://vnw-img-cdn.popsww.com/api/v2/containers/file2/cms_topic/vertical_poster-128d9c4e3cfc-1708400799846-D1MOGy71.png?v=0&maxW=260',
-//                   nameItem: "Kizuna no Allele",
-//                   genres: null)
-//             ],
-//           );

@@ -185,8 +185,10 @@ class _GetOTPPageState extends State<GetOTPPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Login()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login()));
                         },
                         child: Text(
                           "Đăng nhập ngay",

@@ -17,7 +17,7 @@ class BigEpisodeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.9,
         child: Column(children: [
           CachedNetworkImage(
@@ -56,7 +56,7 @@ class BigEpisodeItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
               nameItem!,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 color: Colors.white,
                 fontWeight: FontWeight.w700,

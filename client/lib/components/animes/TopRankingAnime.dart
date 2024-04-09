@@ -1,10 +1,7 @@
 import 'package:anime_and_comic_entertainment/model/animes.dart';
-import 'package:anime_and_comic_entertainment/model/banner.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
-import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 

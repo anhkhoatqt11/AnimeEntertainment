@@ -1,9 +1,6 @@
 import 'package:anime_and_comic_entertainment/components/animes/BigEpisodeItem.dart';
-import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
 import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
-import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
-import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -38,49 +35,52 @@ class _NewEpisodeListState extends State<NewEpisodeList> {
   @override
   Widget build(BuildContext context) {
     return listEpisode.isEmpty
-        ? ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 191,
-                      height: 108,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(4)),
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 191,
-                      height: 108,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(4)),
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
-                child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 191,
-                      height: 108,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(4)),
-                    )),
-              ),
-            ],
+        ? Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 191,
+                        height: 108,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 191,
+                        height: 108,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 191,
+                        height: 108,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
+                      )),
+                ),
+              ],
+            ),
           )
         : ListView.builder(
             scrollDirection: Axis.horizontal,

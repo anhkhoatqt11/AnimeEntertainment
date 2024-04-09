@@ -1,12 +1,6 @@
 import 'package:anime_and_comic_entertainment/components/animes/CurrentView.dart';
-import 'package:anime_and_comic_entertainment/components/animes/AnimeItem.dart';
-import 'package:anime_and_comic_entertainment/components/animes/BigEpisodeItem.dart';
-import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
-import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
-import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/model/watchingHistories.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
-import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_loader_type.dart';

@@ -1,5 +1,7 @@
 import 'package:anime_and_comic_entertainment/components/animes/WatchingHistoriesList.dart';
 import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.dart';
+import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
+import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
@@ -23,7 +25,7 @@ class _TestPageState extends State<TestPage> {
       return Container(
         width: double.infinity,
         color: const Color(0xFF141414),
-        child: Column(children: [
+        child: ListView(children: [
           ElevatedButton(
               onPressed: () async {
                 var result = await AnimesApi.checkUserHistoryHadSeenEpisode(
@@ -41,6 +43,24 @@ class _TestPageState extends State<TestPage> {
                 AuthApi.login(context, '+84979683590', 'Dangthaison@123');
               },
               child: Text('login')),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DonateBannerHome(
+              urlAsset: 'assets/images/donate1.png',
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DonateBannerHome(
+              urlAsset: 'assets/images/donate2.png',
+            ),
+          ),
+          GradientButton(
+              content: "content",
+              action: () {},
+              height: 60,
+              width: 100,
+              disabled: false)
         ]),
       );
     }));

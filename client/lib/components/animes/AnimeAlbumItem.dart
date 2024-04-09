@@ -13,7 +13,7 @@ class AnimeAlbumItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.43,
         child: Column(children: [
           CachedNetworkImage(

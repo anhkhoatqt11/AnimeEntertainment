@@ -1,13 +1,12 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
+import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.dart';
+import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_album_page.dart';
-import 'package:anime_and_comic_entertainment/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
@@ -224,7 +223,36 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                 SizedBox(
                     height: 256,
                     child: ComicAlbumItem(
-                        idList: listAlbum[index].comicList.toString()))
+                        idList: listAlbum[index].comicList.toString())),
+                index == 2
+                    ? const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: DonateBannerHome(
+                          urlAsset: 'assets/images/donate2.png',
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                index == 4
+                    ? const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: Text(
+                              "️🏆 Bảng xếp hạng",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                            child: TopRankingComic(),
+                          ),
+                        ],
+                      )
+                    : Container(),
               ],
             );
           }));

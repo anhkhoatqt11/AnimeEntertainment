@@ -6,12 +6,13 @@ import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/model/banner.dart';
-import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/model/watchingHistories.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class AnimesApi {
   static const baseUrl = "${UrlApi.urlLocalHost}/api/animes/";
@@ -34,8 +35,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -59,8 +68,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -93,8 +110,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -119,8 +144,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -145,8 +178,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -170,8 +211,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -204,8 +253,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -239,8 +296,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -271,8 +336,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -298,8 +371,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -328,8 +409,16 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -343,8 +432,16 @@ class AnimesApi {
       };
       await http.post(url, body: body);
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -356,8 +453,16 @@ class AnimesApi {
       var body = {"episodeId": episodeId, "userId": userId};
       await http.post(url, body: body);
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -369,8 +474,16 @@ class AnimesApi {
       var body = {"episodeId": episodeId, "userId": userId};
       await http.post(url, body: body);
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -389,8 +502,16 @@ class AnimesApi {
         return {};
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -420,8 +541,16 @@ class AnimesApi {
         return {};
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -443,8 +572,16 @@ class AnimesApi {
         return {};
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -461,8 +598,16 @@ class AnimesApi {
       };
       await http.post(url, body: body);
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 }

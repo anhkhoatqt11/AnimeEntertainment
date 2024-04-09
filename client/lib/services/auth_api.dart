@@ -3,20 +3,13 @@
 import 'dart:convert';
 
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
-import 'package:anime_and_comic_entertainment/main.dart';
-import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
-import 'package:anime_and_comic_entertainment/model/animes.dart';
-import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
-import 'package:anime_and_comic_entertainment/pages/test.dart';
-import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,8 +47,16 @@ class AuthApi {
         return null;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -77,8 +78,16 @@ class AuthApi {
         userProvider.setUserId(jsonDecode(res.body)['id']);
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -97,16 +106,22 @@ class AuthApi {
         return false;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
   static void signOut(BuildContext context) async {
-    final navigator = Navigator.of(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('auth-session-token', '');
-    // ignore: use_build_context_synchronously
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     userProvider.setUserToken("");
     userProvider.setUserId("");
@@ -127,8 +142,16 @@ class AuthApi {
         return null;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -148,8 +171,16 @@ class AuthApi {
         return null;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -166,8 +197,16 @@ class AuthApi {
         return false;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -187,8 +226,16 @@ class AuthApi {
         return false;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 }

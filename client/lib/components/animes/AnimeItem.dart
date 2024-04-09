@@ -12,7 +12,7 @@ class AnimeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
-      child: Container(
+      child: SizedBox(
         width: 125,
         child: Column(children: [
           CachedNetworkImage(

@@ -19,7 +19,7 @@ class CurrentView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
-      child: Container(
+      child: SizedBox(
         width: 191,
         child: Column(children: [
           Stack(
@@ -70,7 +70,7 @@ class CurrentView extends StatelessWidget {
                           colors: Utils.gradientColors,
                           begin: Alignment.centerLeft,
                         ).createShader(rect),
-                    child: FaIcon(FontAwesomeIcons.play,
+                    child: const FaIcon(FontAwesomeIcons.play,
                         color: Colors.white, size: 26)),
               ),
               // define percentage here----------------------------------------------------------------------------------------//
@@ -93,7 +93,7 @@ class CurrentView extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
               nameItem,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
                 color: Colors.white,
                 fontWeight: FontWeight.w500,

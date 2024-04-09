@@ -66,11 +66,11 @@ class _TopRankingComicState extends State<TopRankingComic> {
                 child: const SizedBox.shrink(),
               ),
               Positioned(
-                left: -96,
+                left: -98,
                 child: Container(
                   color: Colors.transparent,
                   height: 400,
-                  width: MediaQuery.of(context).size.width + 96,
+                  width: MediaQuery.of(context).size.width + 98,
                   child: GFCarousel(
                     hasPagination: true,
                     enableInfiniteScroll: true,

@@ -1,10 +1,8 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicAlbum.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ComicBanner.dart';
 import 'package:anime_and_comic_entertainment/components/CurrentReadingUser.dart';
-import 'package:anime_and_comic_entertainment/components/HotSeries.dart';
-import 'package:anime_and_comic_entertainment/components/MainBanner.dart';
 import 'package:anime_and_comic_entertainment/components/comic/NewChapterList.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
@@ -39,11 +37,8 @@ class ComicPage extends StatelessWidget {
         body: ListView(
           children: const [
             ComicBanner(),
-            // SizedBox(
-            //   height: 10,
-            // ),
             Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+              padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
               child: Text(
                 "Đọc tiếp",
                 style: TextStyle(
@@ -76,7 +71,13 @@ class ComicPage extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
               child: SizedBox(height: 256, child: NewChapterList()),
             ),
-
+            // Top unlock...
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
+              child: DonateBannerHome(
+                urlAsset: 'assets/images/donate1.png',
+              ),
+            ),
             Padding(
               padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
               child: ComicAlbumComponent(),
