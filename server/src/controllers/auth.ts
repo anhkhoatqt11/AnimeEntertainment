@@ -23,9 +23,17 @@ export const updateUserById = (id: string, values: Record<string, any>) =>
 export const getLogin: RequestHandler = async (req, res) => {
   try {
     const result = await getUserBySessionToken(req.body.sessionToken);
-    console.log(result);
     if (result) {
-      return res.status(200).json({ loggedIn: true, id: result["_id"] }).end();
+      return res
+        .status(200)
+        .json({
+          loggedIn: true,
+          id: result["_id"],
+          username: result["username"],
+          avatar: result["avatar"],
+          coinPoint: result["coinPoint"],
+        })
+        .end();
     } else {
       return res.status(200).json({ loggedIn: false }).end();
     }
@@ -42,7 +50,7 @@ export const postLogin: RequestHandler = async (req, res) => {
       return res.sendStatus(400);
     }
     var user = await getUserByPhone(phone).select(
-      "+authentication.salt + authentication.password"
+      "+authentication.salt + authentication.password + username + avatar + coinPoint"
     );
     if (!user) {
       return res.sendStatus(400);
@@ -71,7 +79,6 @@ export const postLogin: RequestHandler = async (req, res) => {
     // });
     return res.status(200).json(user).end();
   } catch (error) {
-    console.log(error);
     return res.sendStatus(400);
   }
 };
@@ -89,12 +96,20 @@ export const register: RequestHandler = async (req, res) => {
     }
 
     const salt = random();
+    const randomName = random();
     const user = await createUser({
       phone,
       authentication: {
         salt,
         password: authentication(salt, password),
       },
+      bookmarkList: {},
+      histories: {},
+      paymentHistories: {},
+      avatar:
+        "https://i.pinimg.com/736x/dc/9c/61/dc9c614e3007080a5aff36aebb949474.jpg",
+      username: "user" + randomName,
+      coinPoint: 0,
     });
 
     return res.status(200).json(user).end();

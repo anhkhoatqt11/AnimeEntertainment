@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
+import 'package:anime_and_comic_entertainment/main.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -30,6 +31,9 @@ class AuthApi {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         userProvider.setUserToken(data['authentication']['sessionToken']);
         userProvider.setUserId(data['_id']);
+        userProvider.setUsername(data['username']);
+        userProvider.setUserAvatar(data['avatar']);
+        userProvider.setCoinPoint(data['coinPoint']);
 
         await prefs.setString(
             'auth-session-token', data['authentication']['sessionToken']);
@@ -47,6 +51,7 @@ class AuthApi {
         return null;
       }
     } catch (e) {
+      print(e.toString());
       print(Provider.of<NavigatorProvider>(context, listen: false)
           .isShowNetworkError);
       if (Provider.of<NavigatorProvider>(context, listen: false)
@@ -76,6 +81,9 @@ class AuthApi {
       if (jsonDecode(res.body)['loggedIn'] == true) {
         userProvider.setUserToken(token.toString());
         userProvider.setUserId(jsonDecode(res.body)['id']);
+        userProvider.setUsername(jsonDecode(res.body)['username']);
+        userProvider.setUserAvatar(jsonDecode(res.body)['avatar']);
+        userProvider.setCoinPoint(jsonDecode(res.body)['coinPoint']);
       }
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)
@@ -125,6 +133,7 @@ class AuthApi {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     userProvider.setUserToken("");
     userProvider.setUserId("");
+    RestartWidget.restartApp(context);
   }
 
   static getOTP(BuildContext context, String? mobileNo) async {

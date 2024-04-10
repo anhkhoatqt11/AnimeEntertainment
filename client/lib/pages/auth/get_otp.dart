@@ -4,6 +4,7 @@ import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/otp_verify_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:provider/provider.dart';
 
 class GetOTPPage extends StatefulWidget {
   final int index;
@@ -40,7 +42,9 @@ class _GetOTPPageState extends State<GetOTPPage> {
             size: 24,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Provider.of<NavigatorProvider>(context, listen: false)
+                .setShow(true);
+            Navigator.of(context).popUntil((route) => route.isFirst);
           },
           type: GFButtonType.transparent,
         ),

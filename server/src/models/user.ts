@@ -9,7 +9,7 @@ const userSchema = new Schema({
     sessionToken: { type: String, select: false },
   },
   avatar: { type: String },
-  coinPoint: { type: String },
+  coinPoint: { type: Number },
   bookmarkList: {
     comic: { type: Array },
     movies: { type: Array },

@@ -2,10 +2,10 @@
 
 class User {
   String id;
-  final String username;
+  String username;
   Map<String, String> authentication;
-  final String avatar;
-  final int coinPoint;
+  String avatar;
+  int coinPoint;
   final Map<String, dynamic> bookmarkList;
   final Map<String, dynamic> histories;
   final List paymentHistories;

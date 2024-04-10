@@ -2,6 +2,7 @@
 
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
@@ -37,13 +38,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RestartWidget(
-      child: MaterialApp(
+      child: const MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'skylark',
           color: Color(0xFF141414),
-          home: MyHomePage(
-            title: "",
-          )),
+          home: ProfilePage()),
     );
   }
 }

@@ -23,6 +23,21 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setUsername(String username) {
+    _user.username = username;
+    notifyListeners();
+  }
+
+  void setUserAvatar(String avatar) {
+    _user.avatar = avatar;
+    notifyListeners();
+  }
+
+  void setCoinPoint(int coinPoint) {
+    _user.coinPoint = coinPoint;
+    notifyListeners();
+  }
+
   void setUserFromModel(User user) {
     _user = user;
     notifyListeners();

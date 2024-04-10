@@ -32,6 +32,8 @@ dependencies:
   chewie: ^1.7.5
   video_player: ^2.8.3
   miniplayer: ^1.0.1
+  intl: ^0.18.1
+  url_launcher: ^6.2.5
 
 flutter_icons:
   android: true
@@ -56,6 +58,11 @@ flutter:
     - assets/images/otpicon.png
     - assets/images/verifyicon.png
     - assets/images/error_network.png
+    - assets/images/donate1.png
+    - assets/images/donate2.png
+    - assets/images/skycoin.png
+    - assets/images/donatebanner.png
+    - assets/images/loginbanner.png
     - assets/
   #   - images/a_dot_ham.jpeg
 

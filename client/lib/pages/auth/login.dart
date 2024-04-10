@@ -54,7 +54,7 @@ class _LoginState extends State<Login> {
           onPressed: () {
             Provider.of<NavigatorProvider>(context, listen: false)
                 .setShow(true);
-            Navigator.of(context).pop();
+            Navigator.of(context).popUntil((route) => route.isFirst);
           },
           type: GFButtonType.transparent,
         ),
@@ -260,33 +260,5 @@ class _LoginState extends State<Login> {
         )
       ]),
     );
-  }
-}
-
-class LoginOrProfileComponent extends StatefulWidget {
-  const LoginOrProfileComponent({super.key});
-
-  @override
-  State<LoginOrProfileComponent> createState() =>
-      _LoginOrProfileComponentState();
-}
-
-class _LoginOrProfileComponentState extends State<LoginOrProfileComponent> {
-  @override
-  Widget build(BuildContext context) {
-    return Provider.of<UserProvider>(context)
-                .user
-                .authentication['sessionToken'] !=
-            ""
-        ? Container(
-            child: Text("Logout"),
-          )
-        : Container(
-            child: ElevatedButton(
-                onPressed: () async {
-                  await AuthApi.login(context, "antonio@gmail.com", "123");
-                },
-                child: Text('Log in')),
-          );
   }
 }

@@ -5,11 +5,8 @@ import 'package:intl/intl.dart';
 class Utils {
   static final gradientColors =
       List<Color>.from([Color(0xFFA958FE), Color(0xFFDA5EF0)]);
-  static final gradientColors2 = List<Color>.from([
-    Color(0xFFA958FE),
-    Color(0xFFDA5EF0),
-    Color(0xFFDA5EF0).withOpacity(0.47)
-  ]);
+  static final gradientColors2 = List<Color>.from(
+      [Color(0xFFA958FE), Color(0xFFDA5EF0), Color(0xFFEDB1F7)]);
   static final accentColor = Color(0xFFA958FE);
   static final primaryColor = Color(0xFFDA5EF0);
   static final greenColor = Color.fromARGB(255, 46, 185, 94);
