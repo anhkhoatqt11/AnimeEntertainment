@@ -84,15 +84,10 @@ class AnimesApi {
   static getAnimeAlbumContent(
       BuildContext context, albumId, limit, page) async {
     var url = Uri.parse(
-      "${baseUrl}getAnimeInAlbum",
+      "${baseUrl}getAnimeInAlbum?idAlbum=$albumId&limit=$limit&page=$page",
     );
     try {
-      var body = {
-        "idAlbum": albumId,
-        "limit": limit,
-        "page": page,
-      };
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         List<Animes> animeAlbumItemArray = [];
@@ -226,15 +221,10 @@ class AnimesApi {
 
   static getAnimeChapterById(BuildContext context, animeId, limit, page) async {
     var url = Uri.parse(
-      "${baseUrl}getAnimeChapterById",
+      "${baseUrl}getAnimeChapterById?animeId=$animeId&limit=$limit&page=$page",
     );
     try {
-      var body = {
-        "animeId": animeId,
-        "limit": limit,
-        "page": page,
-      };
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         List<AnimeEpisodes> animeEpisode = [];
@@ -268,13 +258,10 @@ class AnimesApi {
 
   static getAnimeDetailById(BuildContext context, animeId) async {
     var url = Uri.parse(
-      "${baseUrl}getAnimeDetailById",
+      "${baseUrl}getAnimeDetailById?animeId=$animeId",
     );
     try {
-      var body = {
-        "animeId": animeId,
-      };
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         Animes animeDetail = Animes(
@@ -311,13 +298,10 @@ class AnimesApi {
 
   static getAnimeEpisodeDetailById(BuildContext context, episodeId) async {
     var url = Uri.parse(
-      "${baseUrl}getAnimeEpisodeDetailById",
+      "${baseUrl}getAnimeEpisodeDetailById?episodeId=$episodeId",
     );
     try {
-      var body = {
-        "episodeId": episodeId,
-      };
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         AnimeEpisodes episodeDetail = AnimeEpisodes(
@@ -386,13 +370,10 @@ class AnimesApi {
 
   static getAnimeDetailInEpisodePageById(BuildContext context, animeId) async {
     var url = Uri.parse(
-      "${baseUrl}getAnimeDetailInEpisodePageById",
+      "${baseUrl}getAnimeDetailInEpisodePageById?animeId=$animeId",
     );
     try {
-      var body = {
-        "animeId": animeId,
-      };
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         Animes animeDetail = Animes(
@@ -490,11 +471,10 @@ class AnimesApi {
   static checkUserHasLikeOrSaveEpisode(
       BuildContext context, episodeId, userId) async {
     var url = Uri.parse(
-      "${baseUrl}checkUserHasLikeOrSaveEpisode",
+      "${baseUrl}checkUserHasLikeOrSaveEpisode?episodeId=$episodeId&userId=$userId",
     );
     try {
-      var body = {"episodeId": episodeId, "userId": userId};
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         return result;
@@ -517,11 +497,10 @@ class AnimesApi {
 
   static getWatchingHistories(BuildContext context, userId, limit, page) async {
     var url = Uri.parse(
-      "${baseUrl}getWatchingHistories",
+      "${baseUrl}getWatchingHistories?userId=$userId&limit=$limit&page=$page",
     );
     try {
-      var body = {"userId": userId, "limit": limit, "page": page};
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         var index = 0;
@@ -557,11 +536,10 @@ class AnimesApi {
   static checkUserHistoryHadSeenEpisode(
       BuildContext context, episodeId, userId) async {
     var url = Uri.parse(
-      "${baseUrl}checkUserHistoryHadSeenEpisode",
+      "${baseUrl}checkUserHistoryHadSeenEpisode?episodeId=$episodeId&userId=$userId",
     );
     try {
-      var body = {"episodeId": episodeId, "userId": userId};
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         if (result['position'] != null) {

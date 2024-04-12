@@ -12,7 +12,7 @@ router.get("/getComicAlbum", ComicsController.getComicAlbum);
 
 router.get("/getNewChapterComic", ComicsController.getNewChapterComic);
 
-router.post("/getComicInAlbum", ComicsController.getComicInAlbum);
+router.get("/getComicInAlbum", ComicsController.getComicInAlbum);
 
 router.get("/getRankingTable", ComicsController.getRankingTable);
 

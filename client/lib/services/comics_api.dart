@@ -115,15 +115,10 @@ class ComicsApi {
 
   static getComicAlbumContent(BuildContext context, idList, limit, page) async {
     var url = Uri.parse(
-      "${baseUrl}getComicInAlbum",
+      "${baseUrl}getComicInAlbum?idList=$idList&limit=$limit&page=$page",
     );
     try {
-      var body = {
-        "idList": idList,
-        "limit": limit,
-        "page": page,
-      };
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         List<Comics> comicAlbumItemArray = [];

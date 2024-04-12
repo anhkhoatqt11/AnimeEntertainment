@@ -6,6 +6,7 @@ import BannerModel from "../models/banner";
 import AnimeEpisodeModel from "../models/animeEpisode";
 import UserModel from "../models/user";
 import AnimeAlbumModel from "../models/animeAlbum";
+import qs from "qs";
 
 export const getAnimeBanner: RequestHandler = async (req, res, next) => {
   try {
@@ -27,9 +28,18 @@ export const getAnimeAlbum: RequestHandler = async (req, res, next) => {
 
 export const getAnimeInAlbum: RequestHandler = async (req, res, next) => {
   try {
-    const response: string = req.body.idAlbum;
-    const limit = parseInt(req.body.limit);
-    const page = parseInt(req.body.page);
+    const url = req.url;
+    const [, params] = url.split("?");
+    const parsedParams = qs.parse(params);
+    const limit = parseInt(
+      typeof parsedParams.limit === "string" ? parsedParams.limit : "0"
+    );
+    const page = parseInt(
+      typeof parsedParams.page === "string" ? parsedParams.page : "0"
+    );
+    const response: string =
+      typeof parsedParams.idAlbum === "string" ? parsedParams.idAlbum : "0";
+
     const albums = await AnimeAlbumModel.aggregate([
       {
         $match: { _id: new mongoose.Types.ObjectId(response) },
@@ -188,9 +198,17 @@ export const getTopViewAnime: RequestHandler = async (req, res, next) => {
 };
 
 export const getAnimeChapterById: RequestHandler = async (req, res, next) => {
-  const animeId = req.body.animeId;
-  const limit = parseInt(req.body.limit);
-  const page = parseInt(req.body.page);
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const page = parseInt(
+    typeof parsedParams.page === "string" ? parsedParams.page : "0"
+  );
+  const limit = parseInt(
+    typeof parsedParams.limit === "string" ? parsedParams.limit : "0"
+  );
+  const animeId =
+    typeof parsedParams.animeId === "string" ? parsedParams.animeId : "";
   try {
     if (!mongoose.isValidObjectId(animeId)) {
       throw createHttpError(400, "Invalid anime id");
@@ -230,7 +248,11 @@ export const getAnimeChapterById: RequestHandler = async (req, res, next) => {
 };
 
 export const getAnimeDetailById: RequestHandler = async (req, res, next) => {
-  const animeId = req.body.animeId;
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const animeId =
+    typeof parsedParams.animeId === "string" ? parsedParams.animeId : "";
   try {
     if (!mongoose.isValidObjectId(animeId)) {
       throw createHttpError(400, "Invalid anime id");
@@ -318,7 +340,11 @@ export const getAnimeEpisodeDetailById: RequestHandler = async (
   res,
   next
 ) => {
-  const episodeId = req.body.episodeId;
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const episodeId =
+    typeof parsedParams.episodeId === "string" ? parsedParams.episodeId : "";
   try {
     if (!mongoose.isValidObjectId(episodeId)) {
       throw createHttpError(400, "Invalid episode id");
@@ -339,7 +365,11 @@ export const getAnimeDetailInEpisodePageById: RequestHandler = async (
   res,
   next
 ) => {
-  const animeId = req.body.animeId;
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const animeId =
+    typeof parsedParams.animeId === "string" ? parsedParams.animeId : "";
   try {
     if (!mongoose.isValidObjectId(animeId)) {
       throw createHttpError(400, "Invalid anime id");
@@ -392,7 +422,7 @@ export const getAnimeDetailInEpisodePageById: RequestHandler = async (
 
 export const updateEpisodeView: RequestHandler = async (req, res, next) => {
   try {
-    const { episodeId } = req.body;
+    const episodeId = req.body.episodeId;
     var episode = await AnimeEpisodeModel.findById(episodeId);
     if (!episode) {
       return res.sendStatus(400);
@@ -457,7 +487,14 @@ export const checkUserHasLikeOrSaveEpisode: RequestHandler = async (
   next
 ) => {
   try {
-    const { episodeId, userId } = req.body;
+    const url = req.url;
+    const [, params] = url.split("?");
+    const parsedParams = qs.parse(params);
+    const episodeId =
+      typeof parsedParams.episodeId === "string" ? parsedParams.episodeId : "";
+    const userId =
+      typeof parsedParams.userId === "string" ? parsedParams.userId : "";
+
     // check like
     var episode = await AnimeEpisodeModel.findById(episodeId);
     if (!episode) {
@@ -489,8 +526,13 @@ export const checkUserHistoryHadSeenEpisode: RequestHandler = async (
   res,
   next
 ) => {
-  const episodeId = req.body.episodeId;
-  const userId = req.body.userId;
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const episodeId =
+    typeof parsedParams.episodeId === "string" ? parsedParams.episodeId : "";
+  const userId =
+    typeof parsedParams.userId === "string" ? parsedParams.userId : "";
   try {
     if (!mongoose.isValidObjectId(episodeId)) {
       throw createHttpError(400, "Invalid episode id");
@@ -543,9 +585,17 @@ export const updateUserHistoryHadSeenEpisode: RequestHandler = async (
 };
 
 export const getWatchingHistories: RequestHandler = async (req, res, next) => {
-  const userId = req.body.userId;
-  const limit = parseInt(req.body.limit);
-  const page = parseInt(req.body.page);
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const page = parseInt(
+    typeof parsedParams.page === "string" ? parsedParams.page : "0"
+  );
+  const limit = parseInt(
+    typeof parsedParams.limit === "string" ? parsedParams.limit : "0"
+  );
+  const userId =
+    typeof parsedParams.userId === "string" ? parsedParams.userId : "";
   try {
     if (!mongoose.isValidObjectId(userId)) {
       throw createHttpError(400, "Invalid user id");

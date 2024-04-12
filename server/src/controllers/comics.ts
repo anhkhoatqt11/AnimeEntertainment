@@ -6,6 +6,7 @@ import BannerModel from "../models/banner";
 import ComicChapterModel from "../models/comicChapter";
 
 import ComicAlbumModel from "../models/comicAlbum";
+import qs from "qs";
 
 // api get
 export const getComicBanner: RequestHandler = async (req, res, next) => {
@@ -82,9 +83,17 @@ export const getNewChapterComic: RequestHandler = async (req, res, next) => {
 // api get one
 export const getComicInAlbum: RequestHandler = async (req, res, next) => {
   try {
-    const response: string = req.body.idList;
-    const limit = parseInt(req.body.limit);
-    const page = parseInt(req.body.page);
+    const url = req.url;
+    const [, params] = url.split("?");
+    const parsedParams = qs.parse(params);
+    const page = parseInt(
+      typeof parsedParams.page === "string" ? parsedParams.page : "0"
+    );
+    const limit = parseInt(
+      typeof parsedParams.limit === "string" ? parsedParams.limit : "0"
+    );
+    const response: string =
+      typeof parsedParams.idList === "string" ? parsedParams.idList : "";
     const comics: any[] = [];
     var idList = response
       .replace("[", "")
@@ -130,7 +139,12 @@ export const getComicInAlbum: RequestHandler = async (req, res, next) => {
 };
 
 export const getComic: RequestHandler = async (req, res, next) => {
-  const comicId = req.params.comicId;
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const comicId =
+    typeof parsedParams.comicId === "string" ? parsedParams.comicId : "0";
+
   try {
     if (!mongoose.isValidObjectId(comicId)) {
       throw createHttpError(400, "Invalid comic id");
@@ -223,7 +237,11 @@ export const getRankingTable: RequestHandler = async (req, res, next) => {
 };
 
 export const getChapterOfComic: RequestHandler = async (req, res, next) => {
-  const comicId = req.params.comicId;
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const comicId =
+    typeof parsedParams.comicId === "string" ? parsedParams.comicId : "0";
   try {
     if (!mongoose.isValidObjectId(comicId)) {
       throw createHttpError(400, "Invalid comic id");
