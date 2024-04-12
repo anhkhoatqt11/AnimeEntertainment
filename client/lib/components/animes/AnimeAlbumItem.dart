@@ -23,14 +23,17 @@ class AnimeAlbumItem extends StatelessWidget {
             placeholder: (context, url) => Container(
               height: MediaQuery.of(context).size.width * 0.43 * 3 / 2,
               width: MediaQuery.of(context).size.width * 0.43,
-              color: Colors.blue,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(4)),
               child: Shimmer.fromColors(
                 baseColor: Colors.grey.shade300,
                 highlightColor: Colors.grey.shade100,
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.43,
                   height: MediaQuery.of(context).size.width * 0.43 * 3 / 2,
-                  color: Colors.yellow,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(4)),
                 ),
               ),
             ),

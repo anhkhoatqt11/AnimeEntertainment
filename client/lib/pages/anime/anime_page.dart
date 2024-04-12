@@ -97,3 +97,14 @@ class _AnimePageState extends State<AnimePage> {
         ));
   }
 }
+
+
+// onTap: () {
+//               Provider.of<VideoProvider>(context, listen: false).setAnime(
+//                   Animes(
+//                     id: "65fbe3717e4914bdd8125052",
+//                   ),
+//                   AnimeEpisodes(id: "65ffea9c65ac19bed872183c"));
+//               Provider.of<MiniPlayerControllerProvider>(context, listen: false)
+//                   .setMiniController(PanelState.MAX);
+//             },

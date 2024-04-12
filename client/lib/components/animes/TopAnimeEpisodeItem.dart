@@ -11,56 +11,64 @@ class TopAnimeEpisodeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(6.0),
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.44,
-        child: Column(children: [
-          CachedNetworkImage(
-            imageUrl: urlImage!,
-            width: MediaQuery.of(context).size.width * 0.44,
-            height: MediaQuery.of(context).size.width * 0.44 * 9 / 16,
-            placeholder: (context, url) => Container(
-              height: MediaQuery.of(context).size.width * 0.44 * 9 / 16,
+    return GestureDetector(
+      onTap: () {
+        //forward episdoe page
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.44,
+          child: Column(children: [
+            CachedNetworkImage(
+              imageUrl: urlImage!,
               width: MediaQuery.of(context).size.width * 0.44,
-              color: Colors.blue,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey.shade300,
-                highlightColor: Colors.grey.shade100,
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.44,
-                  height: MediaQuery.of(context).size.width * 0.44 * 9 / 16,
-                  color: Colors.yellow,
+              height: MediaQuery.of(context).size.width * 0.44 * 9 / 16,
+              placeholder: (context, url) => Container(
+                height: MediaQuery.of(context).size.width * 0.44 * 9 / 16,
+                width: MediaQuery.of(context).size.width * 0.44,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(4)),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.44,
+                    height: MediaQuery.of(context).size.width * 0.44 * 9 / 16,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(4)),
+                  ),
+                ),
+              ),
+              imageBuilder: (context, imageProvider) {
+                return Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      image: DecorationImage(
+                          image: imageProvider, fit: BoxFit.fill)),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.left,
+                nameItem!,
+                maxLines: 2,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
-            imageBuilder: (context, imageProvider) {
-              return Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.fill)),
-              );
-            },
-          ),
-          const SizedBox(
-            height: 6,
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.left,
-              nameItem!,
-              maxLines: 2,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-        ]),
+          ]),
+        ),
       ),
     );
   }

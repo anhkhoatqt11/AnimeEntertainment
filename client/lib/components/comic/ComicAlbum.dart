@@ -1,5 +1,6 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
 import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.dart';
+import 'package:anime_and_comic_entertainment/components/donate/DonatePackageListHome.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_album_page.dart';
@@ -249,6 +250,28 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
                             child: TopRankingComic(),
+                          ),
+                        ],
+                      )
+                    : Container(),
+                index == 4
+                    ? const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: Text(
+                              "️🔥 Donate ủng hộ chúng mình nè",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                            child: SizedBox(
+                                height: 250, child: DonatePackageListHome()),
                           ),
                         ],
                       )

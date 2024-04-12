@@ -49,105 +49,113 @@ class _SuggestionByViewState extends State<SuggestionByView> {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: Column(
                 children: List.generate(listEpisodeItem.length, (index) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
-                    child: Row(
-                      children: [
-                        Container(
-                          color: Colors.transparent,
-                          height: 80,
-                          child: AspectRatio(
-                            aspectRatio: 16 / 9,
-                            child: CachedNetworkImage(
-                              imageUrl: listEpisodeItem[index].coverImage!,
-                              placeholder: (context, url) => Container(
-                                width: 125,
-                                color: Colors.blue,
-                                child: Shimmer.fromColors(
-                                  baseColor: Colors.grey.shade300,
-                                  highlightColor: Colors.grey.shade100,
-                                  child: Container(
-                                    width: 125,
-                                    decoration: BoxDecoration(
-                                        color: Colors.yellow,
-                                        borderRadius: BorderRadius.circular(4)),
+              return GestureDetector(
+                onTap: () {
+                  //forward episode page
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 12),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(8, 8, 12, 8),
+                      child: Row(
+                        children: [
+                          Container(
+                            color: Colors.transparent,
+                            height: 80,
+                            child: AspectRatio(
+                              aspectRatio: 16 / 9,
+                              child: CachedNetworkImage(
+                                imageUrl: listEpisodeItem[index].coverImage!,
+                                placeholder: (context, url) => Container(
+                                  width: 125,
+                                  decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.circular(4)),
+                                  child: Shimmer.fromColors(
+                                    baseColor: Colors.grey.shade300,
+                                    highlightColor: Colors.grey.shade100,
+                                    child: Container(
+                                      width: 125,
+                                      decoration: BoxDecoration(
+                                          color: Colors.yellow,
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                    ),
                                   ),
                                 ),
+                                imageBuilder: (context, imageProvider) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4),
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.fill)),
+                                  );
+                                },
                               ),
-                              imageBuilder: (context, imageProvider) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.fill)),
-                                );
-                              },
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                              height: 80,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    listEpisodeItem[index].episodeName!,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const FaIcon(
-                                            FontAwesomeIcons.clock,
-                                            color: Colors.grey,
-                                            size: 11,
-                                          ),
-                                          const SizedBox(
-                                            width: 4,
-                                          ),
-                                          Text(
-                                            Utils.convertTotalTime(
-                                                listEpisodeItem[index]
-                                                    .totalTime!),
-                                            style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 11),
-                                          )
-                                        ],
-                                      ),
-                                      Text(
-                                        "${Utils.formatNumberWithDots(listEpisodeItem[index].views!)} lượt xem",
-                                        style: TextStyle(
-                                            color: Utils.primaryColor,
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              )),
-                        )
-                      ],
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: SizedBox(
+                                height: 80,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      listEpisodeItem[index].episodeName!,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const FaIcon(
+                                              FontAwesomeIcons.clock,
+                                              color: Colors.grey,
+                                              size: 11,
+                                            ),
+                                            const SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                              Utils.convertTotalTime(
+                                                  listEpisodeItem[index]
+                                                      .totalTime!),
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 11),
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          "${Utils.formatNumberWithDots(listEpisodeItem[index].views!)} lượt xem",
+                                          style: TextStyle(
+                                              color: Utils.primaryColor,
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                )),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -18,6 +18,7 @@ class CustomAlertDialog extends StatelessWidget {
       backgroundColor: const Color(0xFF141414),
       contentTextStyle: const TextStyle(color: Colors.white),
       contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      actionsPadding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       title: Row(
         children: [
@@ -44,15 +45,13 @@ class CustomAlertDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             GFButton(
+              text: "OK",
+              type: GFButtonType.outline,
+              color: Utils.primaryColor,
               onPressed: () {
                 Navigator.of(context).pop();
                 action();
               },
-              text: "OK",
-              color: const Color.fromARGB(255, 38, 213, 99),
-              shape: GFButtonShape.pills,
-              type: GFButtonType.outline2x,
-              size: GFSize.LARGE,
             ),
           ],
         )

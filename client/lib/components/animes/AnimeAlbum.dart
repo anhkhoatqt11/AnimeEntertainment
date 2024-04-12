@@ -1,6 +1,7 @@
 import 'package:anime_and_comic_entertainment/components/animes/AnimeItem.dart';
 import 'package:anime_and_comic_entertainment/components/animes/EpisodeItem.dart';
 import 'package:anime_and_comic_entertainment/components/animes/TopRankingAnime.dart';
+import 'package:anime_and_comic_entertainment/components/donate/DonatePackageListHome.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
@@ -431,19 +432,51 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                         ],
                       )
                     : Container(),
+                index == 2
+                    ? const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: Text(
+                              "️🔥 Donate ủng hộ chúng mình nè",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                            child: SizedBox(
+                                height: 250, child: DonatePackageListHome()),
+                          ),
+                        ],
+                      )
+                    : Container(),
                 index == 1
-                    ? const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: DonateBannerHome(
-                          urlAsset: 'assets/images/donate1.png',
+                    ? GestureDetector(
+                        onTap: () {
+                          //forward donate page
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: DonateBannerHome(
+                            urlAsset: 'assets/images/donate1.png',
+                          ),
                         ),
                       )
                     : const SizedBox.shrink(),
                 index == 3
-                    ? const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: DonateBannerHome(
-                          urlAsset: 'assets/images/donate2.png',
+                    ? GestureDetector(
+                        onTap: () {
+                          //forward donate page
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: DonateBannerHome(
+                            urlAsset: 'assets/images/donate2.png',
+                          ),
                         ),
                       )
                     : const SizedBox.shrink(),

@@ -16,72 +16,80 @@ class EpisodeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(6.0),
-      child: SizedBox(
-        width: 191,
-        child: Column(children: [
-          CachedNetworkImage(
-            imageUrl: urlImage!,
-            width: 191,
-            height: 108,
-            placeholder: (context, url) => Container(
-              height: 108,
+    return GestureDetector(
+      onTap: () {
+        //forward episode page
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: SizedBox(
+          width: 191,
+          child: Column(children: [
+            CachedNetworkImage(
+              imageUrl: urlImage!,
               width: 191,
-              color: Colors.blue,
-              child: Shimmer.fromColors(
-                baseColor: Colors.grey.shade300,
-                highlightColor: Colors.grey.shade100,
-                child: Container(
-                  width: 191,
-                  height: 108,
-                  color: Colors.yellow,
+              height: 108,
+              placeholder: (context, url) => Container(
+                height: 108,
+                width: 191,
+                decoration: BoxDecoration(
+                    color: Colors.blue, borderRadius: BorderRadius.circular(4)),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    width: 191,
+                    height: 108,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(4)),
+                  ),
+                ),
+              ),
+              imageBuilder: (context, imageProvider) {
+                return Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      image: DecorationImage(
+                          image: imageProvider, fit: BoxFit.fill)),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.left,
+                nameItem!,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
-            imageBuilder: (context, imageProvider) {
-              return Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.fill)),
-              );
-            },
-          ),
-          const SizedBox(
-            height: 6,
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.left,
-              nameItem!,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.left,
-              "Lượt xem: ${Utils.formatNumberWithDots(views!)}",
-              maxLines: 2,
-              style: const TextStyle(
-                height: 1.2,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
                 overflow: TextOverflow.ellipsis,
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-                color: Colors.grey,
+                textAlign: TextAlign.left,
+                "Lượt xem: ${Utils.formatNumberWithDots(views!)}",
+                maxLines: 2,
+                style: const TextStyle(
+                  height: 1.2,
+                  overflow: TextOverflow.ellipsis,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey,
+                ),
               ),
-            ),
-          )
-        ]),
+            )
+          ]),
+        ),
       ),
     );
   }

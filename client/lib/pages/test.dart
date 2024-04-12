@@ -1,5 +1,6 @@
 import 'package:anime_and_comic_entertainment/components/animes/WatchingHistoriesList.dart';
 import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.dart';
+import 'package:anime_and_comic_entertainment/components/donate/DonatePackageListHome.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -44,23 +45,9 @@ class _TestPageState extends State<TestPage> {
               },
               child: Text('login')),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DonateBannerHome(
-              urlAsset: 'assets/images/donate1.png',
-            ),
+            padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+            child: SizedBox(height: 500, child: DonatePackageListHome()),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DonateBannerHome(
-              urlAsset: 'assets/images/donate2.png',
-            ),
-          ),
-          GradientButton(
-              content: "content",
-              action: () {},
-              height: 60,
-              width: 100,
-              disabled: false)
         ]),
       );
     }));

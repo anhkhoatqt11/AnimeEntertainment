@@ -17,90 +17,99 @@ class CurrentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(6.0),
-      child: SizedBox(
-        width: 191,
-        child: Column(children: [
-          Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
-              CachedNetworkImage(
-                imageUrl: urlImage,
-                width: 191,
-                height: 108,
-                placeholder: (context, url) => Container(
-                  height: 108,
+    return GestureDetector(
+      onTap: () {
+        //forward episode page
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: SizedBox(
+          width: 191,
+          child: Column(children: [
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                CachedNetworkImage(
+                  imageUrl: urlImage,
                   width: 191,
-                  color: Colors.blue,
-                  child: Shimmer.fromColors(
-                    baseColor: Colors.grey.shade300,
-                    highlightColor: Colors.grey.shade100,
-                    child: Container(
-                      width: 191,
-                      height: 108,
-                      color: Colors.yellow,
+                  height: 108,
+                  placeholder: (context, url) => Container(
+                    height: 108,
+                    width: 191,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      child: Container(
+                        width: 191,
+                        height: 108,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
+                      ),
                     ),
                   ),
+                  imageBuilder: (context, imageProvider) {
+                    return Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          image: DecorationImage(
+                              image: imageProvider, fit: BoxFit.fill)),
+                    );
+                  },
                 ),
-                imageBuilder: (context, imageProvider) {
-                  return Container(
+                Opacity(
+                  opacity: 0.8,
+                  child: Container(
+                    width: 50,
+                    height: 50,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        image: DecorationImage(
-                            image: imageProvider, fit: BoxFit.fill)),
-                  );
-                },
-              ),
-              Opacity(
-                opacity: 0.8,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(360)),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(360)),
+                  ),
+                ),
+                Positioned(
+                  right: 84,
+                  top: 42,
+                  child: ShaderMask(
+                      shaderCallback: (rect) => LinearGradient(
+                            colors: Utils.gradientColors,
+                            begin: Alignment.centerLeft,
+                          ).createShader(rect),
+                      child: const FaIcon(FontAwesomeIcons.play,
+                          color: Colors.white, size: 26)),
+                ),
+                // define percentage here----------------------------------------------------------------------------------------//
+                Positioned(
+                    bottom: 0,
+                    left: -10,
+                    child: GFProgressBar(
+                        width: 191,
+                        percentage: percentage,
+                        backgroundColor: Colors.black26,
+                        progressBarColor: Utils.primaryColor))
+              ],
+            ),
+            const SizedBox(
+              height: 6,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.left,
+                nameItem,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              Positioned(
-                right: 84,
-                top: 42,
-                child: ShaderMask(
-                    shaderCallback: (rect) => LinearGradient(
-                          colors: Utils.gradientColors,
-                          begin: Alignment.centerLeft,
-                        ).createShader(rect),
-                    child: const FaIcon(FontAwesomeIcons.play,
-                        color: Colors.white, size: 26)),
-              ),
-              // define percentage here----------------------------------------------------------------------------------------//
-              Positioned(
-                  bottom: 0,
-                  left: -10,
-                  child: GFProgressBar(
-                      width: 191,
-                      percentage: percentage,
-                      backgroundColor: Colors.black26,
-                      progressBarColor: Utils.primaryColor))
-            ],
-          ),
-          const SizedBox(
-            height: 6,
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.left,
-              nameItem,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          )
-        ]),
+            )
+          ]),
+        ),
       ),
     );
   }

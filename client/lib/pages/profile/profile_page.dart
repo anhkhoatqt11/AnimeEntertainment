@@ -1,6 +1,7 @@
 import 'package:anime_and_comic_entertainment/components/ui/CoinButton.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
@@ -50,14 +51,17 @@ class ProfilePage extends StatelessWidget {
                   top: 100,
                   child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
-                      height: 500,
+                      height: 540,
                       child: Stack(
                         children: [
                           Positioned(
                             top: 40,
                             child: Container(
                                 width: MediaQuery.of(context).size.width * 0.8,
-                                height: 400,
+                                height:
+                                    user.authentication['sessionToken'] == ""
+                                        ? 400
+                                        : 440,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: const Color(0xFF242424))),
@@ -140,7 +144,7 @@ class ProfilePage extends StatelessWidget {
                                   child: SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width * 0.8,
-                                    height: 500,
+                                    height: 540,
                                     child: Padding(
                                       padding: const EdgeInsets.only(top: 60),
                                       child: Column(
@@ -157,17 +161,36 @@ class ProfilePage extends StatelessWidget {
                                                       color: Utils.primaryColor,
                                                       width: 2),
                                                   shape: BoxShape.circle,
+                                                  color: Colors.white,
+                                                  colorFilter:
+                                                      const ColorFilter.mode(
+                                                          Colors.transparent,
+                                                          BlendMode.color),
                                                   image:
                                                       NetworkImage(user.avatar),
                                                   boxFit: BoxFit.cover,
                                                 ),
-                                                const Positioned(
+                                                Positioned(
                                                   bottom: 4,
                                                   right: 4,
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons.circlePlus,
-                                                    color: Colors.white,
-                                                    size: 14,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Provider.of<NavigatorProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .setShow(false);
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const AvatarPage()));
+                                                    },
+                                                    child: const FaIcon(
+                                                      FontAwesomeIcons
+                                                          .circlePlus,
+                                                      color: Colors.white,
+                                                      size: 18,
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -361,6 +384,38 @@ class ProfilePage extends StatelessWidget {
                                                   color: Colors.grey,
                                                   thickness: .5,
                                                 ),
+                                                const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 4.0, bottom: 4.0),
+                                                  child: Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 20,
+                                                        child: FaIcon(
+                                                          FontAwesomeIcons
+                                                              .building,
+                                                          color: Colors.white,
+                                                          size: 18,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Text(
+                                                        'Về chúng tôi',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                const Divider(
+                                                  color: Colors.grey,
+                                                  thickness: .5,
+                                                ),
                                                 Padding(
                                                     padding:
                                                         const EdgeInsets.only(
@@ -390,9 +445,9 @@ class ProfilePage extends StatelessWidget {
                                                           builder: (_) =>
                                                               CustomAlertChoiceDialog(
                                                                 content:
-                                                                    "Số điện thoại này chưa được đăng ký",
+                                                                    "Việc đăng xuất sẽ hạn chế một số tính năng của ứng dụng",
                                                                 title:
-                                                                    "Thông báo",
+                                                                    "Đăng xuất",
                                                                 action: () {
                                                                   AuthApi.signOut(
                                                                       context);

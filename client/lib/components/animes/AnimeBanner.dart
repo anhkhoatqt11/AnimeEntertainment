@@ -1,11 +1,13 @@
 import 'package:anime_and_comic_entertainment/model/banner.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/detail_anime_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AnimeBanner extends StatefulWidget {
@@ -64,14 +66,16 @@ class _AnimeBannerState extends State<AnimeBanner> {
             items: listBanner.map(
               (listItem) {
                 return GestureDetector(
-                    onTap: () => {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    DetailAnimePage(animeId: listItem.urlId)),
-                          )
-                        },
+                    onTap: () {
+                      Provider.of<NavigatorProvider>(context, listen: false)
+                          .setShow(false);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DetailAnimePage(animeId: listItem.urlId)),
+                      );
+                    },
                     child: Container(
                       margin: EdgeInsets.all(8.0),
                       child: ClipRRect(
@@ -82,13 +86,17 @@ class _AnimeBannerState extends State<AnimeBanner> {
                           width: 1300,
                           placeholder: (context, url) => Container(
                             width: 1300,
-                            color: Colors.blue,
+                            decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(4)),
                             child: Shimmer.fromColors(
                               baseColor: Colors.grey.shade300,
                               highlightColor: Colors.grey.shade100,
                               child: Container(
                                 width: 1300,
-                                color: Colors.yellow,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(4)),
                               ),
                             ),
                           ),

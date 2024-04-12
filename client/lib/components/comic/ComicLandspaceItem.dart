@@ -30,14 +30,17 @@ class ComicLandspaceItem extends StatelessWidget {
             placeholder: (context, url) => Container(
               height: 187,
               width: 125,
-              color: Colors.blue,
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(4)),
               child: Shimmer.fromColors(
                 baseColor: Colors.grey.shade300,
                 highlightColor: Colors.grey.shade100,
                 child: Container(
                   width: 125,
                   height: 187,
-                  color: Colors.yellow,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(4)),
                 ),
               ),
             ),

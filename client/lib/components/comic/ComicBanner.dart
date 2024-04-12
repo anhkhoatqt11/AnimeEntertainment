@@ -73,13 +73,17 @@ class _ComicBannerState extends State<ComicBanner> {
                           width: 1300,
                           placeholder: (context, url) => Container(
                             width: 1300,
-                            color: Colors.blue,
+                            decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(4)),
                             child: Shimmer.fromColors(
                               baseColor: Colors.grey.shade300,
                               highlightColor: Colors.grey.shade100,
                               child: Container(
                                 width: 1300,
-                                color: Colors.yellow,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(4)),
                               ),
                             ),
                           ),

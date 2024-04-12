@@ -446,127 +446,133 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                             Column(
                                 children: List.generate(
                                     detailAnime.episodes!.length, (index) {
-                              late bool savedVideo = false;
-                              return Padding(
-                                padding: const EdgeInsets.only(top: 12),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.05),
-                                      borderRadius: BorderRadius.circular(8)),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(8, 8, 12, 8),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          color: Colors.transparent,
-                                          height: 80,
-                                          child: AspectRatio(
-                                            aspectRatio: 16 / 9,
-                                            child: CachedNetworkImage(
-                                              imageUrl:
-                                                  detailAnime.episodes![index]
-                                                      ['coverImage'],
-                                              placeholder: (context, url) =>
-                                                  Container(
-                                                width: 125,
-                                                color: Colors.blue,
-                                                child: Shimmer.fromColors(
-                                                  baseColor:
-                                                      Colors.grey.shade300,
-                                                  highlightColor:
-                                                      Colors.grey.shade100,
-                                                  child: Container(
-                                                    width: 125,
-                                                    color: Colors.yellow,
+                              return GestureDetector(
+                                onTap: () {
+                                  //forward episode page
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 12),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.05),
+                                        borderRadius: BorderRadius.circular(8)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          8, 8, 12, 8),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            color: Colors.transparent,
+                                            height: 80,
+                                            child: AspectRatio(
+                                              aspectRatio: 16 / 9,
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    detailAnime.episodes![index]
+                                                        ['coverImage'],
+                                                placeholder: (context, url) =>
+                                                    Container(
+                                                  width: 125,
+                                                  color: Colors.blue,
+                                                  child: Shimmer.fromColors(
+                                                    baseColor:
+                                                        Colors.grey.shade300,
+                                                    highlightColor:
+                                                        Colors.grey.shade100,
+                                                    child: Container(
+                                                      width: 125,
+                                                      color: Colors.yellow,
+                                                    ),
                                                   ),
                                                 ),
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                        image: DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.fill)),
+                                                  );
+                                                },
                                               ),
-                                              imageBuilder:
-                                                  (context, imageProvider) {
-                                                return Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.fill)),
-                                                );
-                                              },
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: SizedBox(
-                                              height: 80,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    detailAnime.episodes![index]
-                                                        ['episodeName'],
-                                                    maxLines: 2,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          const FaIcon(
-                                                            FontAwesomeIcons
-                                                                .clock,
-                                                            color: Colors.grey,
-                                                            size: 11,
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 4,
-                                                          ),
-                                                          Text(
-                                                            Utils.convertTotalTime(
-                                                                detailAnime.episodes![
-                                                                        index][
-                                                                    'totalTime']),
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                    fontSize:
-                                                                        11),
-                                                          )
-                                                        ],
-                                                      ),
-                                                      Text(
-                                                        "${Utils.formatNumberWithDots(detailAnime.episodes![index]['views'])} lượt xem",
-                                                        style: TextStyle(
-                                                            color: Utils
-                                                                .primaryColor,
-                                                            fontSize: 11,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              )),
-                                        )
-                                      ],
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: SizedBox(
+                                                height: 80,
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      detailAnime
+                                                              .episodes![index]
+                                                          ['episodeName'],
+                                                      maxLines: 2,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            const FaIcon(
+                                                              FontAwesomeIcons
+                                                                  .clock,
+                                                              color:
+                                                                  Colors.grey,
+                                                              size: 11,
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 4,
+                                                            ),
+                                                            Text(
+                                                              Utils.convertTotalTime(
+                                                                  detailAnime.episodes![
+                                                                          index]
+                                                                      [
+                                                                      'totalTime']),
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .grey,
+                                                                  fontSize: 11),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        Text(
+                                                          "${Utils.formatNumberWithDots(detailAnime.episodes![index]['views'])} lượt xem",
+                                                          style: TextStyle(
+                                                              color: Utils
+                                                                  .primaryColor,
+                                                              fontSize: 11,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                )),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

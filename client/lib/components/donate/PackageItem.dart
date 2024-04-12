@@ -3,25 +3,21 @@ import 'package:shimmer/shimmer.dart';
 
 import 'package:flutter/material.dart';
 
-class ComicItem extends StatelessWidget {
+class PackageItem extends StatelessWidget {
   final String? urlImage;
-  final String? nameItem;
-  final List<dynamic>? genres;
-  const ComicItem(
+  final String? title;
+  final String? subTitle;
+  const PackageItem(
       {super.key,
       required this.urlImage,
-      required this.nameItem,
-      required this.genres});
+      required this.title,
+      required this.subTitle});
 
   @override
   Widget build(BuildContext context) {
-    String genreList = "";
-    genres!.forEach((element) {
-      genreList += (element['genreName']) + "/ ";
-    });
     return Padding(
       padding: const EdgeInsets.all(6.0),
-      child: Container(
+      child: SizedBox(
         width: 125,
         child: Column(children: [
           CachedNetworkImage(
@@ -31,17 +27,14 @@ class ComicItem extends StatelessWidget {
             placeholder: (context, url) => Container(
               height: 187,
               width: 125,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(4)),
+              color: Colors.blue,
               child: Shimmer.fromColors(
                 baseColor: Colors.grey.shade300,
                 highlightColor: Colors.grey.shade100,
                 child: Container(
                   width: 125,
                   height: 187,
-                  decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(4)),
+                  color: Colors.yellow,
                 ),
               ),
             ),
@@ -62,7 +55,7 @@ class ComicItem extends StatelessWidget {
             child: Text(
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
-              nameItem!,
+              title!,
               style: const TextStyle(
                 fontSize: 16,
                 color: Colors.white,
@@ -75,8 +68,8 @@ class ComicItem extends StatelessWidget {
             child: Text(
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.left,
-              genreList.substring(0, genreList.length - 2),
-              maxLines: 2,
+              subTitle!,
+              maxLines: 1,
               style: const TextStyle(
                 height: 1.2,
                 overflow: TextOverflow.ellipsis,

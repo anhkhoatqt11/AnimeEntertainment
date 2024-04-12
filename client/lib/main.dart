@@ -2,6 +2,7 @@
 
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
@@ -42,7 +43,9 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'skylark',
           color: Color(0xFF141414),
-          home: ProfilePage()),
+          home: MyHomePage(
+            title: '',
+          )),
     );
   }
 }
@@ -59,7 +62,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   static const double _playerMinHeight = 112.0;
   final autoSizeGroup = AutoSizeGroup();
-  var _bottomNavIndex = 0; //default index of a first screen
 
   final iconList = <IconData>[
     FontAwesomeIcons.house,
@@ -71,7 +73,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   final titleList = ['Trang chủ', 'Truyện', 'Anime', 'Thử thách', 'Cá nhân'];
 
-  String _currentPage = "Page1";
   List<String> pageKeys = ["Page1", "Page2", "Page3", "Page4", "Page5"];
   final Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
     "Page1": GlobalKey<NavigatorState>(),
@@ -82,12 +83,13 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   };
 
   void _selectTab(String tabItem, int index) {
-    if (tabItem == _currentPage) {
+    String cur =
+        Provider.of<NavigatorProvider>(context, listen: false).currentPage;
+    if (tabItem == cur) {
       _navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst);
     } else {
-      setState(() {
-        _currentPage = pageKeys[index];
-      });
+      Provider.of<NavigatorProvider>(context, listen: false)
+          .setCurrentPage(pageKeys[index]);
     }
   }
 
@@ -100,6 +102,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Consumer(builder: (BuildContext context, value, Widget? child) {
       final isStack = Provider.of<NavigatorProvider>(context).isShowNavigator;
+      final bottomIndex =
+          Provider.of<NavigatorProvider>(context).bottomIndexNavigator;
       return Scaffold(
         backgroundColor: const Color(0xFF141414),
         body: Consumer(
@@ -108,7 +112,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             final episode = Provider.of<VideoProvider>(context).episode;
             final miniPlayerController =
                 Provider.of<MiniPlayerControllerProvider>(context).state;
-
             return Stack(children: <Widget>[
               _buildOffstageNavigator("Page1"),
               _buildOffstageNavigator("Page2"),
@@ -185,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                   );
                 },
                 backgroundColor: const Color(0XFF2D2D2D),
-                activeIndex: _bottomNavIndex,
+                activeIndex: bottomIndex,
                 splashColor: Utils.accentColor,
                 splashSpeedInMilliseconds: 0,
                 notchSmoothness: NotchSmoothness.defaultEdge,
@@ -203,9 +206,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                               .setMiniController(PanelState.MIN)
                         },
                       setState(() => _selectTab(pageKeys[index], index)),
-                      setState(() {
-                        _bottomNavIndex = index;
-                      })
+                      Provider.of<NavigatorProvider>(context, listen: false)
+                          .setNavagatorIndex(index)
                     })
             : const SizedBox.shrink(),
       );
@@ -213,12 +215,18 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 
   Widget _buildOffstageNavigator(String tabItem) {
-    return Offstage(
-      offstage: _currentPage != tabItem,
-      child: TabNavigator(
-        navigatorKey: _navigatorKeys[tabItem]!,
-        tabItem: tabItem,
-      ),
+    return Consumer(
+      builder: (context, watch, _) {
+        String cur =
+            Provider.of<NavigatorProvider>(context, listen: false).currentPage;
+        return Offstage(
+          offstage: cur != tabItem,
+          child: TabNavigator(
+            navigatorKey: _navigatorKeys[tabItem]!,
+            tabItem: tabItem,
+          ),
+        );
+      },
     );
   }
 }
@@ -229,6 +237,7 @@ class RestartWidget extends StatefulWidget {
   final Widget child;
 
   static void restartApp(BuildContext context) {
+    print("Restart");
     context.findAncestorStateOfType<_RestartWidgetState>()?.restartApp();
   }
 
