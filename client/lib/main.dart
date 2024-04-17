@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
+import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_result.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
@@ -19,6 +20,8 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
+import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,9 +46,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'skylark',
           color: Color(0xFF141414),
-          home: MyHomePage(
-            title: '',
-          )),
+          home: ChallengeTest()),
     );
   }
 }
