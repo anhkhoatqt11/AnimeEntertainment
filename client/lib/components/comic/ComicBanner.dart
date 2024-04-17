@@ -40,10 +40,15 @@ class _ComicBannerState extends State<ComicBanner> {
             child: Shimmer.fromColors(
                 baseColor: Colors.grey.shade300,
                 highlightColor: Colors.grey.shade100,
-                child: Container(
-                  width: double.infinity,
-                  height: 200,
-                  color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+                  child: Container(
+                    width: double.infinity,
+                    height: 200,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(4)),
+                  ),
                 )))
         : GFCarousel(
             viewportFraction: 0.9,
@@ -68,13 +73,17 @@ class _ComicBannerState extends State<ComicBanner> {
                           width: 1300,
                           placeholder: (context, url) => Container(
                             width: 1300,
-                            color: Colors.blue,
+                            decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(4)),
                             child: Shimmer.fromColors(
                               baseColor: Colors.grey.shade300,
                               highlightColor: Colors.grey.shade100,
                               child: Container(
                                 width: 1300,
-                                color: Colors.yellow,
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(4)),
                               ),
                             ),
                           ),

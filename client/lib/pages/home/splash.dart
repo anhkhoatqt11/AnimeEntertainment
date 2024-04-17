@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:anime_and_comic_entertainment/main.dart';
+import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class _SplashState extends State<Splash> {
   }
 
   startTimer() {
-    var duration = Duration(seconds: 3, milliseconds: 600);
+    var duration = Duration(seconds: 5, milliseconds: 0);
     return Timer(duration, route);
   }
 
@@ -30,9 +31,7 @@ class _SplashState extends State<Splash> {
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => MyHomePage(
-        title: 'skylark',
-      ),
+      pageBuilder: (context, animation, secondaryAnimation) => TestPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 2.0);
         const end = Offset.zero;
@@ -59,12 +58,14 @@ class _SplashState extends State<Splash> {
   Widget content() {
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      color: Colors.black,
+      color: Color(0xFF141414),
       child: Center(
-        child: (Image(
-          image: AssetImage('assets/images/skylark_logo.gif'),
-          width: screenWidth * 0.6,
-        )),
+        child: Image.asset(
+          'assets/images/skylarkgif.gif',
+          height: double.infinity,
+          width: double.infinity,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

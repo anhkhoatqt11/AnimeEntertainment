@@ -29,12 +29,17 @@ dependencies:
   intl_phone_number_input: ^0.7.4
   fluttertoast: ^8.2.4
   flutter_launcher_icons: ^0.9.0
+  chewie: ^1.7.5
+  video_player: ^2.8.3
+  miniplayer: ^1.0.1
+  intl: ^0.18.1
+  url_launcher: ^6.2.5
 
 flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/logoBlackBackground.png"
-  adaptive_icon_background: "#141414"
+  adaptive_icon_background: "#ffffff"
   adaptive_icon_foreground: "assets/images/play_store_512.png"
 
 dev_dependencies:
@@ -48,11 +53,17 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/skylark_logo.gif
+    - assets/images/skylarkgif.gif
     - assets/images/logoImage.png
     - assets/images/comiclist.jpg
     - assets/images/otpicon.png
     - assets/images/verifyicon.png
     - assets/images/error_network.png
+    - assets/images/donate1.png
+    - assets/images/donate2.png
+    - assets/images/skycoin.png
+    - assets/images/donatebanner.png
+    - assets/images/loginbanner.png
     - assets/
   #   - images/a_dot_ham.jpeg
 

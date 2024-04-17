@@ -95,10 +95,8 @@ class _ComicAlbumPageState extends State<ComicAlbumPage> {
                   fontSize: 20),
             )),
         body: listComicItem.isEmpty
-            ? const SizedBox(
-                width: 100,
-                height: 100,
-                child: Text("Loading"),
+            ? const Center(
+                child: GFLoader(type: GFLoaderType.circle),
               )
             : ListView.builder(
                 scrollDirection: Axis.vertical,

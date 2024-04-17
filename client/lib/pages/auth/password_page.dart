@@ -2,7 +2,6 @@
 
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
-import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
@@ -245,9 +244,7 @@ class _PasswordPageState extends State<PasswordPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const GetOTPPage(
-                                                          index: 0,
-                                                        )),
+                                                        const Login()),
                                               );
                                             },
                                           ));

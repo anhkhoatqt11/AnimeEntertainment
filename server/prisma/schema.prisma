@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type AnimeepisodesComments {
+  content String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  likes   Json?
+  replies AnimeepisodesCommentsReplies[]
+  userId  String                         @db.ObjectId
+}
+
+type AnimeepisodesCommentsReplies {
+  content String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  likes   Json?
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  replies Json?
+  userId  String @db.ObjectId
+}
+
+type BannersList {
+  bannerImage String
+  urlId       String @db.ObjectId
+}
+
+type ComicchaptersComments {
+  content String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  likes   Json?
+  replies ComicchaptersCommentsReplies[]
+  userId  String                         @db.ObjectId
+}
+
+type ComicchaptersCommentsReplies {
+  content String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  likes   Json?
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  replies Json?
+  userId  String @db.ObjectId
+}
+
+type UsersAuthentication {
+  password     String
+  salt         String
+  sessionToken String
+}
+
+type UsersBookmarkList {
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  comic  Json?
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  movies Json?
+}
+
+type UsersHistories {
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  readingComic  Json?
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  watchingMovie Json?
+}
+
+model animeepisodes {
+  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
+  adLink      String
+  advertising String
+  comments    AnimeepisodesComments[]
+  content     String
+  coverImage  String
+  episodeName String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  likes       Json?
+  publicTime  DateTime                @db.Date
+  totalTime   Int
+  views       Int
+}
+
+model animes {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  ageFor         String
+  coverImage     String
+  description    String
+  episodes       String[]
+  genres         String[]
+  landspaceImage String
+  movieName      String
+  publishTime    String
+  publisher      String
+}
+
+model banners {
+  id   String        @id @default(auto()) @map("_id") @db.ObjectId
+  list BannersList[]
+  type String
+}
+
+model comicalbums {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  albumName String
+  comicList String[]
+}
+
+model comicchapters {
+  id           String                  @id @default(auto()) @map("_id") @db.ObjectId
+  chapterName  String
+  comments     ComicchaptersComments[]
+  content      String[]
+  coverImage   String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  likes        Json?
+  publicTime   DateTime                @db.Date
+  unlockPrice  Int
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  userUnlocked Json?
+  views        Int
+}
+
+model comics {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  ageFor         String
+  artist         String
+  author         String
+  chapterList    String[]
+  comicName      String
+  coverImage     String
+  description    String
+  genres         String[]
+  landspaceImage String
+  newChapterTime String
+  publisher      String
+}
+
+model genres {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  genreName String
+}
+
+model users {
+  id               String               @id @default(auto()) @map("_id") @db.ObjectId
+  v                Int?                 @map("__v")
+  authentication   UsersAuthentication?
+  avatar           String?
+  bookmarkList     UsersBookmarkList
+  coinPoint        Int?
+  histories        UsersHistories
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  paymentHistories Json?
+  phone            String?
+  userName         String?
+}

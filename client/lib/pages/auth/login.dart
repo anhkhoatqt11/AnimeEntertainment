@@ -2,6 +2,7 @@
 
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -51,7 +52,9 @@ class _LoginState extends State<Login> {
             size: 24,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
+            Provider.of<NavigatorProvider>(context, listen: false)
+                .setShow(true);
+            Navigator.of(context).popUntil((route) => route.isFirst);
           },
           type: GFButtonType.transparent,
         ),
@@ -257,33 +260,5 @@ class _LoginState extends State<Login> {
         )
       ]),
     );
-  }
-}
-
-class LoginOrProfileComponent extends StatefulWidget {
-  const LoginOrProfileComponent({super.key});
-
-  @override
-  State<LoginOrProfileComponent> createState() =>
-      _LoginOrProfileComponentState();
-}
-
-class _LoginOrProfileComponentState extends State<LoginOrProfileComponent> {
-  @override
-  Widget build(BuildContext context) {
-    return Provider.of<UserProvider>(context)
-                .user
-                .authentication['sessionToken'] !=
-            ""
-        ? Container(
-            child: Text("Logout"),
-          )
-        : Container(
-            child: ElevatedButton(
-                onPressed: () async {
-                  await AuthApi.login(context, "antonio@gmail.com", "123");
-                },
-                child: Text('Log in')),
-          );
   }
 }

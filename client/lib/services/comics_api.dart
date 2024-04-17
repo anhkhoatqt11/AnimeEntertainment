@@ -6,79 +6,14 @@ import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/model/banner.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class ComicsApi {
   static const baseUrl = "${UrlApi.urlLocalHost}/api/comics/";
-
-  // static getComic(id) async {
-  //   var url = Uri.parse(
-  //     "${baseUrl}getComic/$id",
-  //   );
-  //   try {
-  //     final res = await http.get(url);
-  //     print(jsonDecode(res.body));
-  //     if (res.statusCode == 200) {
-  //       var data = jsonDecode(res.body);
-  //     } else {
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
-  // static getComics() async {
-  //   List<Comics> comics = [];
-  //   var url = Uri.parse(
-  //     "${baseUrl}getAllComics",
-  //   );
-  //   try {
-  //     final res = await http.get(url);
-  //     print(jsonDecode(res.body));
-  //     if (res.statusCode == 200) {
-  //       var data = jsonDecode(res.body);
-  //       data.forEach((value) => {
-  //             comics.add(Comics(
-  //               coverImage: value['coverImage'],
-  //               comicName: value['comicName'],
-  //               author: value['author'],
-  //               artist: value['artist'],
-  //               genres: value['genres'],
-  //               ageFor: value['ageFor'],
-  //               publisher: value['publisher'],
-  //               description: value['description'],
-  //               newChapterTime: value['newChapterTime'],
-  //               chapterList: value['chapterList'],
-  //             ))
-  //           });
-  //       return comics;
-  //     } else {
-  //       return [];
-  //     }
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
-
-  // static getChapterComic(id) async {
-  //   var url = Uri.parse(
-  //     "${baseUrl}getChapterComic/$id",
-  //   );
-  //   try {
-  //     final res = await http.get(url);
-  //     print(jsonDecode(res.body));
-  //     if (res.statusCode == 200) {
-  //       var data = jsonDecode(res.body);
-  //     } else {
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     debugPrint(e.toString());
-  //   }
-  // }
 
   static getComicBanners(BuildContext context) async {
     var url = Uri.parse(
@@ -98,8 +33,16 @@ class ComicsApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -124,8 +67,16 @@ class ComicsApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -149,22 +100,25 @@ class ComicsApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
   static getComicAlbumContent(BuildContext context, idList, limit, page) async {
     var url = Uri.parse(
-      "${baseUrl}getComicInAlbum",
+      "${baseUrl}getComicInAlbum?idList=$idList&limit=$limit&page=$page",
     );
     try {
-      var body = {
-        "idList": idList,
-        "limit": limit,
-        "page": page,
-      };
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         List<Comics> comicAlbumItemArray = [];
@@ -183,8 +137,51 @@ class ComicsApi {
         return [];
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static getRankingTable(BuildContext context) async {
+    var url = Uri.parse(
+      "${baseUrl}getRankingTable",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<Comics> rankingArray = [];
+        result.forEach((element) {
+          rankingArray.add(Comics(
+              id: element['_id']['comicOwnerId'][0],
+              coverImage: element['_id']['coverImage'][0],
+              comicName: element['_id']['comicName'][0],
+              landspaceImage: element['_id']['landspaceImage'][0],
+              genres: element['_id']['genres']));
+        });
+        return rankingArray;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 

@@ -1,10 +1,11 @@
 import 'dart:ui';
 
+import 'package:anime_and_comic_entertainment/main.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
-import 'package:getwidget/components/button/gf_icon_button.dart';
-import 'package:getwidget/types/gf_button_type.dart';
+import 'package:provider/provider.dart';
 
 class NoInternetPage extends StatelessWidget {
   const NoInternetPage({super.key});
@@ -16,18 +17,6 @@ class NoInternetPage extends StatelessWidget {
         appBar: GFAppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          leading: GFIconButton(
-            splashColor: Colors.transparent,
-            icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
-              color: Colors.white,
-              size: 24,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            type: GFButtonType.transparent,
-          ),
         ),
         body: Stack(alignment: AlignmentDirectional.center, children: [
           Image.asset(
@@ -75,6 +64,21 @@ class NoInternetPage extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                   ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                ElevatedButton(
+                  child: Text(
+                    "Thử lại",
+                    style: TextStyle(
+                        color: Utils.blueColor, fontWeight: FontWeight.w600),
+                  ),
+                  onPressed: () {
+                    Provider.of<NavigatorProvider>(context, listen: false)
+                        .setShowNetworkError(false);
+                    RestartWidget.restartApp(context);
+                  },
                 )
               ],
             ),

@@ -1,16 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 class User {
-  final String? id;
-  final String username;
+  String id;
+  String username;
   Map<String, String> authentication;
-  final String avatar;
-  final int coinPoint;
+  String avatar;
+  int coinPoint;
   final Map<String, dynamic> bookmarkList;
   final Map<String, dynamic> histories;
   final List paymentHistories;
   User({
-    this.id,
+    required this.id,
     required this.username,
     required this.authentication,
     required this.avatar,

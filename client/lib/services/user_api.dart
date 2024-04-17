@@ -1,100 +1,73 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
-import 'package:anime_and_comic_entertainment/model/user.dart';
+import 'package:anime_and_comic_entertainment/model/avatar.dart';
+import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
-class Api {
+class UsersApi {
   static const baseUrl = "${UrlApi.urlLocalHost}/api/users/";
 
-  static addUser(Map pdata) async {
-    var url = Uri.parse("${baseUrl}createUser");
-    try {
-      final res = await http.post(
-        url,
-        body: pdata,
-      );
-      if (res.statusCode == 201) {
-        var data = jsonDecode(res.body.toString());
-        print(data);
-      } else {
-        print("Failed to get response");
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  static getUsers() async {
-    List<User> users = [];
+  static getAvatarList(BuildContext context) async {
     var url = Uri.parse(
-      "${baseUrl}getAllUsers",
+      "${baseUrl}getAvatarList",
     );
     try {
       final res = await http.get(url);
-      print(jsonDecode(res.body));
       if (res.statusCode == 200) {
-        var data = jsonDecode(res.body);
-        // data.forEach((value) => {
-        //       users.add(User(
-        //           id: value['id'].toString(),
-        //           name: value['name'],
-        //           total: value['total'],
-        //           payed: value['payed'],
-        //           debt: value['debt']))
-        //     });
-        return users;
+        var result = (jsonDecode(res.body));
+        List<Avatar> avatarCollectionList = [];
+        result.forEach((element) {
+          avatarCollectionList.add(Avatar(
+            collectionName: element['collectionName'],
+            avatarList: element['avatarList'],
+          ));
+        });
+        return avatarCollectionList;
       } else {
         return [];
       }
     } catch (e) {
-      debugPrint(e.toString());
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
-  static getUser(id) async {
+  static updateAvatar(BuildContext context, avatarUrl) async {
     var url = Uri.parse(
-      "${baseUrl}getUser/$id",
+      "${baseUrl}updateAvatar",
     );
     try {
-      final res = await http.get(url);
-      print(jsonDecode(res.body));
-      if (res.statusCode == 200) {
-        var data = jsonDecode(res.body);
-      } else {
-        return null;
-      }
+      var body = {
+        "userId": Provider.of<UserProvider>(context, listen: false).user.id,
+        "avatarUrl": avatarUrl
+      };
+      await http.post(url, body: body);
     } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  static updateUser(id, body) async {
-    var url = Uri.parse("${baseUrl}updateUser/$id");
-    try {
-      final res = await http.patch(url, body: body);
-      if (res.statusCode == 200) {
-        print(jsonDecode(res.body));
-      } else {
-        print("Failed to update");
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  static deleteProduct(id) async {
-    var url = Uri.parse("${baseUrl}deleteUser/$id");
-    try {
-      final res = await http.delete(url);
-      if (res.statusCode == 200) {
-        print(jsonDecode(res.body));
-      } else {
-        print("Failed to delete");
-      }
-    } catch (e) {
-      debugPrint(e.toString());
     }
   }
 }

@@ -1,11 +1,25 @@
 import 'dart:ui';
 
+import 'package:intl/intl.dart';
+
 class Utils {
   static final gradientColors =
       List<Color>.from([Color(0xFFA958FE), Color(0xFFDA5EF0)]);
-  static final accentColor = Color(0xFF892ECC);
+  static final gradientColors2 = List<Color>.from(
+      [Color(0xFFA958FE), Color(0xFFDA5EF0), Color(0xFFEDB1F7)]);
+  static final accentColor = Color(0xFFA958FE);
   static final primaryColor = Color(0xFFDA5EF0);
+  static final greenColor = Color.fromARGB(255, 46, 185, 94);
+  static final blueColor = Color.fromARGB(255, 63, 172, 255);
 
+  static final top1gradientColors = List<Color>.from(
+      [Color.fromARGB(0, 88, 88, 88), Color.fromARGB(255, 218, 94, 240)]);
+  static final top2gradientColors = List<Color>.from(
+      [Color.fromARGB(0, 88, 88, 88), Color.fromARGB(255, 46, 185, 94)]);
+  static final top3gradientColors = List<Color>.from(
+      [Color.fromARGB(0, 88, 88, 88), Color.fromARGB(255, 63, 172, 255)]);
+  static final topgradientColors = List<Color>.from(
+      [Color.fromARGB(0, 88, 88, 88), Color.fromARGB(255, 163, 163, 163)]);
   static bool validateNumberPhone(String str) {
     String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
     RegExp regExp = new RegExp(patttern);
@@ -13,6 +27,15 @@ class Utils {
       return false;
     }
     return true;
+  }
+
+  static String convertTotalTime(int value) {
+    return "${(value / 60).round()}:${(value % 60)}";
+  }
+
+  static String formatNumberWithDots(int number) {
+    var formatter = NumberFormat.decimalPattern('vi_VN');
+    return (formatter.format(number));
   }
 
   static String validatePassword(String password) {

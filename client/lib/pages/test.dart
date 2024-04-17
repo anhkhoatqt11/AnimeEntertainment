@@ -1,8 +1,9 @@
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
-import 'package:anime_and_comic_entertainment/services/user_api.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({super.key});
@@ -18,8 +19,20 @@ class _TestPageState extends State<TestPage> {
         child: Scaffold(
       body: Container(
         width: double.infinity,
-        color: Colors.blue,
-        child: Column(children: [
+        color: const Color(0xFF141414),
+        child: ListView(children: [
+          ElevatedButton(
+              onPressed: () async {
+                var result = await AnimesApi.checkUserHistoryHadSeenEpisode(
+                    context,
+                    "65ffea9c65ac19bed872183c",
+                    "65f709463fafb1d0bdce1bb0");
+                print(result);
+                if (result['position'] != null) {
+                  print(result['position']);
+                }
+              },
+              child: Text("test")),
           ElevatedButton(
               onPressed: () {
                 Navigator.push(

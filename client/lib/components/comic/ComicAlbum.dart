@@ -1,8 +1,9 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
+import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.dart';
+import 'package:anime_and_comic_entertainment/components/donate/DonatePackageListHome.dart';
+import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_album_page.dart';
-import 'package:anime_and_comic_entertainment/utils/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:anime_and_comic_entertainment/model/album.dart';
@@ -131,7 +132,7 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
   Widget build(BuildContext context) {
     return listAlbum.isEmpty
         ? SizedBox(
-            height: 256,
+            height: 193,
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -144,7 +145,9 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                       child: Container(
                         width: 125,
                         height: 187,
-                        color: Colors.blue,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
                       )),
                 ),
                 Padding(
@@ -155,7 +158,9 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                       child: Container(
                         width: 125,
                         height: 187,
-                        color: Colors.blue,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
                       )),
                 ),
                 Padding(
@@ -166,7 +171,9 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                       child: Container(
                         width: 125,
                         height: 187,
-                        color: Colors.blue,
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(4)),
                       )),
                 ),
               ],
@@ -192,12 +199,16 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                       },
                       child: Row(
                         children: [
-                          Text(
-                            listAlbum[index].albumName!,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600),
+                          Flexible(
+                            child: Text(
+                              listAlbum[index].albumName!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
                           const SizedBox(
                             width: 5,
@@ -213,7 +224,58 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                 SizedBox(
                     height: 256,
                     child: ComicAlbumItem(
-                        idList: listAlbum[index].comicList.toString()))
+                        idList: listAlbum[index].comicList.toString())),
+                index == 2
+                    ? const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: DonateBannerHome(
+                          urlAsset: 'assets/images/donate2.png',
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                index == 4
+                    ? const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: Text(
+                              "️🏆 Bảng xếp hạng",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 10, 0, 10),
+                            child: TopRankingComic(),
+                          ),
+                        ],
+                      )
+                    : Container(),
+                index == 4
+                    ? const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: Text(
+                              "️🔥 Donate ủng hộ chúng mình nè",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                            child: SizedBox(
+                                height: 250, child: DonatePackageListHome()),
+                          ),
+                        ],
+                      )
+                    : Container(),
               ],
             );
           }));

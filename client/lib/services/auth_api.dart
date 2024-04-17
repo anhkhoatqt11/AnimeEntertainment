@@ -2,9 +2,12 @@
 
 import 'dart:convert';
 
+import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/main.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -27,23 +30,38 @@ class AuthApi {
         var data = jsonDecode(res.body);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         userProvider.setUserToken(data['authentication']['sessionToken']);
+        userProvider.setUserId(data['_id']);
+        userProvider.setUsername(data['username']);
+        userProvider.setUserAvatar(data['avatar']);
+        userProvider.setCoinPoint(data['coinPoint']);
+
         await prefs.setString(
             'auth-session-token', data['authentication']['sessionToken']);
-
-        navigator.pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => MyHomePage(
-              title: 'Skylark',
-            ),
-          ),
-          (route) => false,
-        );
+        await Provider.of<VideoProvider>(context, listen: false)
+            .setLikeSave(data['_id'], context);
+        Provider.of<NavigatorProvider>(context, listen: false).setShow(true);
+        navigator.popUntil((route) => route.isFirst);
       } else {
+        showDialog(
+            context: context,
+            builder: (_) => CustomAlertDialog(
+                content: "Thông tin tài khoản không tồn tại",
+                title: 'Thông báo',
+                action: () {}));
         return null;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(e.toString());
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -62,10 +80,22 @@ class AuthApi {
       final res = await http.post(url, body: body);
       if (jsonDecode(res.body)['loggedIn'] == true) {
         userProvider.setUserToken(token.toString());
+        userProvider.setUserId(jsonDecode(res.body)['id']);
+        userProvider.setUsername(jsonDecode(res.body)['username']);
+        userProvider.setUserAvatar(jsonDecode(res.body)['avatar']);
+        userProvider.setCoinPoint(jsonDecode(res.body)['coinPoint']);
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -84,26 +114,26 @@ class AuthApi {
         return false;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
   static void signOut(BuildContext context) async {
-    final navigator = Navigator.of(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('auth-session-token', '');
-    // ignore: use_build_context_synchronously
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     userProvider.setUserToken("");
-    navigator.pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (context) => MyHomePage(
-          title: 'Skylark',
-        ),
-      ),
-      (route) => false,
-    );
+    userProvider.setUserId("");
+    RestartWidget.restartApp(context);
   }
 
   static getOTP(BuildContext context, String? mobileNo) async {
@@ -121,8 +151,16 @@ class AuthApi {
         return null;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -142,8 +180,16 @@ class AuthApi {
         return null;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -160,8 +206,16 @@ class AuthApi {
         return false;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -181,8 +235,16 @@ class AuthApi {
         return false;
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 }

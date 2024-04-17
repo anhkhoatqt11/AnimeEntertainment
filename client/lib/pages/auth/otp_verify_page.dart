@@ -24,7 +24,6 @@ class OTPVerifyPage extends StatefulWidget {
 
 class _OTPVerifyPageState extends State<OTPVerifyPage> {
   String _otpCode = "";
-  final int _otpCodeLength = 4;
 
   @override
   Widget build(BuildContext context) {
