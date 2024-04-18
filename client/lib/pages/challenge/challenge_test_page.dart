@@ -1,4 +1,5 @@
-import 'package:anime_and_comic_entertainment/model/challegens.dart';
+import 'package:anime_and_comic_entertainment/components/challenge/AnswerOption.dart';
+import 'package:anime_and_comic_entertainment/model/challenges.dart';
 import 'package:anime_and_comic_entertainment/services/challenges_api.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
@@ -11,38 +12,64 @@ class ChallengeTest extends StatefulWidget {
 }
 
 class _ChallengeTestState extends State<ChallengeTest> {
-  List<ChallengeQuestion> _questions = []; // Store fetched questions
-
-  Future<List<ChallengeQuestion>> getChallengesQuestion() async {
-    var result = await ChallegensApi.getChallengesQuestion(context);
-    return result;
-  }
+  late List<ChallengeQuestion> _questions;
+  int _currentQuestionIndex = 0;
+  Map<int, int?> _userAnswers =
+      {}; // Map to store user answers, key: question index, value: selected answer index
 
   @override
   void initState() {
     super.initState();
+    _fetchQuestions();
+  }
 
-    getChallengesQuestion().then((value) => value.forEach((element) {
-          setState(() {
-            _questions.add(ChallengeQuestion(
-              id: element.id,
-              questionName: element.questionName,
-              answers: element.answers,
-              correctAnswerID: element.correctAnswerID,
-              mediaUrl: element.mediaUrl,
-            ));
-          });
-        }));
+  Future<void> _fetchQuestions() async {
+    var result = await ChallengesApi.getChallengesQuestion(context);
+    setState(() {
+      _questions = result;
+    });
+  }
+
+  void _nextQuestion() {
+    setState(() {
+      if (_currentQuestionIndex < _questions.length - 1) {
+        _currentQuestionIndex++;
+      }
+    });
+  }
+
+  void _previousQuestion() {
+    setState(() {
+      if (_currentQuestionIndex > 0) {
+        _currentQuestionIndex--;
+      }
+    });
+  }
+
+  void _selectAnswer(int answerIndex) {
+    setState(() {
+      _userAnswers[_currentQuestionIndex] = answerIndex;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_questions == null || _questions.isEmpty) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    ChallengeQuestion question = _questions[_currentQuestionIndex];
+
     return Scaffold(
       backgroundColor: const Color(0xFF141414),
       appBar: GFAppBar(
         elevation: 0,
         backgroundColor: const Color(0xFF141414),
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -65,7 +92,7 @@ class _ChallengeTestState extends State<ChallengeTest> {
                   ),
                 ),
                 Text(
-                  "1/10", // You can update this dynamically based on the number of questions fetched
+                  "${_currentQuestionIndex + 1}/${_questions.length}",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -80,44 +107,45 @@ class _ChallengeTestState extends State<ChallengeTest> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Display questions dynamically
-          for (var question in _questions)
-            Column(
-              children: [
-                const SizedBox(height: 20),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      question.mediaUrl,
-                      height: 200,
-                      width: 200,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
-                  child: Text(
-                    question.questionName,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    for (var answer in question.answers)
-                      AnswerOption(
-                          text: answer.content,
-                          color: Colors.red), // Display answers dynamically
-                  ],
-                ),
-              ],
+          const SizedBox(height: 20),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
             ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                question.mediaUrl,
+                height: 200,
+                width: 350,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
+            child: Text(
+              question.questionName,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              for (int i = 0; i < question.answers.length; i++)
+                GestureDetector(
+                  onTap: () => _selectAnswer(i),
+                  child: AnswerOption(
+                    text: question.answers[i].content,
+                    color: _userAnswers[_currentQuestionIndex] == i
+                        ? Colors.red
+                        : Colors.blue, // Change color based on selection
+                  ),
+                ),
+            ],
+          ),
           const Spacer(),
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -126,50 +154,31 @@ class _ChallengeTestState extends State<ChallengeTest> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _previousQuestion,
                     child: const Text('Trở lại'),
                   ),
                 ),
                 const SizedBox(
-                    width: 8), // Adjust spacing between buttons if needed
+                  width: 8,
+                ),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Tiếp theo'),
+                    onPressed: () {
+                      _nextQuestion();
+                      // Save or submit answers when all questions are answered
+                      if (_currentQuestionIndex == _questions.length - 1) {
+                        // Call a function to save or submit the answers
+                      }
+                    },
+                    child: _currentQuestionIndex == _questions.length - 1
+                        ? const Text('Nộp bài')
+                        : const Text('Tiếp theo'),
                   ),
                 ),
               ],
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class AnswerOption extends StatelessWidget {
-  final String? text;
-  final Color color;
-
-  const AnswerOption({Key? key, required this.text, required this.color})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: color,
-      ),
-      child: Text(
-        text!,
-        style: const TextStyle(
-          fontSize: 18,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
       ),
     );
   }

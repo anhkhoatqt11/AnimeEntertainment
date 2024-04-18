@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:anime_and_comic_entertainment/model/challegens.dart';
+import 'package:anime_and_comic_entertainment/model/challenges.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-class ChallegensApi {
+class ChallengesApi {
   static const baseUrl = "${UrlApi.urlLocalHost}/api/challenges/";
 
   static Future<List<ChallengeQuestion>> getChallengesQuestion(

@@ -79,7 +79,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/comics", comicRoutes);
 app.use("/api/animes", animeRoutes);
 app.use("/api/donates", donateRoutes);
-app.use("/api/challegens", challengeRoutes);
+app.use("/api/challenges", challengeRoutes);
 
 //------------------------------------------------------------
 
