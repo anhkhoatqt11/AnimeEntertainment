@@ -1,8 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:anime_and_comic_entertainment/pages/anime/anime_page.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
-import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
-import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
+import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_page.dart';
+import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
@@ -22,8 +24,8 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = StripeApiKey.publishableKey;
-  await Stripe.instance.applySettings();
+  // Stripe.publishableKey = StripeApiKey.publishableKey;
+  // await Stripe.instance.applySettings();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => UserProvider()),
     ChangeNotifierProvider(create: (context) => VideoProvider()),

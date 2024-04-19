@@ -1,9 +1,11 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicChapter.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// ignore_for_file: prefer_const_constructors
 
 class DetailComicPage extends StatelessWidget {
   final String comicId;
@@ -12,7 +14,7 @@ class DetailComicPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<int> ListChapters = [1, 2, 3, 4, 5, 6];
+    List<int> listChapters = [1, 2, 3, 4, 5, 6];
     late Comics comic = Comics();
     Future<Comics> getAnimeDetailById() async {
       var result = await ComicsApi.getComicDetailById(context, comicId);
@@ -55,7 +57,17 @@ class DetailComicPage extends StatelessWidget {
                 child: GradientSquareButton(
                   width: 165,
                   height: 50,
-                  action: () {},
+                  action: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ComicChapterDetail(
+                          comicId: "65ec601305c5cb2ad67cfb37",
+                          chapterIndex: 1,
+                        ),
+                      ),
+                    );
+                  },
                   content: 'ĐỌC NGAY',
                   cornerRadius: 10,
                 ),
@@ -73,7 +85,7 @@ class DetailComicPage extends StatelessWidget {
                           fontWeight: FontWeight.w600),
                     )),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -120,7 +132,7 @@ class DetailComicPage extends StatelessWidget {
                             style: TextStyle(color: Colors.white),
                           ),
                           Text(
-                            comic.chapterList!.length.toString(),
+                            comic.comicName.toString(),
                             style: const TextStyle(color: Colors.yellow),
                           )
                         ],
@@ -204,10 +216,10 @@ class DetailComicPage extends StatelessWidget {
                             )),
                       ),
                       SizedBox(
-                          height: ListChapters.length * 100,
+                          height: listChapters.length * 100,
                           child: Column(
                             children: List.generate(
-                                ListChapters.length, (index) => ComicChapter()),
+                                listChapters.length, (index) => ComicChapter()),
                           ))
                     ],
                   ),

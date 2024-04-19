@@ -1,5 +1,6 @@
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
+import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,7 @@ class _TestPageState extends State<TestPage> {
                   ),
                 );
               },
-              child: const Text("Detail comic"))
+              child: const Text("Detail comic")),
         ]),
       ),
     ));
