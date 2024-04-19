@@ -1,3 +1,4 @@
+import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_comment.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // ignore_for_file: prefer_const_constructors
@@ -19,6 +20,8 @@ class ComicChapterDetail extends StatelessWidget {
             },
             icon: const Icon(Icons.arrow_back),
           ),
+          centerTitle: true,
+          title: Text("Chương 2"),
           foregroundColor: Colors.white,
           backgroundColor: const Color(0xFF141414)),
       body: ListView(
@@ -53,7 +56,17 @@ class ComicChapterDetail extends StatelessWidget {
                         ],
                       ))),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ComicChapterComment(
+                          comicId: "65ec601305c5cb2ad67cfb37",
+                          chapterIndex: 1,
+                        ),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent),
                   child: FaIcon(
