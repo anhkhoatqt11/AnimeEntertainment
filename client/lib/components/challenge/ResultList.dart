@@ -1,30 +1,25 @@
 import 'package:anime_and_comic_entertainment/components/challenge/ResultItem.dart';
 import 'package:flutter/material.dart';
 
-class ResultListItem extends StatefulWidget {
-  const ResultListItem({super.key});
+class ResultListItem extends StatelessWidget {
+  final List<String> userAnswers;
+  final List<bool> isCorrect;
+  final int totalPoints;
 
-  @override
-  State<ResultListItem> createState() => _ResultListItemState();
-}
-
-class _ResultListItemState extends State<ResultListItem> {
-  final List<String> items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
+  const ResultListItem({
+    required this.userAnswers,
+    required this.isCorrect,
+    required this.totalPoints,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: items.length,
+      itemCount: userAnswers.length,
       itemBuilder: (context, index) {
         return ResultItem(
-          answer: items[index],
-          isCorrect: true,
+          answer: userAnswers[index],
+          isCorrect: isCorrect[index],
         );
       },
     );

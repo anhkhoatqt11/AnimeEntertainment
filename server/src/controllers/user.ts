@@ -28,3 +28,13 @@ export const updateAvatar: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const getUsersChallengesPoint: RequestHandler = async (req, res, next) => {
+  try {
+    const user = await UserModel.find().exec();
+    res.status(200).json(user.map((u) => ({ userId: u._id, point: u.challenges})));
+  } catch (error) {
+    next(error);
+  }
+}
