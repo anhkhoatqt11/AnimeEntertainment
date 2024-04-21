@@ -7,6 +7,7 @@ import 'package:anime_and_comic_entertainment/pages/comic/comic_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -26,12 +27,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Stripe.publishableKey = StripeApiKey.publishableKey;
   // await Stripe.instance.applySettings();
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) => UserProvider()),
-    ChangeNotifierProvider(create: (context) => VideoProvider()),
-    ChangeNotifierProvider(create: (context) => MiniPlayerControllerProvider()),
-    ChangeNotifierProvider(create: (context) => NavigatorProvider())
-  ], child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -40,14 +36,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'skylark',
-      home: Scaffold(body: const TestPage()
-          // MyHomePage(
-          //   title: 'skylark',
-          // ),
-          ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => VideoProvider()),
+        ChangeNotifierProvider(
+            create: (context) => MiniPlayerControllerProvider()),
+        ChangeNotifierProvider(create: (context) => NavigatorProvider()),
+        ChangeNotifierProvider(create: (context) => ComisDetailProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+          useMaterial3: true,
+        ),
+        title: 'skylark',
+        home: const TestPage(),
+      ),
     );
   }
 }

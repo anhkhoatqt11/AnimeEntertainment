@@ -1,5 +1,6 @@
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:flutter/material.dart';
@@ -35,16 +36,20 @@ class _TestPageState extends State<TestPage> {
               },
               child: Text("test")),
           ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        DetailComicPage(comicId: "65ec601305c5cb2ad67cfb37"),
-                  ),
-                );
-              },
-              child: const Text("Detail comic")),
+            onPressed: () async {
+              await Provider.of<ComisDetailProvider>(context, listen: false)
+                  .getListCosmic('65ec601305c5cb2ad67cfb37');
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DetailComicPage(
+                      comicId: "65ec601305c5cb2ad67cfb37"),
+                ),
+              );
+            },
+            child: const Text("Detail comic"),
+          ),
         ]),
       ),
     ));

@@ -2,27 +2,42 @@ import 'package:anime_and_comic_entertainment/components/comic/ComicChapter.dart
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 // ignore_for_file: prefer_const_constructors
 
-class DetailComicPage extends StatelessWidget {
+class DetailComicPage extends StatefulWidget {
   final String comicId;
 
-  DetailComicPage({required this.comicId});
+  const DetailComicPage({super.key, required this.comicId});
+
+  @override
+  State<DetailComicPage> createState() => _DetailComicPageState();
+}
+
+class _DetailComicPageState extends State<DetailComicPage> {
+  List<int> listChapters = [1, 2, 3, 4, 5, 6];
+  late Comics comic;
+  @override
+  void initState() {
+    comic = Comics();
+    //getAnimeDetailById().then((value) => {comic = value});
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    comic = Provider.of<ComisDetailProvider>(context).comis!;
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<int> listChapters = [1, 2, 3, 4, 5, 6];
-    late Comics comic = Comics();
-    Future<Comics> getAnimeDetailById() async {
-      var result = await ComicsApi.getComicDetailById(context, comicId);
-      return result;
-    }
-
-    getAnimeDetailById().then((value) => {comic = value});
-
     return Scaffold(
         backgroundColor: const Color(0xFF141414),
         appBar: AppBar(

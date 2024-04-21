@@ -31,4 +31,9 @@ class Comics {
       this.chapterList,
       this.totalView,
       this.totalLike});
+
+  @override
+  String toString() {
+    return 'landspaceImage: $landspaceImage $id $coverImage';
+  }
 }

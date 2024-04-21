@@ -185,13 +185,48 @@ class ComicsApi {
     }
   }
 
-  static getComicDetailById(BuildContext context, animeId) async {
+  // static getComicDetailById(BuildContext context, animeId) async {
+  //   var url = Uri.parse(
+  //     "${baseUrl}getDetailComicById",
+  //   );
+  //   try {
+  //     var body = {
+  //       "animeId": animeId,
+  //     };
+  //     final res = await http.post(url, body: body);
+  //     if (res.statusCode == 200) {
+  //       var result = (jsonDecode(res.body));
+  //       Comics comicDetail = Comics(
+  //         id: result[0]['_id'],
+  //         coverImage: result[0]['coverImage'],
+  //         landspaceImage: result[0]['landspaceImage'],
+  //         comicName: result[0]['movieName'],
+  //         genres: result[0]['genreNames'],
+  //         newChapterTime: result[0]['newChapterTime'],
+  //         ageFor: result[0]['ageFor'],
+  //         publisher: result[0]['publisher'],
+  //         description: result[0]['description'],
+  //         chapterList: result[0]['detailEpisodeList'],
+  //         totalView: result[0]['totalViews'],
+  //         totalLike: result[0]['totalLikes'],
+  //       );
+  //       return comicDetail;
+  //     } else {
+  //       return [];
+  //     }
+  //   } catch (e) {
+  //     Navigator.push(context,
+  //         MaterialPageRoute(builder: (context) => const NoInternetPage()));
+  //   }
+  // }
+
+  static Future<Comics> getComicDetailById(comicId) async {
     var url = Uri.parse(
       "${baseUrl}getDetailComicById",
     );
     try {
       var body = {
-        "animeId": animeId,
+        "comicId": comicId,
       };
       final res = await http.post(url, body: body);
       if (res.statusCode == 200) {
@@ -212,11 +247,10 @@ class ComicsApi {
         );
         return comicDetail;
       } else {
-        return [];
+        return Comics(id: 'data');
       }
     } catch (e) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      return Comics(id: 'exception');
     }
   }
 }
