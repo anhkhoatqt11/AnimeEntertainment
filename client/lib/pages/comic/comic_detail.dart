@@ -2,11 +2,14 @@ import 'package:anime_and_comic_entertainment/components/comic/ComicChapter.dart
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
-import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:getwidget/components/appbar/gf_appbar.dart';
+import 'package:getwidget/components/button/gf_icon_button.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/types/gf_button_type.dart';
+import 'package:getwidget/types/gf_loader_type.dart';
 // ignore_for_file: prefer_const_constructors
 
 class DetailComicPage extends StatefulWidget {
@@ -20,228 +23,258 @@ class DetailComicPage extends StatefulWidget {
 
 class _DetailComicPageState extends State<DetailComicPage> {
   List<int> listChapters = [1, 2, 3, 4, 5, 6];
-  late Comics comic;
-  @override
-  void initState() {
-    comic = Comics();
-    //getAnimeDetailById().then((value) => {comic = value});
-
-    super.initState();
+  late bool isLoading = false;
+  late Comics comic = Comics();
+  Future<Comics> getComicDetailById() async {
+    var result = await ComicsApi.getComicDetailById(context, widget.comicId);
+    return result;
   }
 
   @override
-  void didChangeDependencies() {
-    comic = Provider.of<ComisDetailProvider>(context).comis!;
-
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
+    getComicDetailById().then((value) => setState(() {
+          comic = value;
+          isLoading = false;
+          print(comic.landspaceImage);
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: const Color(0xFF141414),
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
-          foregroundColor: Colors.white,
-          backgroundColor: const Color(0xFF141414),
-          actions: <Widget>[
-            IconButton(
-                onPressed: () {},
-                icon: const FaIcon(FontAwesomeIcons.squarePlus))
-          ],
-        ),
-        body: ListView(
-          children: [
-            Stack(children: [
-              Column(
-                children: [
-                  Image.network(comic.landspaceImage ?? ""),
-                  const SizedBox(
-                    height: 25,
-                  )
-                ],
-              ),
-              Positioned(
-                right: 10,
-                bottom: 0,
-                child: GradientSquareButton(
-                  width: 165,
-                  height: 50,
-                  action: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ComicChapterDetail(
-                          comicId: "65ec601305c5cb2ad67cfb37",
-                          chapterIndex: 1,
-                        ),
-                      ),
-                    );
-                  },
-                  content: 'ĐỌC NGAY',
-                  cornerRadius: 10,
+    return comic.landspaceImage == null
+        ? Scaffold(
+            backgroundColor: const Color(0xFF141414),
+            appBar: GFAppBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              leading: GFIconButton(
+                splashColor: Colors.transparent,
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                  size: 24,
                 ),
-              )
-            ]),
-            Column(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                type: GFButtonType.transparent,
+              ),
+            ),
+            body: const Center(
+              child: GFLoader(type: GFLoaderType.circle),
+            ),
+          )
+        : Scaffold(
+            backgroundColor: const Color(0xFF141414),
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back),
+              ),
+              foregroundColor: Colors.white,
+              backgroundColor: const Color(0xFF141414),
+              actions: <Widget>[
+                IconButton(
+                    onPressed: () {},
+                    icon: const FaIcon(FontAwesomeIcons.squarePlus))
+              ],
+            ),
+            body: ListView(
               children: [
-                Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 15),
-                    child: Text(
-                      comic.comicName ?? "",
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Stack(children: [
+                  Column(
                     children: [
-                      Column(
-                        children: [
-                          const FaIcon(
-                            FontAwesomeIcons.bookOpenReader,
-                            color: Colors.white,
-                          ),
-                          const Text(
-                            'Lượt xem',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            comic.totalView.toString(),
-                            style: const TextStyle(color: Colors.yellow),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          const FaIcon(
-                            FontAwesomeIcons.solidThumbsUp,
-                            color: Colors.white,
-                          ),
-                          const Text(
-                            'Lượt thích',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            comic.totalLike.toString(),
-                            style: const TextStyle(color: Colors.yellow),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          const FaIcon(
-                            FontAwesomeIcons.solidFile,
-                            color: Colors.white,
-                          ),
-                          const Text(
-                            'Số chương',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            comic.comicName.toString(),
-                            style: const TextStyle(color: Colors.yellow),
-                          )
-                        ],
+                      Image.network(
+                          height: 200,
+                          width: double.infinity,
+                          "https://www.phucanh.vn/media/news/2608_trang-web-tai-hinh-nen-dep-ban-nen-biet.jpg"),
+                      const SizedBox(
+                        height: 25,
                       )
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        'Tác giả: ${comic.author}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        'Họa sĩ: ${comic.artist}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                      const Text(
-                        'Thể loại: ',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      const Text(
-                        'Nội dung bởi: ',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        'Mô tả: ${comic.description}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  child: Column(
-                    children: [
-                      Row(
+                  Positioned(
+                    right: 10,
+                    bottom: 0,
+                    child: GradientSquareButton(
+                      width: 165,
+                      height: 50,
+                      action: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ComicChapterDetail(
+                              comicId: "65ec601305c5cb2ad67cfb37",
+                              chapterIndex: 1,
+                            ),
+                          ),
+                        );
+                      },
+                      content: 'ĐỌC NGAY',
+                      cornerRadius: 10,
+                    ),
+                  )
+                ]),
+                Column(
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 15),
+                        child: Text(
+                          comic.comicName ?? "",
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.transparent),
-                              child: const Text(
-                                'Danh sách chương',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 218, 113, 15)),
-                              )),
-                          ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.transparent),
-                              child: const Text(
-                                'Bình luận',
+                          Column(
+                            children: [
+                              const FaIcon(
+                                FontAwesomeIcons.bookOpenReader,
+                                color: Colors.white,
+                              ),
+                              const Text(
+                                'Lượt xem',
                                 style: TextStyle(color: Colors.white),
-                              ))
+                              ),
+                              Text(
+                                comic.totalView.toString(),
+                                style: const TextStyle(color: Colors.yellow),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              const FaIcon(
+                                FontAwesomeIcons.solidThumbsUp,
+                                color: Colors.white,
+                              ),
+                              const Text(
+                                'Lượt thích',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                comic.totalLike.toString(),
+                                style: const TextStyle(color: Colors.yellow),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              const FaIcon(
+                                FontAwesomeIcons.solidFile,
+                                color: Colors.white,
+                              ),
+                              const Text(
+                                'Số chương',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                comic.chapterList!.length.toString(),
+                                style: const TextStyle(color: Colors.yellow),
+                              )
+                            ],
+                          )
                         ],
                       ),
-                      Container(
-                          height: 3,
-                          color: const Color.fromARGB(255, 218, 113, 15)),
-                      Container(
-                        color: Colors.black,
-                        child: const Padding(
-                            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Text(
-                                  '100 Chương',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                Text(
-                                  'Thứ 2 hàng tuần',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 12),
-                                )
-                              ],
-                            )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            'Tác giả: ${comic.author}',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          Text(
+                            'Họa sĩ: ${comic.artist}',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          const Text(
+                            'Thể loại: ',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Text(
+                            'Nội dung bởi: ${comic.publisher}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Text(
+                            'Mô tả: ${comic.description}',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                          height: listChapters.length * 100,
-                          child: Column(
-                            children: List.generate(
-                                listChapters.length, (index) => ComicChapter()),
-                          ))
-                    ],
-                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent),
+                                  child: const Text(
+                                    'Danh sách chương',
+                                    style: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 218, 113, 15)),
+                                  ))
+                            ],
+                          ),
+                          Container(
+                              height: 3,
+                              color: const Color.fromARGB(255, 218, 113, 15)),
+                          Container(
+                            color: Colors.black,
+                            child: Padding(
+                                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Text(
+                                      '${comic.chapterList!.length.toString()} Chương',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    Text(
+                                      '${comic.newChapterTime}',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 12),
+                                    )
+                                  ],
+                                )),
+                          ),
+                          SizedBox(
+                            height: listChapters.length * 100,
+                            child: Column(
+                                children: List.generate(
+                                    comic.chapterList!.length,
+                                    (index) => ComicChapter(
+                                        coverImage: comic.chapterList![index]
+                                            ['coverImage'],
+                                        chapterName: comic.chapterList![index]
+                                            ['chapterName'],
+                                        unlockPrice: comic.chapterList![index]
+                                            ['unlockPrice'],
+                                        publicTime: comic.chapterList![index]
+                                            ['publicTime']))),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        ));
+            ));
   }
 }

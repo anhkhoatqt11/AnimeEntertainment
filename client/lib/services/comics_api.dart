@@ -220,37 +220,45 @@ class ComicsApi {
   //   }
   // }
 
-  static Future<Comics> getComicDetailById(comicId) async {
+  static getComicDetailById(BuildContext context, String comicId) async {
     var url = Uri.parse(
-      "${baseUrl}getDetailComicById",
+      "${baseUrl}getDetailComicById?comicId=$comicId",
     );
     try {
-      var body = {
-        "comicId": comicId,
-      };
-      final res = await http.post(url, body: body);
+      final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         Comics comicDetail = Comics(
           id: result[0]['_id'],
           coverImage: result[0]['coverImage'],
           landspaceImage: result[0]['landspaceImage'],
-          comicName: result[0]['movieName'],
+          comicName: result[0]['comicName'],
+          author: result[0]['author'],
+          artist: result[0]['artist'],
           genres: result[0]['genreNames'],
           newChapterTime: result[0]['newChapterTime'],
           ageFor: result[0]['ageFor'],
           publisher: result[0]['publisher'],
           description: result[0]['description'],
-          chapterList: result[0]['detailEpisodeList'],
+          chapterList: result[0]['detailChapterList'],
           totalView: result[0]['totalViews'],
           totalLike: result[0]['totalLikes'],
         );
         return comicDetail;
       } else {
-        return Comics(id: 'data');
+        return [];
       }
     } catch (e) {
-      return Comics(id: 'exception');
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 }

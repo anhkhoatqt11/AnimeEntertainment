@@ -273,7 +273,11 @@ export const getChapterOfComic: RequestHandler = async (req, res, next) => {
 }
 
 export const getDetailComicById: RequestHandler = async (req, res, next) => {
-  const comicId = req.body.comicId;
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const comicId: string =
+    typeof parsedParams.comicId === "string" ? parsedParams.comicId : "0";
   try {
     if (!mongoose.isValidObjectId(comicId)) {
       throw createHttpError(400, "Invalid comic id")

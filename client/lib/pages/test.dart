@@ -34,12 +34,9 @@ class _TestPageState extends State<TestPage> {
                   print(result['position']);
                 }
               },
-              child: Text("test")),
+              child: const Text("test")),
           ElevatedButton(
             onPressed: () async {
-              await Provider.of<ComisDetailProvider>(context, listen: false)
-                  .getListCosmic('65ec601305c5cb2ad67cfb37');
-
               Navigator.push(
                 context,
                 MaterialPageRoute(

@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'package:anime_and_comic_entertainment/components/comic/ComicChapter.dart';
 
 class Comics {
   final String? id;

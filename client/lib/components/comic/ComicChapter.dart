@@ -2,7 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ComicChapter extends StatefulWidget {
-  const ComicChapter({super.key});
+  final String coverImage;
+  final String chapterName;
+  final int unlockPrice;
+  final String publicTime;
+
+  const ComicChapter(
+      {super.key,
+      required this.coverImage,
+      required this.chapterName,
+      required this.unlockPrice,
+      required this.publicTime});
 
   @override
   State<ComicChapter> createState() => _ComicChapterState();
@@ -17,8 +27,7 @@ class _ComicChapterState extends State<ComicChapter> {
       child: Row(
         children: [
           CachedNetworkImage(
-            imageUrl:
-                "https://i.guim.co.uk/img/media/2281074279af96115bbfdfa2f64dfc1eab685d69/0_0_3000_2318/master/3000.jpg?width=620&quality=85&auto=format&fit=max&s=19194e207969bdaa0638abd85d961497",
+            imageUrl: widget.coverImage,
             width: 100,
             height: 100,
           ),
@@ -26,20 +35,20 @@ class _ComicChapterState extends State<ComicChapter> {
             width: 10,
           ),
           Expanded(
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Chương 1 - Người bạn đến từ tương lai",
+                Text(widget.chapterName,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white)),
                 Text(
-                  "December 1st, 2023",
-                  style: TextStyle(
+                  widget.publicTime.toString(),
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
                   ),
@@ -50,9 +59,9 @@ class _ComicChapterState extends State<ComicChapter> {
           const SizedBox(
             width: 10,
           ),
-          const Text(
-            "MIỄN PHÍ",
-            style: TextStyle(fontSize: 16, color: Colors.orange),
+          Text(
+            widget.unlockPrice > 0 ? widget.unlockPrice.toString() : "Miễn phí",
+            style: const TextStyle(fontSize: 16, color: Colors.orange),
           )
         ],
       ),
