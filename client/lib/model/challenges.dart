@@ -39,3 +39,43 @@ class Answer {
     );
   }
 }
+
+class UserChallenge {
+  final String userId;
+  final String name;
+  final String avatar;
+  final List<Map<String, dynamic>> point;
+
+  UserChallenge({
+    required this.userId,
+    required this.name,
+    required this.avatar,
+    required this.point,
+  });
+
+  factory UserChallenge.fromJson(Map<String, dynamic> json) {
+    // Parse the 'point' field as a List<Map<String, dynamic>>
+    List<Map<String, dynamic>> points = [];
+    if (json['point'] != null) {
+      points = List<Map<String, dynamic>>.from(json['point']);
+    }
+
+    return UserChallenge(
+      userId: json['userId'] ?? '',
+      name: json['name'] ?? '',
+      avatar: json['avatar'] ?? '',
+      point: points, // Assign the parsed 'points' list
+    );
+  }
+
+  int getMaxTime() {
+    int maxTime = 0;
+    for (var p in point) {
+      int currentTime = p['time'] ?? 0;
+      if (currentTime > maxTime) {
+        maxTime = currentTime;
+      }
+    }
+    return maxTime;
+  }
+}

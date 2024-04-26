@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:anime_and_comic_entertainment/components/challenge/AnswerOption.dart';
 import 'package:anime_and_comic_entertainment/model/challenges.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_result_page.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/challenges_api.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
+import 'package:provider/provider.dart';
 
 class ChallengeTest extends StatefulWidget {
   const ChallengeTest({Key? key}) : super(key: key);
@@ -15,18 +17,28 @@ class ChallengeTest extends StatefulWidget {
 }
 
 class _ChallengeTestState extends State<ChallengeTest> {
+  //Define data
   List<ChallengeQuestion> _questions = [];
   int _currentQuestionIndex = 0;
   Map<int, int?> _userAnswers = {};
   int _score = 0;
   late Timer _timer;
   int _timerDurationInSeconds = 300; // 5 minutes
+  late String userId = "";
+  bool _answerSelected = false; // Track if an answer is selected
+
+  Future<void> getUserID() async {
+    userId = Provider.of<UserProvider>(context, listen: false).user.id;
+    print(userId);
+    return;
+  }
 
   @override
   void initState() {
     super.initState();
     _fetchQuestions();
     _startTimer();
+    getUserID();
   }
 
   @override
@@ -60,8 +72,9 @@ class _ChallengeTestState extends State<ChallengeTest> {
     setState(() {
       if (_currentQuestionIndex < _questions.length - 1) {
         _currentQuestionIndex++;
+        _answerSelected = false; // Reset answer selection for next question
       }
-      print(_userAnswers); // print user answers
+      print(_userAnswers);
     });
   }
 
@@ -76,16 +89,20 @@ class _ChallengeTestState extends State<ChallengeTest> {
   void _selectAnswer(int answerIndex) {
     setState(() {
       _userAnswers[_currentQuestionIndex] = answerIndex;
+      _answerSelected = true; // Set answer selected to true
     });
   }
 
   void _submitAnswer() {
+    if (!_answerSelected) {
+      // Don't submit if no answer is selected
+      return;
+    }
     int correctAnswers = 0;
     int totalBonusPoints = 0;
     List<String> userAnswers = [];
     List<bool> isCorrect = [];
 
-    // Calculate correct answers and user answers
     for (int i = 0; i < _questions.length; i++) {
       int? userAnswerIndex = _userAnswers[i];
       int correctAnswerIndex = _questions[i].correctAnswerID;
@@ -101,7 +118,6 @@ class _ChallengeTestState extends State<ChallengeTest> {
       }
     }
 
-    // Calculate time bonus points based on the time remaining
     int timeBonus =
         ((_timerDurationInSeconds / 60).toInt() * 20).clamp(0, 1000);
 
@@ -111,6 +127,14 @@ class _ChallengeTestState extends State<ChallengeTest> {
 
     // Ensure total points don't exceed 1000
     int score = totalPoints > 1000 ? 1000 : totalPoints;
+
+    //Push user result to database
+    ChallengesApi.uploadUsersChallengesPoint(
+      userId: userId,
+      point: totalPoints,
+      date: DateTime.now(),
+      remainingTime: _timerDurationInSeconds,
+    );
 
     // Navigate to result page and pass data
     Navigator.pushReplacement(
@@ -267,11 +291,14 @@ class _ChallengeTestState extends State<ChallengeTest> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_currentQuestionIndex == _questions.length - 1) {
-                        _submitAnswer();
-                        print("User Answers: $_userAnswers");
-                      } else {
-                        _nextQuestion();
+                      if (_answerSelected) {
+                        // Only proceed if an answer is selected
+                        if (_currentQuestionIndex == _questions.length - 1) {
+                          _submitAnswer();
+                          print("User Answers: $_userAnswers");
+                        } else {
+                          _nextQuestion();
+                        }
                       }
                     },
                     child: _currentQuestionIndex == _questions.length - 1

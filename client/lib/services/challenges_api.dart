@@ -51,4 +51,57 @@ class ChallengesApi {
       return [];
     }
   }
+
+  static Future<void> uploadUsersChallengesPoint({
+    required String userId,
+    required int point,
+    required DateTime date,
+    required int remainingTime,
+  }) async {
+    var url = Uri.parse("${baseUrl}uploadUsersChallengesPoint");
+    try {
+      final res = await http.post(
+        url,
+        body: jsonEncode({
+          'userId': userId,
+          'point': point,
+          'date': date.toIso8601String(), // Convert DateTime to ISO 8601 string
+          'remainingTime': remainingTime,
+        }),
+        headers: {'Content-Type': 'application/json'},
+      );
+      if (res.statusCode == 200) {
+        // Success
+        print('User challenge points uploaded successfully');
+      } else {
+        // Handle other status codes
+        print('Failed to upload user challenge points: ${res.statusCode}');
+      }
+    } catch (e) {
+      // Handle exceptions
+      print('Error uploading user challenge points: $e');
+    }
+  }
+
+  static Future<List<UserChallenge>> getUsersChallengesPoints(
+      ) async {
+    var url = Uri.parse("${baseUrl}getUsersChallengesPoint");
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        final List<dynamic> data = json.decode(res.body);
+        List<UserChallenge> userChallenges = [];
+        for (var item in data) {
+          userChallenges.add(UserChallenge.fromJson(item));
+        }
+        print(data);
+        return userChallenges;
+        } else {
+          return []; // Return an empty list if there's no data
+        }
+      } catch (e) {
+        print('Error fetching leaderboard: $e');
+      throw Exception('Error: $e');
+    }
+  }
 }
