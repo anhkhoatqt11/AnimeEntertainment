@@ -1,18 +1,14 @@
+import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ComicChapter extends StatefulWidget {
-  final String coverImage;
-  final String chapterName;
-  final int unlockPrice;
-  final String publicTime;
+  final int index;
+  final Comics comic;
 
-  const ComicChapter(
-      {super.key,
-      required this.coverImage,
-      required this.chapterName,
-      required this.unlockPrice,
-      required this.publicTime});
+  const ComicChapter({super.key, required this.index, required this.comic});
 
   @override
   State<ComicChapter> createState() => _ComicChapterState();
@@ -21,15 +17,21 @@ class ComicChapter extends StatefulWidget {
 class _ComicChapterState extends State<ComicChapter> {
   @override
   Widget build(BuildContext context) {
+    Comics comic = widget.comic;
+    DateTime date = DateFormat('yyyy-MM-dd')
+        .parse(comic.chapterList![widget.index]['publicTime']);
+    DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+    String publishTime = dateFormat.format(date);
+
     return Container(
       height: 100,
       width: MediaQuery.of(context).size.width,
       child: Row(
         children: [
           CachedNetworkImage(
-            imageUrl: widget.coverImage,
+            imageUrl: comic.chapterList![widget.index]['coverImage'],
             width: 100,
-            height: 100,
+            height: 90,
           ),
           const SizedBox(
             width: 10,
@@ -39,7 +41,7 @@ class _ComicChapterState extends State<ComicChapter> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(widget.chapterName,
+                Text(comic.chapterList![widget.index]['chapterName'],
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -47,7 +49,7 @@ class _ComicChapterState extends State<ComicChapter> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white)),
                 Text(
-                  widget.publicTime.toString(),
+                  publishTime,
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
@@ -56,13 +58,27 @@ class _ComicChapterState extends State<ComicChapter> {
               ],
             ),
           ),
-          const SizedBox(
-            width: 10,
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ComicChapterDetail(
+                    comic: comic,
+                    index: widget.index,
+                  ),
+                ),
+              );
+            },
+            style:
+                ElevatedButton.styleFrom(backgroundColor: Colors.transparent),
+            child: Text(
+              comic.chapterList![widget.index]['unlockPrice'] > 0
+                  ? comic.chapterList![widget.index]['unlockPrice']
+                  : "Miễn phí",
+              style: const TextStyle(fontSize: 16, color: Colors.orange),
+            ),
           ),
-          Text(
-            widget.unlockPrice > 0 ? widget.unlockPrice.toString() : "Miễn phí",
-            style: const TextStyle(fontSize: 16, color: Colors.orange),
-          )
         ],
       ),
     );

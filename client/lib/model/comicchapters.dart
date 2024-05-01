@@ -4,7 +4,7 @@ class ComicChapter {
   final String? id;
   final String? coverImage;
   final String? chapterName;
-  final String? publicTime;
+  final DateTime? publicTime;
   final List? content;
   final List? comments;
   final List? likes;

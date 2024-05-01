@@ -7,7 +7,7 @@ class ComicChapterComment extends StatelessWidget {
   final int chapterIndex;
 
   const ComicChapterComment(
-      {required this.comicId, required this.chapterIndex});
+      {super.key, required this.comicId, required this.chapterIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class ComicChapterComment extends StatelessWidget {
                               '${data.userName}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption
+                                  .bodySmall
                                   ?.copyWith(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black),
@@ -86,7 +86,7 @@ class ComicChapterComment extends StatelessWidget {
                               '${data.content}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption
+                                  .bodySmall
                                   ?.copyWith(
                                       fontWeight: FontWeight.w300,
                                       color: Colors.black),
@@ -95,7 +95,7 @@ class ComicChapterComment extends StatelessWidget {
                         ),
                       ),
                       DefaultTextStyle(
-                        style: Theme.of(context).textTheme.caption!.copyWith(
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: Colors.grey[700],
                             fontWeight: FontWeight.bold),
                         child: Padding(
@@ -134,7 +134,7 @@ class ComicChapterComment extends StatelessWidget {
                               '${data.userName}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black),
@@ -146,7 +146,7 @@ class ComicChapterComment extends StatelessWidget {
                               '${data.content}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(
                                       fontWeight: FontWeight.w300,
                                       color: Colors.black),
@@ -155,7 +155,7 @@ class ComicChapterComment extends StatelessWidget {
                         ),
                       ),
                       DefaultTextStyle(
-                        style: Theme.of(context).textTheme.caption!.copyWith(
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: Colors.grey[700],
                             fontWeight: FontWeight.bold),
                         child: Padding(
@@ -227,7 +227,7 @@ class ComicChapterComment extends StatelessWidget {
                               '${data.userName}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption
+                                  .bodySmall
                                   ?.copyWith(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black),
@@ -239,7 +239,7 @@ class ComicChapterComment extends StatelessWidget {
                               '${data.content}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption
+                                  .bodySmall
                                   ?.copyWith(
                                       fontWeight: FontWeight.w300,
                                       color: Colors.black),
@@ -248,7 +248,7 @@ class ComicChapterComment extends StatelessWidget {
                         ),
                       ),
                       DefaultTextStyle(
-                        style: Theme.of(context).textTheme.caption!.copyWith(
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: Colors.grey[700],
                             fontWeight: FontWeight.bold),
                         child: Padding(
@@ -287,7 +287,7 @@ class ComicChapterComment extends StatelessWidget {
                               '${data.userName}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(
                                       fontWeight: FontWeight.w600,
                                       color: Colors.black),
@@ -299,7 +299,7 @@ class ComicChapterComment extends StatelessWidget {
                               '${data.content}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(
                                       fontWeight: FontWeight.w300,
                                       color: Colors.black),
@@ -308,7 +308,7 @@ class ComicChapterComment extends StatelessWidget {
                         ),
                       ),
                       DefaultTextStyle(
-                        style: Theme.of(context).textTheme.caption!.copyWith(
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: Colors.grey[700],
                             fontWeight: FontWeight.bold),
                         child: Padding(

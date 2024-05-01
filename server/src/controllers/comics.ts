@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import ComicsModel from "../models/comics";
 import BannerModel from "../models/banner";
 import ComicChapterModel from "../models/comicChapter";
+import UserModel from "../models/user";
 
 import ComicAlbumModel from "../models/comicAlbum";
 import qs from "qs";
@@ -335,3 +336,27 @@ export const getDetailComicById: RequestHandler = async (req, res, next) => {
     next(error)
   }
 }
+
+export const updateUserSaveComic: RequestHandler = async (req, res, next) => {
+  try {
+    const { comicId, userId } = req.body;
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+    var checkSave = user.bookmarkList!["comic"].filter(
+      (item) => item.toString() === comicId
+    );
+    if (checkSave.length === 0) {
+      user.bookmarkList!["comic"].push(new mongoose.Types.ObjectId(comicId));
+    } else {
+      user.bookmarkList!["comic"] = user.bookmarkList!["comic"].filter(
+        (item) => item.toString() !== comicId
+      );
+    }
+    await user?.save();
+    return res.status(200).json(user).end();
+  } catch (error) {
+    next(error);
+  }
+};

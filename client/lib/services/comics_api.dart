@@ -185,41 +185,6 @@ class ComicsApi {
     }
   }
 
-  // static getComicDetailById(BuildContext context, animeId) async {
-  //   var url = Uri.parse(
-  //     "${baseUrl}getDetailComicById",
-  //   );
-  //   try {
-  //     var body = {
-  //       "animeId": animeId,
-  //     };
-  //     final res = await http.post(url, body: body);
-  //     if (res.statusCode == 200) {
-  //       var result = (jsonDecode(res.body));
-  //       Comics comicDetail = Comics(
-  //         id: result[0]['_id'],
-  //         coverImage: result[0]['coverImage'],
-  //         landspaceImage: result[0]['landspaceImage'],
-  //         comicName: result[0]['movieName'],
-  //         genres: result[0]['genreNames'],
-  //         newChapterTime: result[0]['newChapterTime'],
-  //         ageFor: result[0]['ageFor'],
-  //         publisher: result[0]['publisher'],
-  //         description: result[0]['description'],
-  //         chapterList: result[0]['detailEpisodeList'],
-  //         totalView: result[0]['totalViews'],
-  //         totalLike: result[0]['totalLikes'],
-  //       );
-  //       return comicDetail;
-  //     } else {
-  //       return [];
-  //     }
-  //   } catch (e) {
-  //     Navigator.push(context,
-  //         MaterialPageRoute(builder: (context) => const NoInternetPage()));
-  //   }
-  // }
-
   static getComicDetailById(BuildContext context, String comicId) async {
     var url = Uri.parse(
       "${baseUrl}getDetailComicById?comicId=$comicId",
@@ -241,6 +206,7 @@ class ComicsApi {
           publisher: result[0]['publisher'],
           description: result[0]['description'],
           chapterList: result[0]['detailChapterList'],
+          genreNames: result[0]['genreNames'],
           totalView: result[0]['totalViews'],
           totalLike: result[0]['totalLikes'],
         );
@@ -248,6 +214,27 @@ class ComicsApi {
       } else {
         return [];
       }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static updateUserSaveComic(BuildContext context, comicId, userId) async {
+    var url = Uri.parse(
+      "${baseUrl}updateUserSaveComic",
+    );
+    try {
+      var body = {"comicId": comicId, "userId": userId};
+      await http.post(url, body: body);
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)
           .isShowNetworkError);

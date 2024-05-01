@@ -22,7 +22,6 @@ class DetailComicPage extends StatefulWidget {
 }
 
 class _DetailComicPageState extends State<DetailComicPage> {
-  List<int> listChapters = [1, 2, 3, 4, 5, 6];
   late bool isLoading = false;
   late Comics comic = Comics();
   Future<Comics> getComicDetailById() async {
@@ -36,7 +35,6 @@ class _DetailComicPageState extends State<DetailComicPage> {
     getComicDetailById().then((value) => setState(() {
           comic = value;
           isLoading = false;
-          print(comic.landspaceImage);
         }));
   }
 
@@ -88,9 +86,8 @@ class _DetailComicPageState extends State<DetailComicPage> {
                   Column(
                     children: [
                       Image.network(
-                          height: 200,
                           width: double.infinity,
-                          "https://www.phucanh.vn/media/news/2608_trang-web-tai-hinh-nen-dep-ban-nen-biet.jpg"),
+                          comic.landspaceImage.toString()),
                       const SizedBox(
                         height: 25,
                       )
@@ -106,9 +103,9 @@ class _DetailComicPageState extends State<DetailComicPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ComicChapterDetail(
-                              comicId: "65ec601305c5cb2ad67cfb37",
-                              chapterIndex: 1,
+                            builder: (context) => ComicChapterDetail(
+                              comic: comic,
+                              index: 0,
                             ),
                           ),
                         );
@@ -198,8 +195,8 @@ class _DetailComicPageState extends State<DetailComicPage> {
                             'Họa sĩ: ${comic.artist}',
                             style: const TextStyle(color: Colors.white),
                           ),
-                          const Text(
-                            'Thể loại: ',
+                          Text(
+                            'Thể loại: ${comic.genreNames![0]['genreName'].toString()}',
                             style: TextStyle(color: Colors.white),
                           ),
                           Text(
@@ -255,19 +252,12 @@ class _DetailComicPageState extends State<DetailComicPage> {
                                 )),
                           ),
                           SizedBox(
-                            height: listChapters.length * 100,
+                            height: comic.chapterList!.length * 100,
                             child: Column(
                                 children: List.generate(
                                     comic.chapterList!.length,
                                     (index) => ComicChapter(
-                                        coverImage: comic.chapterList![index]
-                                            ['coverImage'],
-                                        chapterName: comic.chapterList![index]
-                                            ['chapterName'],
-                                        unlockPrice: comic.chapterList![index]
-                                            ['unlockPrice'],
-                                        publicTime: comic.chapterList![index]
-                                            ['publicTime']))),
+                                        index: index, comic: comic))),
                           ),
                         ],
                       ),

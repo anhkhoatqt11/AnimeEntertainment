@@ -1,5 +1,3 @@
-import 'package:anime_and_comic_entertainment/components/comic/ComicChapter.dart';
-
 class Comics {
   final String? id;
   final String? coverImage;
@@ -13,6 +11,7 @@ class Comics {
   final String? description;
   final String? newChapterTime;
   final List? chapterList;
+  final List? genreNames;
   final int? totalView;
   final int? totalLike;
 
@@ -29,6 +28,7 @@ class Comics {
       this.description,
       this.newChapterTime,
       this.chapterList,
+      this.genreNames,
       this.totalView,
       this.totalLike});
 

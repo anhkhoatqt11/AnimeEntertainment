@@ -16,4 +16,6 @@ router.post("/getComicInAlbum", ComicsController.getComicInAlbum);
 
 router.get("/getDetailComicById", ComicsController.getDetailComicById);
 
+router.put("/updateUserSaveComic", ComicsController.updateUserSaveComic);
+
 export default router;
