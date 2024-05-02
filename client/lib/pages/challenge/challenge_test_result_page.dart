@@ -77,6 +77,7 @@ class ChallengeTestResult extends StatelessWidget {
                       .setShow(true);
                   Navigator.of(context, rootNavigator: true)
                       .popUntil((route) => route.isFirst);
+                      // Navigator.of().pushAndRemoveUntil(newRoute, (route) => false)
                 },
                 child: Text(
                   'Quay trở về bảng xếp hạng',
