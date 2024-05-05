@@ -3,6 +3,9 @@ import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.d
 import 'package:anime_and_comic_entertainment/components/donate/DonatePackageListHome.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
+import 'package:anime_and_comic_entertainment/pages/home/search_page.dart';
+import 'package:anime_and_comic_entertainment/pages/home/search_result_page.dart';
+import 'package:anime_and_comic_entertainment/pages/payment.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
@@ -29,21 +32,27 @@ class _TestPageState extends State<TestPage> {
         child: ListView(children: [
           ElevatedButton(
               onPressed: () async {
-                var result = await AnimesApi.checkUserHistoryHadSeenEpisode(
-                    context,
-                    "65ffea9c65ac19bed872183c",
-                    "65f709463fafb1d0bdce1bb0");
-                print(result);
-                if (result['position'] != null) {
-                  print(result['position']);
-                }
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return PaymentScreen();
+                }));
               },
-              child: Text("test")),
+              child: Text("Test payment")),
           ElevatedButton(
-              onPressed: () async {
-                AuthApi.login(context, '+84979683590', 'Dangthaison@123');
-              },
-              child: Text('login')),
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SearchPage();
+              }));
+            },
+            child: Text("Test Search"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SearchResultPage();
+              }));
+            },
+            child: Text("Test Search Result"),
+          ),
           Padding(
             padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
             child: SizedBox(height: 500, child: DonatePackageListHome()),

@@ -22,7 +22,6 @@ import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_page.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = StripeApiKey.publishableKey;
@@ -43,12 +42,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RestartWidget(
       child: const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'skylark',
-          color: Color(0xFF141414),
-          home: MyHomePage(
-            title: '',
-          )),
+        debugShowCheckedModeBanner: false,
+        title: 'skylark',
+        color: Color(0xFF141414),
+        home: TestPage(),
+      ),
     );
   }
 }
