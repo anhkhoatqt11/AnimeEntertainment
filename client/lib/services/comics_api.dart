@@ -228,12 +228,105 @@ class ComicsApi {
     }
   }
 
-  static updateUserSaveComic(BuildContext context, comicId, userId) async {
+  static updateUserSaveChapter(BuildContext context, chapterId, userId) async {
     var url = Uri.parse(
-      "${baseUrl}updateUserSaveComic",
+      "${baseUrl}updateUserSaveChapter",
     );
     try {
-      var body = {"comicId": comicId, "userId": userId};
+      var body = {"chapterId": chapterId, "userId": userId};
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static checkUserHasLikeOrSaveChapter(
+      BuildContext context, chapterId, userId) async {
+    var url = Uri.parse(
+      "${baseUrl}checkUserHasLikeOrSaveChapter?chapterId=$chapterId&userId=$userId",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        return result;
+      } else {
+        return {};
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static updateChapterView(BuildContext context, chapterId) async {
+    var url = Uri.parse(
+      "${baseUrl}updateChapterView",
+    );
+    try {
+      var body = {
+        "chapterId": chapterId,
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static updateUserLikeChapter(BuildContext context, chapterId, userId) async {
+    var url = Uri.parse(
+      "${baseUrl}updateUserLikeChapter",
+    );
+    try {
+      var body = {"chapterId": chapterId, "userId": userId};
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static updateUserHistoryHadSeenChapter(
+      BuildContext context, chapterId, userId) async {
+    var url = Uri.parse(
+      "${baseUrl}updateUserHistoryHadSeenChapter",
+    );
+    try {
+      var body = {"chapterId": chapterId, "userId": userId};
       await http.post(url, body: body);
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)

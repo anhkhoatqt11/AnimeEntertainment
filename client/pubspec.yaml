@@ -65,6 +65,7 @@ flutter:
     - assets/images/skycoin.png
     - assets/images/donatebanner.png
     - assets/images/loginbanner.png
+    - assets/images/user.png
     - assets/
   #   - images/a_dot_ham.jpeg
 

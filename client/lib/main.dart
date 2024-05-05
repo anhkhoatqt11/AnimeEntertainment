@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
             create: (context) => MiniPlayerControllerProvider()),
         ChangeNotifierProvider(create: (context) => NavigatorProvider()),
-        ChangeNotifierProvider(create: (context) => ComisDetailProvider()),
+        ChangeNotifierProvider(create: (context) => ComicChapterProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

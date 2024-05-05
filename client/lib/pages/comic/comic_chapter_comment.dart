@@ -46,7 +46,7 @@ class ComicChapterComment extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 18,
                     backgroundColor: Colors.grey,
-                    backgroundImage: AssetImage('assets/avatar_2.png'),
+                    backgroundImage: AssetImage('assets/images/user.png'),
                   ),
                 ),
                 avatarChild: (context, data) => PreferredSize(
@@ -54,7 +54,7 @@ class ComicChapterComment extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 18,
                     backgroundColor: Colors.grey,
-                    backgroundImage: AssetImage('assets/avatar_1.png'),
+                    backgroundImage: AssetImage('assets/images/user.png'),
                   ),
                 ),
                 contentChild: (context, data) {
@@ -199,7 +199,7 @@ class ComicChapterComment extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 18,
                     backgroundColor: Colors.grey,
-                    backgroundImage: AssetImage('assets/avatar_2.png'),
+                    backgroundImage: AssetImage('assets/images/user.png'),
                   ),
                 ),
                 avatarChild: (context, data) => PreferredSize(
@@ -207,7 +207,7 @@ class ComicChapterComment extends StatelessWidget {
                   child: CircleAvatar(
                     radius: 18,
                     backgroundColor: Colors.grey,
-                    backgroundImage: AssetImage('assets/avatar_1.png'),
+                    backgroundImage: AssetImage('assets/images/user.png'),
                   ),
                 ),
                 contentChild: (context, data) {

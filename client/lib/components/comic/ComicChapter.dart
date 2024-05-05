@@ -74,7 +74,7 @@ class _ComicChapterState extends State<ComicChapter> {
                 ElevatedButton.styleFrom(backgroundColor: Colors.transparent),
             child: Text(
               comic.chapterList![widget.index]['unlockPrice'] > 0
-                  ? comic.chapterList![widget.index]['unlockPrice']
+                  ? comic.chapterList![widget.index]['unlockPrice'].toString()
                   : "Miễn phí",
               style: const TextStyle(fontSize: 16, color: Colors.orange),
             ),
