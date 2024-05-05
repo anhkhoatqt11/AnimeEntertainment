@@ -19,6 +19,9 @@ class ComicItem extends StatelessWidget {
     genres!.forEach((element) {
       genreList += (element['genreName']) + "/ ";
     });
+    if (genres!.length == 0 ){
+      genreList += "/ ";
+    }
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: Container(

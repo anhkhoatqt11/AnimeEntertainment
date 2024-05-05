@@ -45,14 +45,14 @@ class _TestPageState extends State<TestPage> {
             },
             child: Text("Test Search"),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return SearchResultPage();
-              }));
-            },
-            child: Text("Test Search Result"),
-          ),
+          // ElevatedButton(
+          //   onPressed: () async {
+          //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //       return SearchResultPage();
+          //     }));
+          //   },
+          //   child: Text("Test Search Result"),
+          // ),
           Padding(
             padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
             child: SizedBox(height: 500, child: DonatePackageListHome()),

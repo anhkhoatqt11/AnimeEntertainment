@@ -589,4 +589,35 @@ class AnimesApi {
     }
   }
 
+  static searchForAnimes(BuildContext context, searchWord) async {
+    var url = Uri.parse("${baseUrl}searchAnimeAndEpisodes?query=$searchWord");
+    print(url);
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<Animes> animeArray = [];
+        result['animeResults'].forEach((element) {
+          animeArray.add(Animes(
+              id: element['_id'],
+              coverImage: element['coverImage'],
+              movieName: element['movieName']));
+        });
+        return animeArray;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
 }

@@ -643,11 +643,14 @@ export const searchAnimeAndEpisodes: RequestHandler = async (req, res, next) => 
       throw createHttpError(400, "Invalid search query");
     }
 
+    // Construct regex pattern for partial word matching
+    const regexQuery = query.split(" ").map(word => `(?=.*${word})`).join("");
+
     // Search for anime
     const animeResults = await AnimesModel.find({
       $or: [
-        { movieName: { $regex: query, $options: "i" } }, // Case-insensitive search by movie name
-        { publisher: { $regex: query, $options: "i" } }, // Case-insensitive search by publisher
+        { movieName: { $regex: regexQuery, $options: "i" } }, // Case-insensitive search by movie name
+        { publisher: { $regex: regexQuery, $options: "i" } }, // Case-insensitive search by publisher
         // Add more fields to search as needed
       ],
     });
@@ -655,7 +658,7 @@ export const searchAnimeAndEpisodes: RequestHandler = async (req, res, next) => 
     // Search for anime episodes
     const episodeResults = await AnimeEpisodeModel.find({
       $or: [
-        { episodeName: { $regex: query, $options: "i" } }, // Case-insensitive search by episode name
+        { episodeName: { $regex: regexQuery, $options: "i" } }, // Case-insensitive search by episode name
         // Add more fields to search as needed
       ],
     });
