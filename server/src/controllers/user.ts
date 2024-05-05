@@ -28,3 +28,6 @@ export const updateAvatar: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
