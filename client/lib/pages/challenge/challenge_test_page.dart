@@ -5,8 +5,11 @@ import 'package:anime_and_comic_entertainment/model/challenges.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_result_page.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/challenges_api.dart';
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/components/appbar/gf_appbar.dart';
+import 'package:getwidget/components/button/gf_button.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:getwidget/types/gf_button_type.dart';
 import 'package:provider/provider.dart';
 
 class ChallengeTest extends StatefulWidget {
@@ -20,8 +23,7 @@ class _ChallengeTestState extends State<ChallengeTest> {
   //Define data
   List<ChallengeQuestion> _questions = [];
   int _currentQuestionIndex = 0;
-  Map<int, int?> _userAnswers = {};
-  int _score = 0;
+  final Map<int, int?> _userAnswers = {};
   late Timer _timer;
   int _timerDurationInSeconds = 300; // 5 minutes
   late String userId = "";
@@ -29,7 +31,6 @@ class _ChallengeTestState extends State<ChallengeTest> {
 
   Future<void> getUserID() async {
     userId = Provider.of<UserProvider>(context, listen: false).user.id;
-    print(userId);
     return;
   }
 
@@ -74,7 +75,6 @@ class _ChallengeTestState extends State<ChallengeTest> {
         _currentQuestionIndex++;
         _answerSelected = false; // Reset answer selection for next question
       }
-      print(_userAnswers);
     });
   }
 
@@ -99,7 +99,6 @@ class _ChallengeTestState extends State<ChallengeTest> {
       return;
     }
     int correctAnswers = 0;
-    int totalBonusPoints = 0;
     List<String> userAnswers = [];
     List<bool> isCorrect = [];
 
@@ -151,8 +150,8 @@ class _ChallengeTestState extends State<ChallengeTest> {
 
   @override
   Widget build(BuildContext context) {
-    if (_questions == null || _questions.isEmpty) {
-      return Scaffold(
+    if (_questions.isEmpty) {
+      return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -167,58 +166,75 @@ class _ChallengeTestState extends State<ChallengeTest> {
 
     return Scaffold(
       backgroundColor: const Color(0xFF141414),
-      appBar: GFAppBar(
-        elevation: 0,
-        backgroundColor: const Color(0xFF141414),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Thử thách",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 28,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Câu hỏi tuần này",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                Text(
-                  "${_currentQuestionIndex + 1}/${_questions.length}",
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                Text(
-                  '$timeText',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Thử thách",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Câu hỏi tuần này",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    Text(
+                      "${_currentQuestionIndex + 1}/${_questions.length}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 3,
+                ),
+                timeText != "00:00"
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Thời gian thêm thưởng",
+                            style: TextStyle(
+                              color: Colors.grey[500],
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          Text(
+                            timeText,
+                            style: const TextStyle(
+                              color: Colors.yellow,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -234,44 +250,60 @@ class _ChallengeTestState extends State<ChallengeTest> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
             child: Text(
               question.questionName,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16),
             ),
           ),
-          const SizedBox(height: 20),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              for (int i = 0; i < question.answers.length; i += 2)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      onTap: () => _selectAnswer(i),
-                      child: AnswerOption(
-                        text: question.answers[i].content,
-                        color: _userAnswers[_currentQuestionIndex] == i
-                            ? Colors.red
-                            : Colors.blue, // Change color based on selection
-                      ),
-                    ),
-                    if (i + 1 < question.answers.length)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                for (int i = 0; i < question.answers.length; i += 2)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
                       GestureDetector(
-                        onTap: () => _selectAnswer(i + 1),
+                        onTap: () => _selectAnswer(i),
                         child: AnswerOption(
-                          text: question.answers[i + 1].content,
-                          color: _userAnswers[_currentQuestionIndex] == i + 1
-                              ? Colors.red
-                              : Colors.blue, // Change color based on selection
+                          text: question.answers[i].content,
+                          color: _userAnswers[_currentQuestionIndex] == i
+                              ? Utils.primaryColor
+                              : i == 0
+                                  ? const Color(0xFFEF476F)
+                                  : const Color(0xFF06D6A0),
+                          textColor: _userAnswers[_currentQuestionIndex] == i
+                              ? Colors.white
+                              : Colors.black,
                         ),
                       ),
-                  ],
-                ),
-            ],
+                      if (i + 1 < question.answers.length)
+                        GestureDetector(
+                          onTap: () => _selectAnswer(i + 1),
+                          child: AnswerOption(
+                            text: question.answers[i + 1].content,
+                            color: _userAnswers[_currentQuestionIndex] == i + 1
+                                ? Utils.primaryColor
+                                : i == 0
+                                    ? const Color(0XFFFFD166)
+                                    : const Color(0XFF00BBF9),
+                            textColor:
+                                _userAnswers[_currentQuestionIndex] == i + 1
+                                    ? Colors.white
+                                    : Colors.black,
+                          ),
+                        ),
+                    ],
+                  ),
+              ],
+            ),
           ),
           const Spacer(),
           Padding(
@@ -279,32 +311,44 @@ class _ChallengeTestState extends State<ChallengeTest> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _previousQuestion,
-                    child: const Text('Trở lại'),
-                  ),
-                ),
+                _currentQuestionIndex != 0
+                    ? Expanded(
+                        child: GFButton(
+                            onPressed: _previousQuestion,
+                            color: const Color(0xFFFB6F92),
+                            text: "Trở lại",
+                            type: GFButtonType.solid,
+                            textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500),
+                            shape: GFButtonShape.pills,
+                            size: GFSize.LARGE),
+                      )
+                    : const SizedBox.shrink(),
                 const SizedBox(
                   width: 8,
                 ),
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_answerSelected) {
-                        // Only proceed if an answer is selected
-                        if (_currentQuestionIndex == _questions.length - 1) {
-                          _submitAnswer();
-                          print("User Answers: $_userAnswers");
-                        } else {
-                          _nextQuestion();
+                  child: GFButton(
+                      onPressed: () {
+                        if (_answerSelected) {
+                          // Only proceed if an answer is selected
+                          if (_currentQuestionIndex == _questions.length - 1) {
+                            _submitAnswer();
+                          } else {
+                            _nextQuestion();
+                          }
                         }
-                      }
-                    },
-                    child: _currentQuestionIndex == _questions.length - 1
-                        ? const Text('Hoàn thành')
-                        : const Text('Tiếp theo'),
-                  ),
+                      },
+                      shape: GFButtonShape.pills,
+                      color: const Color(0xFF06D6A0),
+                      textStyle: const TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w500),
+                      text: _currentQuestionIndex == _questions.length - 1
+                          ? 'Hoàn thành'
+                          : 'Tiếp theo',
+                      type: GFButtonType.solid,
+                      size: GFSize.LARGE),
                 ),
               ],
             ),

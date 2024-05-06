@@ -65,6 +65,12 @@ flutter:
     - assets/images/skycoin.png
     - assets/images/donatebanner.png
     - assets/images/loginbanner.png
+    - assets/images/flowerring1.png
+    - assets/images/flowerring2.png
+    - assets/images/flowerring3.png
+    - assets/images/trophy.png
+    - assets/images/silvertrophy.png
+    - assets/images/goldtrophy.png
     - assets/
   #   - images/a_dot_ham.jpeg
 
