@@ -9,14 +9,15 @@ class User {
   final Map<String, dynamic> bookmarkList;
   final Map<String, dynamic> histories;
   final List paymentHistories;
-  User({
-    required this.id,
-    required this.username,
-    required this.authentication,
-    required this.avatar,
-    required this.coinPoint,
-    required this.bookmarkList,
-    required this.histories,
-    required this.paymentHistories,
-  });
+  Map<String, dynamic> questLog;
+  User(
+      {required this.id,
+      required this.username,
+      required this.authentication,
+      required this.avatar,
+      required this.coinPoint,
+      required this.bookmarkList,
+      required this.histories,
+      required this.paymentHistories,
+      required this.questLog});
 }

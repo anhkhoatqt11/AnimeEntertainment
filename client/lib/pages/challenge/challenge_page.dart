@@ -1,6 +1,11 @@
+import 'package:anime_and_comic_entertainment/components/challenge/DailyQuest.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/services/auth_api.dart';
+import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:anime_and_comic_entertainment/components/challenge/Podium.dart';
 import 'package:provider/provider.dart';
@@ -78,6 +83,33 @@ class ChallengePage extends StatelessWidget {
                   fontWeight: FontWeight.w400),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
+            child: Provider.of<UserProvider>(context, listen: false)
+                        .user
+                        .authentication['sessionToken'] ==
+                    ""
+                ? Text(
+                    "Vui lòng đăng nhập để làm nhiệm vụ",
+                    style: TextStyle(color: Utils.accentColor, fontSize: 10),
+                  )
+                : SizedBox.shrink(),
+          ),
+          DailyQuestList(),
+          ElevatedButton(
+              onPressed: () async {
+                Provider.of<UserProvider>(context, listen: false)
+                    .setWatchingTime(1);
+                await DailyQuestsApi.updateQuestLog(context, "");
+              },
+              child: Text("tang luot xem")),
+          ElevatedButton(
+              onPressed: () async {
+                Provider.of<UserProvider>(context, listen: false)
+                    .setReadingTime(1);
+                await DailyQuestsApi.updateQuestLog(context, "");
+              },
+              child: Text("tang luot doc"))
         ],
       ),
     );

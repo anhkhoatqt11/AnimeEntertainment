@@ -84,7 +84,7 @@ class _PodiumState extends State<Podium> {
                             Container(
                               height: 120,
                               width: double.infinity,
-                              color: const Color(0xFFEFEFEF),
+                              color: const Color(0xFF2A2A2A),
                             ),
                             Column(
                               children: [
@@ -104,7 +104,7 @@ class _PodiumState extends State<Podium> {
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
-                                        color: Colors.black,
+                                        color: Colors.white,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400),
                                   ),
@@ -168,7 +168,7 @@ class _PodiumState extends State<Podium> {
                             Container(
                               height: 140,
                               width: double.infinity,
-                              color: const Color(0xFFEFEFEF),
+                              color: const Color(0xFF2A2A2A),
                             ),
                             Column(
                               children: [
@@ -188,7 +188,7 @@ class _PodiumState extends State<Podium> {
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
-                                        color: Colors.black,
+                                        color: Colors.white,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400),
                                   ),
@@ -252,7 +252,7 @@ class _PodiumState extends State<Podium> {
                             Container(
                               height: 100,
                               width: double.infinity,
-                              color: const Color(0xFFEFEFEF),
+                              color: const Color(0xFF2A2A2A),
                             ),
                             Column(
                               children: [
@@ -272,7 +272,7 @@ class _PodiumState extends State<Podium> {
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
-                                        color: Colors.black,
+                                        color: Colors.white,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400),
                                   ),

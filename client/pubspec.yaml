@@ -71,6 +71,7 @@ flutter:
     - assets/images/trophy.png
     - assets/images/silvertrophy.png
     - assets/images/goldtrophy.png
+    - assets/images/receivedcoin.gif
     - assets/
   #   - images/a_dot_ham.jpeg
 
