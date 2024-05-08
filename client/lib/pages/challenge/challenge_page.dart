@@ -1,12 +1,12 @@
-import 'dart:math';
-
+import 'package:anime_and_comic_entertainment/components/challenge/DailyQuest.dart';
+import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/services/auth_api.dart';
+import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/components/appbar/gf_appbar.dart';
-import 'package:getwidget/components/button/gf_icon_button.dart';
-import 'package:getwidget/types/gf_button_type.dart';
 import 'package:anime_and_comic_entertainment/components/challenge/Podium.dart';
 import 'package:provider/provider.dart';
 
@@ -16,58 +16,49 @@ class ChallengePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF141414),
-        appBar: GFAppBar(
-          elevation: 0,
-          backgroundColor: const Color(0xFF141414),
-          title: const Text(
-            "Thử thách",
-            style: TextStyle(
-                color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600),
+      backgroundColor: const Color(0xFF141414),
+      body: ListView(
+        children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+            child: Text(
+              "Thử thách",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20),
+            ),
           ),
-          actions: <Widget>[
-            GFIconButton(
-              icon: const Icon(
-                Icons.favorite,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-              type: GFButtonType.transparent,
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: Text(
+              "Bảng xếp hạng hàng tuần",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
             ),
-          ],
-        ),
-        body: ListView(
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: Text(
-                "Bảng xếp hạng hàng tuần",
-                style: TextStyle(
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const Podium(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 30, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Chưa có xếp hạng",
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Podium(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(30, 10, 0, 20),
-              child: Row(
-                children: [
-                  const Text(
-                    "Chưa có xếp hạng",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
-                    ),
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
                   ),
-                  const SizedBox(
-                      width: 80), // Add some space between the text and button
-                  ElevatedButton(
-                    onPressed: () {
+                ),
+                GradientButton(
+                    content: "Tham gia ngay",
+                    action: () {
                       Provider.of<NavigatorProvider>(context, listen: false)
                           .setShow(false);
                       Navigator.pushReplacement(
@@ -75,22 +66,52 @@ class ChallengePage extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => ChallengeTest()));
                     },
-                    child: const Text('Tham gia ngay'),
-                  ),
-                ],
-              ),
+                    height: 45,
+                    width: 160,
+                    disabled: false)
+              ],
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: Text(
-                "Thử thách khác ",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
-              ),
+          ),
+          const Divider(),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: Text(
+              "Nhiệm vụ hằng ngày ",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
             ),
-          ],
-        ));
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
+            child: Provider.of<UserProvider>(context, listen: false)
+                        .user
+                        .authentication['sessionToken'] ==
+                    ""
+                ? Text(
+                    "Vui lòng đăng nhập để làm nhiệm vụ",
+                    style: TextStyle(color: Utils.accentColor, fontSize: 10),
+                  )
+                : SizedBox.shrink(),
+          ),
+          DailyQuestList(),
+          ElevatedButton(
+              onPressed: () async {
+                Provider.of<UserProvider>(context, listen: false)
+                    .setWatchingTime(1);
+                await DailyQuestsApi.updateQuestLog(context, "");
+              },
+              child: Text("tang luot xem")),
+          ElevatedButton(
+              onPressed: () async {
+                Provider.of<UserProvider>(context, listen: false)
+                    .setReadingTime(1);
+                await DailyQuestsApi.updateQuestLog(context, "");
+              },
+              child: Text("tang luot doc"))
+        ],
+      ),
+    );
   }
 }

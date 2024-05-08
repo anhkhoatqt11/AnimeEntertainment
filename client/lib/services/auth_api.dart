@@ -34,6 +34,11 @@ class AuthApi {
         userProvider.setUsername(data['username']);
         userProvider.setUserAvatar(data['avatar']);
         userProvider.setCoinPoint(data['coinPoint']);
+        userProvider.setQuestLog(
+            data["questLog"]["readingTime"],
+            data["questLog"]["watchingTime"],
+            data["questLog"]["received"],
+            data["questLog"]["finalTime"]);
 
         await prefs.setString(
             'auth-session-token', data['authentication']['sessionToken']);
@@ -84,6 +89,11 @@ class AuthApi {
         userProvider.setUsername(jsonDecode(res.body)['username']);
         userProvider.setUserAvatar(jsonDecode(res.body)['avatar']);
         userProvider.setCoinPoint(jsonDecode(res.body)['coinPoint']);
+        userProvider.setQuestLog(
+            jsonDecode(res.body)["questLog"]["readingTime"],
+            jsonDecode(res.body)["questLog"]["watchingTime"],
+            jsonDecode(res.body)["questLog"]["received"],
+            jsonDecode(res.body)["questLog"]["finalTime"]);
       }
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)

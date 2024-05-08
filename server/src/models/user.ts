@@ -20,6 +20,7 @@ const userSchema = new Schema({
   },
   paymentHistories: { type: Array },
   challenges: { type: Array },
+  questLog: { type: Object },
 });
 
 type User = InferSchemaType<typeof userSchema>;
