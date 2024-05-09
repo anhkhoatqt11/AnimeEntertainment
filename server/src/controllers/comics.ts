@@ -497,3 +497,60 @@ export const updateUserHistoryHadSeenChapter: RequestHandler = async (
     next(error);
   }
 };
+
+export const getComicChapterComments: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const url = req.url;
+    const [, params] = url.split("?");
+    const parsedParams = qs.parse(params);
+    const chapterId =
+      typeof parsedParams.chapterId === "string" ? parsedParams.chapterId : "";
+
+    var chapter = await ComicChapterModel.findById(chapterId).select('comments');
+    if (!chapter) {
+      return res.sendStatus(400);
+    }
+
+    return res
+      .status(200)
+      .json(chapter.comments)
+      .end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addRootChapterComments: RequestHandler = async (req, res, next) => {
+  try {
+    const { chapterId, userId, content } = req.body;
+    var chapter = await ComicChapterModel.findById(chapterId);
+    console.log(chapter);
+    if (!chapter) {
+      return res.sendStatus(400);
+    }
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    chapter.comments.push({
+      _id: new mongoose.Types.ObjectId(),
+      userId: new mongoose.Types.ObjectId(userId),
+      likes: new mongoose.Types.Array(),
+      replies: new mongoose.Types.Array(),
+      content: content,
+      avatar: user.avatar,
+      userName: user.username
+    });
+
+    await chapter?.save();
+    return res.status(200).json(chapter).end();
+  } catch (error) {
+    next(error);
+  }
+};

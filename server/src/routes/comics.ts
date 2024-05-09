@@ -39,5 +39,15 @@ router.get(
     ComicsController.checkUserHistoryHadSeenChapter
 );
 
+router.get(
+    "/getComicChapterComments",
+    ComicsController.getComicChapterComments
+);
+
+router.post(
+    "/addRootChapterComments",
+    ComicsController.addRootChapterComments
+);
+
 export default router;
 

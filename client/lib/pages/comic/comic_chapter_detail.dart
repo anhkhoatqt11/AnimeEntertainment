@@ -160,7 +160,7 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
             valueColor: AlwaysStoppedAnimation<Color>(Utils.primaryColor),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height - 128,
+            height: MediaQuery.of(context).size.height - 112,
             child: ListView.builder(
               controller: _scrollController,
               itemCount: contentLength,
@@ -207,10 +207,9 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ComicChapterComment(
-                                    comicId: "65ec601305c5cb2ad67cfb37",
-                                    chapterIndex: 1,
+                                  builder: (context) => ComicChapterComment(
+                                    chapterId: widget.comic
+                                        .chapterList![widget.index]['_id'],
                                   ),
                                 ),
                               );
