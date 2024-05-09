@@ -632,3 +632,39 @@ export const getWatchingHistories: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const searchAnimeAndEpisodes: RequestHandler = async (req, res, next) => {
+  try {
+    const { query } = req.query;
+
+    // Validate query parameter
+    if (!query || typeof query !== "string") {
+      throw createHttpError(400, "Invalid search query");
+    }
+
+    // Construct regex pattern for partial word matching
+    const regexQuery = query.split(" ").map(word => `(?=.*${word})`).join("");
+
+    // Search for anime
+    const animeResults = await AnimesModel.find({
+      $or: [
+        { movieName: { $regex: regexQuery, $options: "i" } }, // Case-insensitive search by movie name
+        { publisher: { $regex: regexQuery, $options: "i" } }, // Case-insensitive search by publisher
+        // Add more fields to search as needed
+      ],
+    });
+
+    // Search for anime episodes
+    const episodeResults = await AnimeEpisodeModel.find({
+      $or: [
+        { episodeName: { $regex: regexQuery, $options: "i" } }, // Case-insensitive search by episode name
+        // Add more fields to search as needed
+      ],
+    });
+
+    res.status(200).json({ animeResults, episodeResults });
+  } catch (error) {
+    next(error);
+  }
+};

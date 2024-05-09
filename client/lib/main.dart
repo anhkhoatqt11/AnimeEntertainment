@@ -42,12 +42,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RestartWidget(
       child: const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'skylark',
-          color: Color(0xFF141414),
-          home: MyHomePage(
-            title: '',
-          )),
+        debugShowCheckedModeBanner: false,
+        title: 'skylark',
+        color: Color(0xFF141414),
+        home: TestPage(),
+      ),
     );
   }
 }
