@@ -74,11 +74,6 @@ class _DetailComicPageState extends State<DetailComicPage> {
               ),
               foregroundColor: Colors.white,
               backgroundColor: const Color(0xFF141414),
-              actions: <Widget>[
-                IconButton(
-                    onPressed: () {},
-                    icon: const FaIcon(FontAwesomeIcons.squarePlus))
-              ],
             ),
             body: ListView(
               children: [
