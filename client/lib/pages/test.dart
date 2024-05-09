@@ -1,16 +1,7 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:anime_and_comic_entertainment/components/animes/WatchingHistoriesList.dart';
-import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.dart';
-import 'package:anime_and_comic_entertainment/components/donate/DonatePackageListHome.dart';
-import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
-import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
-import 'package:anime_and_comic_entertainment/pages/home/search_page.dart';
-import 'package:anime_and_comic_entertainment/pages/home/search_result_page.dart';
-import 'package:anime_and_comic_entertainment/pages/payment.dart';
-import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
-import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
@@ -32,9 +23,9 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Consumer(builder: (context, watch, _) {
-      final user = Provider.of<UserProvider>(context).user;
-      return Container(
+    return SafeArea(
+        child: Scaffold(
+      body: Container(
         width: double.infinity,
         color: const Color(0xFF141414),
         child: ListView(children: [
@@ -49,18 +40,42 @@ class _TestPageState extends State<TestPage> {
                   print(result['position']);
                 }
               },
-              child: Text("test")),
+              child: const Text("test")),
           ElevatedButton(
-              onPressed: () async {
-                AuthApi.login(context, '+84979683590', 'Dangthaison@123');
-              },
-              child: Text('login')),
-          Padding(
-            padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-            child: SizedBox(height: 500, child: DonatePackageListHome()),
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DetailComicPage(
+                      comicId: "65ec601305c5cb2ad67cfb37"),
+                ),
+              );
+            },
+            child: const Text("Detail comic"),
           ),
         ]),
-      );
-    }));
+      ),
+    ));
   }
 }
+
+  // ElevatedButton(
+  //             onPressed: () async {
+  //               var pdata = {
+  //                 "name": "User1",
+  //                 "phoneNumber": "01234",
+  //                 "total": "10",
+  //                 "payed": "1",
+  //                 "debt": "0"
+  //               };
+  //               await Api.addUser(pdata);
+  //             },
+  //             child: Text("CREATE")),
+  //         ElevatedButton(
+  //             onPressed: () async {
+  //               // var res =
+  //                   // await ComicsApi.getChapterComic("65ec601305c5cb2ad67cfb37");
+  //             },
+  //             child: Text("READ")),
+  //         ElevatedButton(onPressed: () async {}, child: Text("UPDATE")),
+  //         ElevatedButton(onPressed: () async {}, child: Text("DELETE")),

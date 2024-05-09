@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Comics {
   final String? id;
   final String? coverImage;
@@ -13,6 +11,9 @@ class Comics {
   final String? description;
   final String? newChapterTime;
   final List? chapterList;
+  final List? genreNames;
+  final int? totalView;
+  final int? totalLike;
 
   Comics(
       {this.id,
@@ -26,5 +27,13 @@ class Comics {
       this.publisher,
       this.description,
       this.newChapterTime,
-      this.chapterList});
+      this.chapterList,
+      this.genreNames,
+      this.totalView,
+      this.totalLike});
+
+  @override
+  String toString() {
+    return 'landspaceImage: $landspaceImage $id $coverImage';
+  }
 }
