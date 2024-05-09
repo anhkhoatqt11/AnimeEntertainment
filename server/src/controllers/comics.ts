@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import ComicsModel from "../models/comics";
+import Comics from "../models/comics";
 import BannerModel from "../models/banner";
 import ComicChapterModel from "../models/comicChapter";
 import UserModel from "../models/user";
@@ -264,14 +265,13 @@ export const getChapterOfComic: RequestHandler = async (req, res, next) => {
     ]);
 
     if (!comic) {
-      throw createHttpError(404, "comic not found")
+      throw createHttpError(404, "comic not found");
     }
     res.status(200).json(comic);
+  } catch (error) {
+    next(error);
   }
-  catch (error) {
-    next(error)
-  }
-}
+};
 
 export const getDetailComicById: RequestHandler = async (req, res, next) => {
   const url = req.url;
@@ -281,12 +281,12 @@ export const getDetailComicById: RequestHandler = async (req, res, next) => {
     typeof parsedParams.comicId === "string" ? parsedParams.comicId : "0";
   try {
     if (!mongoose.isValidObjectId(comicId)) {
-      throw createHttpError(400, "Invalid comic id")
+      throw createHttpError(400, "Invalid comic id");
     }
-    // Mỗi một comic có một field gọi là chapterList chứa id của các chapter 
+    // Mỗi một comic có một field gọi là chapterList chứa id của các chapter
     const comic = await ComicsModel.aggregate([
       {
-        $match: { _id: new mongoose.Types.ObjectId(comicId) }
+        $match: { _id: new mongoose.Types.ObjectId(comicId) },
       },
       {
         $lookup: {
@@ -325,17 +325,16 @@ export const getDetailComicById: RequestHandler = async (req, res, next) => {
           },
         },
       },
-    ])
+    ]);
 
     if (!comic) {
-      throw createHttpError(404, "comic not found")
+      throw createHttpError(404, "comic not found");
     }
     res.status(200).json(comic);
+  } catch (error) {
+    next(error);
   }
-  catch (error) {
-    next(error)
-  }
-}
+};
 
 export const updateUserSaveComic: RequestHandler = async (req, res, next) => {
   try {
@@ -357,6 +356,38 @@ export const updateUserSaveComic: RequestHandler = async (req, res, next) => {
     await user?.save();
     return res.status(200).json(user).end();
   } catch (error) {
+    next(error);
+  }
+};
+
+// Define the searchComics controller function
+export const searchComics: RequestHandler = async (req, res, next) => {
+  // Extract the search term from the query string
+  const { query } = req.query;
+
+  try {
+    // Construct the MongoDB query object to search across multiple fields
+    const comics: (typeof Comics)[] = await ComicsModel.find({
+      $or: [
+        { comicName: { $regex: new RegExp(query as string, "i") } },
+        { publisher: { $regex: new RegExp(query as string, "i") } },
+        { author: { $regex: new RegExp(query as string, "i") } },
+        { artist: { $regex: new RegExp(query as string, "i") } },
+      ],
+    });
+
+    // Check if any comics were found
+    if (!comics.length) {
+      throw createHttpError(
+        404,
+        "No comics found matching the search criteria"
+      );
+    }
+
+    // Return the search results as a JSON response
+    res.status(200).json(comics);
+  } catch (error) {
+    // Pass any errors to the error handling middleware
     next(error);
   }
 };

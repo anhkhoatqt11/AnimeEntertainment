@@ -18,4 +18,6 @@ router.get("/getDetailComicById", ComicsController.getDetailComicById);
 
 router.put("/updateUserSaveComic", ComicsController.updateUserSaveComic);
 
+router.get("/searchComic", ComicsController.searchComics);
+
 export default router;

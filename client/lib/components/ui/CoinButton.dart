@@ -2,6 +2,8 @@ import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+
+
 class CoinButton extends StatelessWidget {
   final Function action;
   const CoinButton({
