@@ -6,5 +6,6 @@ router.get("/getAvatarList", UserController.getAvatarList);
 
 router.post("/updateAvatar", UserController.updateAvatar);
 
+router.get("/getBookmarkList", UserController.getBookmarkList);
 
 export default router;

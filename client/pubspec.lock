@@ -341,38 +341,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.0"
-  in_app_purchase:
-    dependency: "direct main"
-    description:
-      name: in_app_purchase
-      sha256: "960f26a08d9351fb8f89f08901f8a829d41b04d45a694b8f776121d9e41dcad6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.2.0"
-  in_app_purchase_android:
-    dependency: transitive
-    description:
-      name: in_app_purchase_android
-      sha256: "4d71972a62d54fd464b1c846e549aed8685cb65b50fc9dffa1fd50e55d8bc2ac"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.4+1"
-  in_app_purchase_platform_interface:
-    dependency: transitive
-    description:
-      name: in_app_purchase_platform_interface
-      sha256: "1d353d38251da5b9fea6635c0ebfc6bb17a2d28d0e86ea5e083bf64244f1fb4c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.4.0"
-  in_app_purchase_storekit:
-    dependency: transitive
-    description:
-      name: in_app_purchase_storekit
-      sha256: eee35ad057c91f6d0e08db840ade03a9db6121beb03469590296f719f5936e68
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.14"
   intl:
     dependency: "direct main"
     description:
@@ -717,6 +685,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.2"
+  purchases_flutter:
+    dependency: "direct main"
+    description:
+      name: purchases_flutter
+      sha256: "4ff3a62a685cd964590d2c8126be62c3ede3657a5421adf558fd95f01699643a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.29.0"
   rational:
     dependency: transitive
     description:

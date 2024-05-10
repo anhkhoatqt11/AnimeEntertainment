@@ -5,9 +5,12 @@ import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.d
 import 'package:anime_and_comic_entertainment/components/donate/DonatePackageListHome.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
+import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/search_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/search_result_page.dart';
 import 'package:anime_and_comic_entertainment/pages/payment.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/edit_profile_page.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
@@ -51,10 +54,53 @@ class _TestPageState extends State<TestPage> {
               },
               child: Text("test")),
           ElevatedButton(
-              onPressed: () async {
-                AuthApi.login(context, '+84979683590', 'Dangthaison@123');
-              },
-              child: Text('login')),
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SearchPage();
+              }));
+            },
+            child: Text("Test Search"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ChallengePage();
+              }));
+            },
+            child: Text("Test Challenge"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return PaymentScreenPage();
+              }));
+            },
+            child: Text("Test Payment"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return EditProfilePage();
+              }));
+            },
+            child: Text("Test Edit Profile Page"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return BookMarkPage();
+              }));
+            },
+            child: Text("Test Bookmark Profile Page"),
+          ),
+          // ElevatedButton(
+          //   onPressed: () async {
+          //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //       return SearchResultPage();
+          //     }));
+          //   },
+          //   child: Text("Test Search Result"),
+          // ),
           Padding(
             padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
             child: SizedBox(height: 500, child: DonatePackageListHome()),
