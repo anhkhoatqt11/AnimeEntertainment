@@ -129,16 +129,14 @@ class _SearchResultPageState extends State<SearchResultPage> {
                         scrollDirection: Axis.vertical,
                         children: [
                           Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 0, right: 0),
+                              padding: const EdgeInsets.only(left: 0, right: 0),
                               child: Wrap(
                                   alignment: WrapAlignment.spaceBetween,
                                   children: List.generate(listAnimeItem.length,
                                       (index) {
                                     if (index < listAnimeItem.length) {
                                       return GestureDetector(
-                                        onTap: () {
-                                        },
+                                        onTap: () {},
                                         child: AnimeItem(
                                           urlImage:
                                               listAnimeItem[index].coverImage,
@@ -206,6 +204,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                                           // );
                                         },
                                         child: ComicItem(
+                                          comicId: listComicItem[index].id,
                                           urlImage:
                                               listComicItem[index].coverImage,
                                           nameItem:

@@ -82,6 +82,7 @@ class _DetailComicPageState extends State<DetailComicPage> {
                     children: [
                       Image.network(
                           width: double.infinity,
+                          height: 100,
                           comic.landspaceImage.toString()),
                       const SizedBox(
                         height: 25,

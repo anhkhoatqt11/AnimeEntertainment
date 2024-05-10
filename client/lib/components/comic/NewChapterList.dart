@@ -87,9 +87,11 @@ class _NewChapterListState extends State<NewChapterList> {
             itemCount: listComic.length,
             itemBuilder: (context, index) {
               return ComicItem(
-                  urlImage: listComic[index].coverImage,
-                  nameItem: listComic[index].comicName,
-                  genres: listComic[index].genres);
+                urlImage: listComic[index].coverImage,
+                nameItem: listComic[index].comicName,
+                genres: listComic[index].genres,
+                comicId: listComic[index].id,
+              );
             });
   }
 }
