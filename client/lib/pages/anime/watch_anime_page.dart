@@ -175,20 +175,20 @@ class _WatchAnimePageState extends State<WatchAnimePage>
               completeInitContent = true;
             });
           });
-        _controllerAd =
-            VideoPlayerController.networkUrl(Uri.parse(value.advertising!))
-              ..initialize().then((_) {
-                _chewieControllerAd = ChewieController(
-                    videoPlayerController: _controllerAd!,
-                    autoPlay: true,
-                    looping: false,
-                    startAt: Duration(seconds: 10),
-                    showControls: false);
-                _playerWidgetAd = Chewie(controller: _chewieControllerAd!);
-                setState(() {
-                  completeInitAd = true;
-                });
-              });
+        _controllerAd = VideoPlayerController.networkUrl(Uri.parse(
+            "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"))
+          ..initialize().then((_) {
+            _chewieControllerAd = ChewieController(
+                videoPlayerController: _controllerAd!,
+                autoPlay: true,
+                looping: false,
+                startAt: Duration(seconds: 10),
+                showControls: false);
+            _playerWidgetAd = Chewie(controller: _chewieControllerAd!);
+            setState(() {
+              completeInitAd = true;
+            });
+          });
       });
     });
   }

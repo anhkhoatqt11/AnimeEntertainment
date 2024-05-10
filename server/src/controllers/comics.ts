@@ -360,7 +360,6 @@ export const updateUserSaveChapter: RequestHandler = async (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
 // Define the searchComics controller function
 export const searchComics: RequestHandler = async (req, res, next) => {
   // Extract the search term from the query string
@@ -392,7 +391,6 @@ export const searchComics: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-=======
 export const checkUserHasLikeOrSaveChapter: RequestHandler = async (
   req,
   res,
@@ -519,7 +517,7 @@ export const updateUserHistoryHadSeenChapter: RequestHandler = async (
       const indexOfItem = userInfo?.histories?.readingComic.indexOf(check);
       if (indexOfItem !== undefined) {
         userInfo?.histories?.readingComic.splice(indexOfItem, 1, {
-          chapterId: new mongoose.Types.ObjectId(chapterId)
+          chapterId: new mongoose.Types.ObjectId(chapterId),
         });
       }
     }
@@ -542,21 +540,24 @@ export const getComicChapterComments: RequestHandler = async (
     const chapterId =
       typeof parsedParams.chapterId === "string" ? parsedParams.chapterId : "";
 
-    var chapter = await ComicChapterModel.findById(chapterId).select('comments');
+    var chapter = await ComicChapterModel.findById(chapterId).select(
+      "comments"
+    );
     if (!chapter) {
       return res.sendStatus(400);
     }
 
-    return res
-      .status(200)
-      .json(chapter.comments)
-      .end();
+    return res.status(200).json(chapter.comments).end();
   } catch (error) {
     next(error);
   }
 };
 
-export const addRootChapterComments: RequestHandler = async (req, res, next) => {
+export const addRootChapterComments: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
     const { chapterId, userId, content } = req.body;
     var chapter = await ComicChapterModel.findById(chapterId);
@@ -577,7 +578,7 @@ export const addRootChapterComments: RequestHandler = async (req, res, next) => 
       replies: new mongoose.Types.Array(),
       content: content,
       avatar: user.avatar,
-      userName: user.username
+      userName: user.username,
     });
 
     await chapter?.save();
@@ -586,4 +587,3 @@ export const addRootChapterComments: RequestHandler = async (req, res, next) => 
     next(error);
   }
 };
->>>>>>> 7e023fd914380fca11154b765d5004ab2cbcfbbb

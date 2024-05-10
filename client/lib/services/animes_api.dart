@@ -132,7 +132,8 @@ class AnimesApi {
               id: element['_id'],
               coverImage: element['coverImage'],
               episodeName: element['episodeName'],
-              movieOwner: element['animeOwner'][0]['movieName']));
+              movieOwner: element['animeOwner'][0]['movieName'],
+              movieOwnerId: element['animeOwner'][0]['_id']));
         });
         return newEpisodeArray;
       } else {
@@ -348,7 +349,8 @@ class AnimesApi {
               coverImage: element['coverImage'],
               episodeName: element['episodeName'],
               totalTime: element['totalTime'],
-              views: element['views']));
+              views: element['views'],
+              movieOwnerId: element['movieOwner'][0]['_id']));
         });
         return animeEpisode;
       } else {
@@ -512,7 +514,8 @@ class AnimesApi {
               episodeName: element['episodeName'],
               totalTime: element['totalTime'],
               position: result[0]['histories']['watchingMovie'][index]
-                  ['position']));
+                  ['position'],
+              movieOwnerId: element['movieOwner'][0]['_id']));
           index++;
         });
         return histories;

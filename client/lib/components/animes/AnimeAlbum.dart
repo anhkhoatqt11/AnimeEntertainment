@@ -555,6 +555,8 @@ class _TopViewEpisodeListState extends State<TopViewEpisodeList> {
               urlImage: item.coverImage,
               nameItem: item.episodeName,
               views: item.views,
+              animeId: widget.animeId,
+              episodeId: item.id,
             );
           } else {
             return Padding(
