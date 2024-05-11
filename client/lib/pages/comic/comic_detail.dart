@@ -10,6 +10,8 @@ import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
+import 'package:provider/provider.dart';
 // ignore_for_file: prefer_const_constructors
 
 class DetailComicPage extends StatefulWidget {
@@ -82,7 +84,7 @@ class _DetailComicPageState extends State<DetailComicPage> {
                     children: [
                       Image.network(
                           width: double.infinity,
-                          height: 100,
+                          //height: 100,
                           comic.landspaceImage.toString()),
                       const SizedBox(
                         height: 25,
@@ -96,6 +98,9 @@ class _DetailComicPageState extends State<DetailComicPage> {
                       width: 165,
                       height: 50,
                       action: () {
+                      Provider.of<NavigatorProvider>(context, listen: false)
+                          .setShow(false);
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
