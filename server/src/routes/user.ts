@@ -8,4 +8,6 @@ router.post("/updateAvatar", UserController.updateAvatar);
 
 router.get("/getBookmarkList", UserController.getBookmarkList);
 
+router.post("/removeBookmark", UserController.removeBookmark);
+
 export default router;

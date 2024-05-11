@@ -3,6 +3,7 @@ import 'package:anime_and_comic_entertainment/components/ComicBookmarkItem.dart'
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/services/user_api.dart';
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 
@@ -34,12 +35,14 @@ class _BookMarkPageState extends State<BookMarkPage> {
       setState(() {
         listAnimeItem = (result['animes'] as List)
             .map((item) => Animes(
+                  id: item['_id'],
                   landspaceImage: item['landspaceImage'],
                   movieName: item['movieName'],
                 ))
             .toList();
         listComicItem = (result['comics'] as List)
             .map((item) => Comics(
+                  id: item['_id'],
                   landspaceImage: item['landspaceImage'],
                   genres: item['genres'],
                   comicName: item['comicName'],
@@ -71,7 +74,10 @@ class _BookMarkPageState extends State<BookMarkPage> {
                     isEditing = !isEditing;
                   });
                 },
-                child: Text(isEditing ? "Xong" : "Sửa"),
+                child: Text(
+                  isEditing ? "Thoát" : "Sửa",
+                  style: TextStyle(fontSize: 18, color: Utils.primaryColor),
+                ),
               ),
             ],
           ),
@@ -90,12 +96,26 @@ class _BookMarkPageState extends State<BookMarkPage> {
             _buildComicList(),
           ],
         ),
-        floatingActionButton: isEditing
-            ? FloatingActionButton(
-                onPressed: () {
-                  _deleteSelectedItems();
-                },
-                child: Icon(Icons.delete),
+        bottomNavigationBar: isEditing
+            ? BottomAppBar(
+                color: Colors.transparent,
+                elevation: 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _deleteSelectedItems();
+                          },
+                          child: Text('Xoá khỏi danh sách'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               )
             : null,
       ),
@@ -105,16 +125,34 @@ class _BookMarkPageState extends State<BookMarkPage> {
   Widget _buildAnimeList() {
     if (listAnimeItem.isEmpty) {
       return Center(
-        child: Text('No bookmarked anime'),
+        child: Column(
+          children: [
+            SizedBox(height: 30),
+            Image.asset('assets/images/empty-box.png'),
+            Text(
+              'Chưa có bộ anime nào',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Hãy thêm anime vào danh sách yêu thích của bạn',
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
       );
     }
     return ListView.builder(
       itemCount: listAnimeItem.length,
       itemBuilder: (context, index) {
         return isEditing
-            ? CheckboxListTile(
-                title: Text(listAnimeItem[index].movieName!),
-                value: selectedAnimeIndexes.contains(index),
+            ? AnimeBookmarkItem(
+                landspaceImage: listAnimeItem[index].landspaceImage!,
+                movieName: listAnimeItem[index].movieName!,
+                isBookmarked: true,
+                isChecked: selectedAnimeIndexes.contains(index),
                 onChanged: (bool? value) {
                   setState(() {
                     if (value!) {
@@ -137,16 +175,34 @@ class _BookMarkPageState extends State<BookMarkPage> {
   Widget _buildComicList() {
     if (listComicItem.isEmpty) {
       return Center(
-        child: Text('No bookmarked comics'),
+        child: Column(
+          children: [
+            SizedBox(height: 30),
+            Image.asset('assets/images/empty-box.png'),
+            Text(
+              'Chưa có bộ truyện nào',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'Hãy thêm truyện vào danh sách yêu thích của bạn',
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
       );
     }
     return ListView.builder(
       itemCount: listComicItem.length,
       itemBuilder: (context, index) {
         return isEditing
-            ? CheckboxListTile(
-                title: Text(listComicItem[index].comicName!),
-                value: selectedComicIndexes.contains(index),
+            ? ComicBookmarkItem(
+                landspaceImage: listComicItem[index].landspaceImage!,
+                comicName: listComicItem[index].comicName!,
+                isBookmarked: true,
+                isChecked: selectedComicIndexes.contains(index),
                 onChanged: (bool? value) {
                   setState(() {
                     if (value!) {
@@ -166,19 +222,49 @@ class _BookMarkPageState extends State<BookMarkPage> {
     );
   }
 
-  void _deleteSelectedItems() {
+  void _deleteSelectedItems() async {
+    const userId = '662777d1ba7dff5ac56f1729'; // Replace with actual user ID
+    final bookmarksToRemove = <String>[];
+
+    // Create copies of the lists to avoid modification during iteration
+    final animeCopy = List.from(listAnimeItem);
+    final comicCopy = List.from(listComicItem);
+
     setState(() {
       // Delete selected anime items
       for (var index in selectedAnimeIndexes) {
-        listAnimeItem.removeAt(index);
+        final anime = animeCopy[index];
+        if (anime != null && anime.id != null) {
+          bookmarksToRemove.add(anime.id!);
+        }
       }
+      // Remove selected anime items from the original list
+      listAnimeItem.removeWhere((anime) =>
+          anime != null &&
+          selectedAnimeIndexes.contains(animeCopy.indexOf(anime)));
+
       // Delete selected comic items
       for (var index in selectedComicIndexes) {
-        listComicItem.removeAt(index);
+        final comic = comicCopy[index];
+        if (comic != null && comic.id != null) {
+          bookmarksToRemove.add(comic.id!);
+        }
       }
+      // Remove selected comic items from the original list
+      listComicItem.removeWhere((comic) =>
+          comic != null &&
+          selectedComicIndexes.contains(comicCopy.indexOf(comic)));
+
       // Clear selected indexes
       selectedAnimeIndexes.clear();
       selectedComicIndexes.clear();
     });
+
+    try {
+      await UsersApi.removeBookmark(context, userId, bookmarksToRemove);
+    } catch (e) {
+      print('Error removing bookmarks: $e');
+      // Handle error
+    }
   }
 }

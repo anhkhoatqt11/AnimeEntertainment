@@ -73,6 +73,7 @@ flutter:
     - assets/images/goldtrophy.png
     - assets/images/receivedcoin.gif
     - assets/images/user.png
+    - assets/images/empty-box.png
     - assets/
   #   - images/a_dot_ham.jpeg
 

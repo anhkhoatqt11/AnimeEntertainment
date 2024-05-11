@@ -61,4 +61,41 @@ export const getBookmarkList: RequestHandler = async (req, res, next) => {
 };
 
 
+export const removeBookmark: RequestHandler = async (req, res, next) => {
+  try {
+    const { userId, bookmarksToRemove } = req.body;
 
+    // Check if userId and bookmarksToRemove are provided
+    if (!userId || !bookmarksToRemove || !Array.isArray(bookmarksToRemove)) {
+      return res.status(400).json({ error: "Invalid input" });
+    }
+
+    // Find the user by userId
+    const user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Assert that bookmarkList exists
+    const bookmarkList = user.bookmarkList!;
+
+    // Remove each bookmark from the user's bookmark list
+    bookmarksToRemove.forEach((bookmarkId: string) => {
+      const comicIndex = bookmarkList.comic.indexOf(bookmarkId);
+      if (comicIndex !== -1) {
+        bookmarkList.comic.splice(comicIndex, 1);
+      }
+      const movieIndex = bookmarkList.movies.indexOf(bookmarkId);
+      if (movieIndex !== -1) {
+        bookmarkList.movies.splice(movieIndex, 1);
+      }
+    });
+
+    // Save the updated user
+    await user.save();
+
+    return res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};

@@ -96,4 +96,32 @@ class UsersApi {
       }
     }
   }
+
+  static Future<void> removeBookmark(BuildContext context, String userId,
+      List<String> bookmarksToRemove) async {
+    var url = Uri.parse("${baseUrl}removeBookmark");
+    try {
+      var body = {
+        "userId": userId,
+        "bookmarksToRemove": bookmarksToRemove,
+      };
+      await http.post(url,
+          body: jsonEncode(body),
+          headers: {'Content-Type': 'application/json'});
+    } catch (e) {
+      handleNetworkError(context);
+    }
+  }
+
+  static void handleNetworkError(BuildContext context) {
+    print(Provider.of<NavigatorProvider>(context, listen: false)
+        .isShowNetworkError);
+    if (!Provider.of<NavigatorProvider>(context, listen: false)
+        .isShowNetworkError) {
+      Provider.of<NavigatorProvider>(context, listen: false)
+          .setShowNetworkError(true);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
 }
