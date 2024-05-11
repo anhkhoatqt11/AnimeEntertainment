@@ -31,7 +31,9 @@ class _SplashState extends State<Splash> {
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => TestPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => MyHomePage(
+        title: '',
+      ),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 2.0);
         const end = Offset.zero;

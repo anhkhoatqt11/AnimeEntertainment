@@ -79,6 +79,7 @@ class _ComicAlbumItemState extends State<ComicAlbumItem> {
           if (index < listComicItem.length) {
             final item = listComicItem[index];
             return ComicItem(
+                comicId: item.id,
                 urlImage: item.coverImage,
                 nameItem: item.comicName,
                 genres: item.genres);

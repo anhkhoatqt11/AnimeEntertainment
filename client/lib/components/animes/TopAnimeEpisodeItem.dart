@@ -1,4 +1,10 @@
+import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
+import 'package:anime_and_comic_entertainment/model/animes.dart';
+import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:miniplayer/miniplayer.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:flutter/material.dart';
@@ -6,14 +12,26 @@ import 'package:flutter/material.dart';
 class TopAnimeEpisodeItem extends StatelessWidget {
   final String? urlImage;
   final String? nameItem;
+  final String? episodeId;
+  final String? animeId;
   const TopAnimeEpisodeItem(
-      {super.key, required this.urlImage, required this.nameItem});
+      {super.key,
+      required this.urlImage,
+      required this.nameItem,
+      required this.episodeId,
+      required this.animeId});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        //forward episdoe page
+        Provider.of<VideoProvider>(context, listen: false).setAnime(
+            Animes(
+              id: animeId,
+            ),
+            AnimeEpisodes(id: episodeId, episodeName: nameItem));
+        Provider.of<MiniPlayerControllerProvider>(context, listen: false)
+            .setMiniController(PanelState.MAX);
       },
       child: Padding(
         padding: const EdgeInsets.all(6.0),

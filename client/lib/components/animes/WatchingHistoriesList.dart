@@ -45,7 +45,8 @@ class _WatchingHistoriesListState extends State<WatchingHistoriesList> {
               coverImage: element.coverImage,
               episodeName: element.episodeName,
               totalTime: element.totalTime,
-              position: element.position));
+              position: element.position,
+              movieOwnerId: element.movieOwnerId));
         });
       });
       if (isLastPage) {
@@ -120,6 +121,8 @@ class _WatchingHistoriesListState extends State<WatchingHistoriesList> {
                   nameItem: listEpisode[index].episodeName!,
                   percentage: listEpisode[index].position! /
                       listEpisode[index].totalTime!,
+                  animeId: listEpisode[index].movieOwnerId!,
+                  episodeId: listEpisode[index].id!,
                 );
               } else {
                 return Padding(

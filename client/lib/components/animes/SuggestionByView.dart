@@ -1,4 +1,7 @@
 import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
+import 'package:anime_and_comic_entertainment/model/animes.dart';
+import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -6,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
+import 'package:miniplayer/miniplayer.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SuggestionByView extends StatefulWidget {
@@ -34,7 +39,8 @@ class _SuggestionByViewState extends State<SuggestionByView> {
                 coverImage: element.coverImage,
                 totalTime: element.totalTime,
                 episodeName: element.episodeName,
-                views: element.views));
+                views: element.views,
+                movieOwnerId: element.movieOwnerId));
           });
         }));
   }
@@ -51,7 +57,16 @@ class _SuggestionByViewState extends State<SuggestionByView> {
                 children: List.generate(listEpisodeItem.length, (index) {
               return GestureDetector(
                 onTap: () {
-                  //forward episode page
+                  Provider.of<VideoProvider>(context, listen: false).setAnime(
+                      Animes(
+                        id: listEpisodeItem[index].movieOwnerId,
+                      ),
+                      AnimeEpisodes(
+                          id: listEpisodeItem[index].id,
+                          episodeName: listEpisodeItem[index].episodeName));
+                  Provider.of<MiniPlayerControllerProvider>(context,
+                          listen: false)
+                      .setMiniController(PanelState.MAX);
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 12),
