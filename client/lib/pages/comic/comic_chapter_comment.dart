@@ -1,9 +1,14 @@
+import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/model/comment.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_comment_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:comment_tree/comment_tree.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 // ignore_for_file: prefer_const_constructors
 
 class ComicChapterComment extends StatefulWidget {
@@ -16,7 +21,10 @@ class ComicChapterComment extends StatefulWidget {
 }
 
 class _ComicChapterCommentState extends State<ComicChapterComment> {
+  final commentController = TextEditingController();
   String commentReplied = '';
+  String commentIdReplied = '';
+  String userId = '65ec67ad05c5cb2ad67cfb3f';
   late List<Comments> comments = [];
   late List<CommentTreeWidget> cmtTreeWidge = [];
   Future<List<Comments>> getComicChapterComments() async {
@@ -37,12 +45,12 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
 
   void loadComments() {
     setState(() {
-      comments.clear();
-
+      cmtTreeWidge.clear();
       for (var comment in comments) {
         List<Comment> replies = [];
         comment.replies!.forEach((element) {
           replies.add(Comment(
+              id: element["_id"],
               avatar: element['avatar'],
               userName: element['userName'],
               content: element['content']));
@@ -50,6 +58,7 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
 
         cmtTreeWidge.add(CommentTreeWidget(
           Comment(
+              id: comment.id,
               avatar: comment.avatar,
               userName: comment.userName,
               content: comment.content),
@@ -183,6 +192,7 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                           child: Text('Trả lời'),
                           onTap: () {
                             setState(() {
+                              commentIdReplied = data.id;
                               commentReplied = 'Đang trả lời ${data.userName}';
                             });
                           },
@@ -248,8 +258,10 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                       bottom: 0,
                       child: SizedBox(
                         height: 75,
-                        width: MediaQuery.of(context).size.width * 0.915,
+                        width: MediaQuery.of(context).size.width * 0.8,
                         child: TextField(
+                          controller: commentController,
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: 'Viết bình luận',
@@ -257,6 +269,108 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                         ),
                       ),
                     ),
+                    Positioned(
+                        left: MediaQuery.of(context).size.width * 0.85,
+                        bottom: 0,
+                        child: SizedBox(
+                          height: 60,
+                          width: MediaQuery.of(context).size.width * 0.19,
+                          child: GestureDetector(
+                            child: FaIcon(
+                              FontAwesomeIcons.paperPlane,
+                              color: Colors.white,
+                            ),
+                            onTap: () async {
+                              // if (Provider.of<UserProvider>(context,
+                              //             listen: false)
+                              //         .user
+                              //         .authentication['sessionToken'] !=
+                              //     "") {
+                              //   setState(() {
+                              //     userId = Provider.of<UserProvider>(context,
+                              //           listen: false)
+                              //       .user
+                              //       .id;
+                              //   });
+                              // } else {
+                              //   Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //           builder: (context) => const Login()));
+                              // }
+
+                              FocusScope.of(context).unfocus();
+
+                              await Provider.of<ComicCommentProvider>(context,
+                                      listen: false)
+                                  .checkUserBanned(context, userId);
+
+                              if (Provider.of<ComicCommentProvider>(context,
+                                      listen: false)
+                                  .commentAccessDate
+                                  .isAfter(DateTime.now())) {
+                                var formattedDate =
+                                    Provider.of<ComicCommentProvider>(context,
+                                            listen: false)
+                                        .formattedDate;
+
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => CustomAlertDialog(
+                                        content:
+                                            'Bạn đang bị cấm bình luận vì vi phạm quy tắc cộng đồng. Thời gian bạn có thể bình luận tiếp là $formattedDate',
+                                        title: 'Thông báo',
+                                        action: () {}));
+                                return;
+                              }
+
+                              await Provider.of<ComicCommentProvider>(context,
+                                      listen: false)
+                                  .checkValidContent(commentController.text);
+
+                              if (!Provider.of<ComicCommentProvider>(context,
+                                      listen: false)
+                                  .isValidContent) {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) => CustomAlertDialog(
+                                        content:
+                                            'Bình luận của bạn vi phạm quy tắc cộng đồng. Bạn sẽ bị cấm bình luận trong 3 ngày.',
+                                        title: 'Cảnh báo',
+                                        action: () {}));
+
+                                await Provider.of<ComicCommentProvider>(context,
+                                        listen: false)
+                                    .banUser(context, userId);
+
+                                return;
+                              }
+
+                              if (commentReplied.isEmpty) {
+                                await Provider.of<ComicCommentProvider>(context,
+                                        listen: false)
+                                    .addRootComment(context, widget.chapterId,
+                                        userId, commentController.text);
+                              } else {
+                                await Provider.of<ComicCommentProvider>(context,
+                                        listen: false)
+                                    .addChildComment(
+                                        context,
+                                        widget.chapterId,
+                                        commentIdReplied,
+                                        userId,
+                                        commentController.text);
+                              }
+
+                              await getComicChapterComments()
+                                  .then((value) => setState(() {
+                                        comments = value;
+
+                                        loadComments();
+                                      }));
+                            },
+                          ),
+                        )),
                     commentReplied.isEmpty
                         ? Positioned(child: Text(''))
                         : Positioned(

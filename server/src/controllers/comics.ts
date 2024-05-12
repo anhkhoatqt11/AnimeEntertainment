@@ -545,11 +545,144 @@ export const addRootChapterComments: RequestHandler = async (req, res, next) => 
       replies: new mongoose.Types.Array(),
       content: content,
       avatar: user.avatar,
-      userName: user.username
+      userName: user.username === null ? "" : user.username
     });
 
     await chapter?.save();
     return res.status(200).json(chapter).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addChildChapterComments: RequestHandler = async (req, res, next) => {
+  try {
+    const { chapterId, commentId, userId, content } = req.body;
+    var chapter = await ComicChapterModel.findById(chapterId);
+    //console.log(chapter);
+    if (!chapter) {
+      return res.sendStatus(400);
+    }
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    var index = 0;
+    var findIndex = -1;
+
+    chapter.comments.forEach(element => {
+      //console.log(element["_id"]);
+      if (element["_id"].toString().includes(commentId)) {
+        console.log(element["replies"]);
+        //element["replies"]
+        findIndex = index;
+        console.log(findIndex);
+      }
+      index++;
+    });
+
+    chapter.comments.at(findIndex)["replies"].push({
+      _id: new mongoose.Types.ObjectId(),
+      userId: new mongoose.Types.ObjectId(userId),
+      likes: new mongoose.Types.Array(),
+      replies: new mongoose.Types.Array(),
+      content: content,
+      avatar: user?.avatar,
+      userName: user?.username === null ? "aa" : user?.username
+    });
+
+    await chapter?.save();
+    return res.status(200).json(chapter).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkValidCommentContent: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  var content =
+    typeof parsedParams.content === "string" ? parsedParams.content : "";
+
+  content = content.toLowerCase();
+
+  const sensitiveWords = ['fuck', 'dick', 'pussy', 'fucker', 'cặc', 'lồn', 'loz', 'cak', 'địt', 'đụ', 'cc']
+  try {
+    var isValid = true;
+
+    if (content.includes('https') || content.includes('http')) {
+      isValid = false;
+    }
+
+    sensitiveWords.forEach((word) => {
+      if (content.includes(word)) {
+        isValid = false;
+      }
+    })
+
+    res.status(200).json(isValid === undefined ? {} : isValid);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkUserBanned: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const userId =
+    typeof parsedParams.userId === "string" ? parsedParams.userId : "";
+
+  try {
+    var user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(400);
+    }
+
+    if (user.accessCommentDate === null || user.accessCommentDate === undefined) {
+      return res.status(200).json("2020");
+    }
+
+    const accessDate = user?.accessCommentDate;
+
+    if (accessDate !== null && accessDate !== undefined && accessDate <= new Date()) {
+      return res.status(200).json("2020");
+    }
+
+    res.status(200).json(user?.accessCommentDate).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const banUser: RequestHandler = async (req, res, next) => {
+  try {
+    const { userId } = req.body;
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    var newAccessDate = new Date();
+    newAccessDate.setDate(newAccessDate.getDate() + 3);
+
+    user.accessCommentDate = newAccessDate;
+
+    await user?.save();
+    return res.status(200).json(user.accessCommentDate).end();
   } catch (error) {
     next(error);
   }

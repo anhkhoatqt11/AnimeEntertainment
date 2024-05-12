@@ -48,6 +48,13 @@ router.post(
     "/addRootChapterComments",
     ComicsController.addRootChapterComments
 );
+router.post("/addChildChapterComments",
+    ComicsController.addChildChapterComments
+);
+
+router.get("/checkValidCommentContent", ComicsController.checkValidCommentContent);
+router.get("/checkUserBanned", ComicsController.checkUserBanned);
+router.put("/banUser", ComicsController.banUser);
 
 export default router;
 

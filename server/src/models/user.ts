@@ -19,6 +19,7 @@ const userSchema = new Schema({
     watchingMovie: { type: Array },
   },
   paymentHistories: { type: Array },
+  accessCommentDate: { type: Date }
 });
 
 type User = InferSchemaType<typeof userSchema>;

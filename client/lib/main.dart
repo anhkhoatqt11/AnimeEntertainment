@@ -7,6 +7,7 @@ import 'package:anime_and_comic_entertainment/pages/comic/comic_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_comment_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
             create: (context) => MiniPlayerControllerProvider()),
         ChangeNotifierProvider(create: (context) => NavigatorProvider()),
         ChangeNotifierProvider(create: (context) => ComicChapterProvider()),
+        ChangeNotifierProvider(create: (context) => ComicCommentProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,4 +1,5 @@
 class Comments {
+  final String? id;
   final String? userId;
   final List? likes;
   final List? replies;
@@ -7,6 +8,7 @@ class Comments {
   final String? content;
 
   Comments({
+    this.id,
     this.userId,
     this.likes,
     this.replies,
