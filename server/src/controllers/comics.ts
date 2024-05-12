@@ -360,7 +360,6 @@ export const updateUserSaveChapter: RequestHandler = async (req, res, next) => {
   }
 };
 
-<<<<<<< HEAD
 // Define the searchComics controller function
 export const searchComics: RequestHandler = async (req, res, next) => {
   // Extract the search term from the query string
@@ -392,7 +391,7 @@ export const searchComics: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-=======
+
 export const checkUserHasLikeOrSaveChapter: RequestHandler = async (
   req,
   res,
