@@ -31,6 +31,21 @@ export const updateAvatar: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const uploadUsername: RequestHandler = async (req, res, next) => {
+  try {
+    const {userId, username} = req.body;
+    var user = await UserModel.findById(userId);
+    if (!user){
+      return res.sendStatus(400);
+    }
+    user.username = username;
+    await user?.save();
+    return res.status(200).json(user).end();
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const getBookmarkList: RequestHandler = async (req, res, next) => {
   try {
     const { userId } = req.query;

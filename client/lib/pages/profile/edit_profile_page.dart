@@ -34,7 +34,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       backgroundColor: const Color(0xFF141414),
       appBar: GFAppBar(
         backgroundColor: const Color(0xFF141414),
-        title: Text('Edit Profile'),
+        title: Text('Chỉnh sửa thông tin'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -54,9 +54,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(
-                labelText: 'Username',
+                labelText: 'Tên người dùng',
                 border: OutlineInputBorder(),
               ),
+              style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 20),
             ElevatedButton(

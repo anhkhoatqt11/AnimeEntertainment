@@ -21,7 +21,7 @@ export const getUsersChallengesPoint: RequestHandler = async (req, res, next) =>
     next(error);
   }
 }
-
+  
 
 export const uploadUsersChallengesPoint: RequestHandler = async (req, res, next) => {
   try {

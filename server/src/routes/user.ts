@@ -6,6 +6,8 @@ router.get("/getAvatarList", UserController.getAvatarList);
 
 router.post("/updateAvatar", UserController.updateAvatar);
 
+router.post("/uploadUsername", UserController.uploadUsername);
+
 router.get("/getBookmarkList", UserController.getBookmarkList);
 
 router.post("/removeBookmark", UserController.removeBookmark);
