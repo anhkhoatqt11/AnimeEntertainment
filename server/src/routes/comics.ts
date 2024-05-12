@@ -56,5 +56,7 @@ router.get("/checkValidCommentContent", ComicsController.checkValidCommentConten
 router.get("/checkUserBanned", ComicsController.checkUserBanned);
 router.put("/banUser", ComicsController.banUser);
 
+router.get("/searchComic", ComicsController.searchComics);
+
 export default router;
 

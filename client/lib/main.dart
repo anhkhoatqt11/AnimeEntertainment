@@ -1,10 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:anime_and_comic_entertainment/pages/anime/anime_page.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
-import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
-import 'package:anime_and_comic_entertainment/pages/comic/comic_page.dart';
-import 'package:anime_and_comic_entertainment/pages/home/home_page.dart';
+import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_result_page.dart';
+import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_comment_provider.dart';
@@ -13,6 +12,7 @@ import 'package:anime_and_comic_entertainment/providers/mini_player_controller_p
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/tab_navigator.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
@@ -23,12 +23,19 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
+import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Stripe.publishableKey = StripeApiKey.publishableKey;
-  // await Stripe.instance.applySettings();
-  runApp(const MyApp());
+  Stripe.publishableKey = StripeApiKey.publishableKey;
+  await Stripe.instance.applySettings();
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => UserProvider()),
+    ChangeNotifierProvider(create: (context) => VideoProvider()),
+    ChangeNotifierProvider(create: (context) => MiniPlayerControllerProvider()),
+    ChangeNotifierProvider(create: (context) => NavigatorProvider()),
+    ChangeNotifierProvider(create: (context) => ComicChapterProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -83,15 +90,7 @@ class _NavigationScreenState extends State<NavigationScreen>
   Widget build(BuildContext context) {
     return Container(
       color: Color(0xFF141414),
-      child: widget.navIndex == 0
-          ? HomePage()
-          : widget.navIndex == 1
-              ? ComicPage()
-              : widget.navIndex == 2
-                  ? AnimePage()
-                  : widget.navIndex == 3
-                      ? ChallengePage()
-                      : ProfilePage(),
+      home: TestPage(),
     );
   }
 }

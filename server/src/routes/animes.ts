@@ -51,5 +51,7 @@ router.get(
   AnimeController.checkUserHistoryHadSeenEpisode
 );
 
+router.get("/searchAnimeAndEpisodes", AnimeController.searchAnimeAndEpisodes);
+
 router.get("/getWatchingHistories", AnimeController.getWatchingHistories);
 export default router;

@@ -17,6 +17,8 @@ import comicRoutes from "./routes/comics";
 import authRoutes from "./routes/auth";
 import animeRoutes from "./routes/animes";
 import donateRoutes from "./routes/donatePackage";
+import challengeRoutes from "./routes/challenge";
+import dailyRequestRoutes from "./routes/quest";
 import { isAuthenticated } from "./middlewares";
 //----------------------------------------------------------------------
 const app = express();
@@ -78,6 +80,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/comics", comicRoutes);
 app.use("/api/animes", animeRoutes);
 app.use("/api/donates", donateRoutes);
+app.use("/api/challenges", challengeRoutes);
+app.use("/api/quest", dailyRequestRoutes);
 
 //------------------------------------------------------------
 

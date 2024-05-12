@@ -10,7 +10,13 @@ class UserProvider extends ChangeNotifier {
       histories: {},
       username: '',
       avatar: '',
-      coinPoint: 0);
+      coinPoint: 0,
+      questLog: {
+        "readingTime": 0,
+        "watchingTime": 0,
+        "received": [],
+        "finalTime": DateTime.now()
+      });
 
   User get user => _user;
   void setUserToken(String token) {
@@ -35,6 +41,41 @@ class UserProvider extends ChangeNotifier {
 
   void setCoinPoint(int coinPoint) {
     _user.coinPoint = coinPoint;
+    notifyListeners();
+  }
+
+  void setReadingTime(int time) {
+    _user.questLog = {
+      "readingTime": _user.questLog["readingTime"] + time,
+      "watchingTime": _user.questLog["watchingTime"],
+      "received": _user.questLog["received"],
+      "finalTime": DateTime.now()
+    };
+    notifyListeners();
+  }
+
+  void setWatchingTime(int time) {
+    _user.questLog = {
+      "readingTime": _user.questLog["readingTime"],
+      "watchingTime": _user.questLog["watchingTime"] + time,
+      "received": _user.questLog["received"],
+      "finalTime": DateTime.now()
+    };
+    notifyListeners();
+  }
+
+  void setReceived(item) {
+    _user.questLog["received"].add(item);
+    notifyListeners();
+  }
+
+  void setQuestLog(int read, int watching, List received, String date) {
+    _user.questLog = {
+      "readingTime": read,
+      "watchingTime": watching,
+      "received": received,
+      "finalTime": DateTime.parse(date)
+    };
     notifyListeners();
   }
 

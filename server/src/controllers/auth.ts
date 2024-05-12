@@ -20,10 +20,38 @@ export const deleteUserById = (id: string) =>
 export const updateUserById = (id: string, values: Record<string, any>) =>
   UserModel.findByIdAndUpdate(id, values);
 
+const calculateQuestDateRenew = (value: Date) => {
+  var currentTime = new Date();
+  if (
+    currentTime.getFullYear() > value.getFullYear() ||
+    currentTime.getMonth() > value.getMonth() ||
+    currentTime.getDate() > value.getDate()
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const getLogin: RequestHandler = async (req, res) => {
   try {
     const result = await getUserBySessionToken(req.body.sessionToken);
+    var renewable = false;
     if (result) {
+      if (
+        calculateQuestDateRenew(
+          new Date(result?.questLog.finalTime.toString())
+        ) === true
+      ) {
+        renewable = true;
+        result.questLog = {
+          readingTime: 0,
+          watchingTime: 0,
+          received: [],
+          finalTime: new Date(),
+        };
+        await result.save();
+      }
       return res
         .status(200)
         .json({
@@ -32,6 +60,15 @@ export const getLogin: RequestHandler = async (req, res) => {
           username: result["username"],
           avatar: result["avatar"],
           coinPoint: result["coinPoint"],
+          questLog:
+            renewable === true
+              ? {
+                  readingTime: 0,
+                  watchingTime: 0,
+                  received: [],
+                  finalTime: new Date(),
+                }
+              : result["questLog"],
         })
         .end();
     } else {
@@ -50,7 +87,7 @@ export const postLogin: RequestHandler = async (req, res) => {
       return res.sendStatus(400);
     }
     var user = await getUserByPhone(phone).select(
-      "+authentication.salt + authentication.password + username + avatar + coinPoint"
+      "+authentication.salt + authentication.password + username + avatar + coinPoint + questLog"
     );
     if (!user) {
       return res.sendStatus(400);
@@ -72,11 +109,25 @@ export const postLogin: RequestHandler = async (req, res) => {
       salt,
       user._id.toString()
     );
+    //
+    var renewable = false;
+    if (user) {
+      if (
+        calculateQuestDateRenew(
+          new Date(user?.questLog.finalTime.toString())
+        ) === true
+      ) {
+        renewable = true;
+        user.questLog = {
+          readingTime: 0,
+          watchingTime: 0,
+          received: [],
+          finalTime: new Date(),
+        };
+      }
+    }
+    //
     await user.save();
-    // res.cookie("USER-AUTH", user.authentication.sessionToken, {
-    //   domain: "localhost",
-    //   path: "/",
-    // });
     return res.status(200).json(user).end();
   } catch (error) {
     return res.sendStatus(400);
