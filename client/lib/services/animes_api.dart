@@ -306,15 +306,15 @@ class AnimesApi {
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         AnimeEpisodes episodeDetail = AnimeEpisodes(
-            id: result['_id'],
-            advertising: result['advertising'],
-            content: result['content'],
-            episodeName: result['episodeName'],
-            likes: result['likes'],
-            totalTime: result['totalTime'],
-            views: result['views'],
-            adLink: result['adLink'],
-            comments: result['comments']);
+            id: result[0]['_id'],
+            advertising: result[0]['advertisementContent'][0]['adVideoUrl'],
+            content: result[0]['content'],
+            episodeName: result[0]['episodeName'],
+            likes: result[0]['likes'],
+            totalTime: result[0]['totalTime'],
+            views: result[0]['views'],
+            adLink: result[0]['advertisementContent'][0]['forwardLink'],
+            comments: result[0]['comments']);
 
         return episodeDetail;
       } else {

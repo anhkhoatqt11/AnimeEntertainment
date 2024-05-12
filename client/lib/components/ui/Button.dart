@@ -80,14 +80,14 @@ class GradientSquareButton extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5))),
+                          borderRadius: BorderRadius.circular(6))),
                   child: null,
                 ))),
         GestureDetector(
           child: Text(
             content,
             style: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                fontSize: 15, fontWeight: FontWeight.w600, color: Colors.white),
           ),
           onTap: () => {action()},
         )

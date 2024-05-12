@@ -587,3 +587,75 @@ export const addRootChapterComments: RequestHandler = async (
     next(error);
   }
 };
+
+export const getReadingHistories: RequestHandler = async (req, res, next) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const page = parseInt(
+    typeof parsedParams.page === "string" ? parsedParams.page : "0"
+  );
+  const limit = parseInt(
+    typeof parsedParams.limit === "string" ? parsedParams.limit : "0"
+  );
+  const userId =
+    typeof parsedParams.userId === "string" ? parsedParams.userId : "";
+  try {
+    if (!mongoose.isValidObjectId(userId)) {
+      throw createHttpError(400, "Invalid user id");
+    }
+    const histories = await UserModel.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(userId) },
+      },
+      {
+        $project: { histories: 1 },
+      },
+      {
+        $lookup: {
+          from: "comicchapters",
+          localField: "histories.readingComic.chapterId",
+          foreignField: "_id",
+          pipeline: [
+            {
+              $lookup: {
+                from: "comics",
+                localField: "_id",
+                foreignField: "chapterList",
+                pipeline: [
+                  {
+                    $lookup: {
+                      from: "comicchapters",
+                      localField: "chapterList",
+                      foreignField: "_id",
+                      pipeline: [],
+                      as: "detailChapterList",
+                    },
+                  },
+                ],
+                as: "comicOwner",
+              },
+            },
+            { $skip: (page - 1) * limit },
+            { $limit: limit },
+          ],
+          as: "detailHistories",
+        },
+      },
+      {
+        $project: {
+          histories: 1,
+          "detailHistories._id": 1,
+          "detailHistories.chapterName": 1,
+          "detailHistories.coverImage": 1,
+          "detailHistories.comicOwner._id": 1,
+          "detailHistories.comicOwner.chapterList": 1,
+          "detailHistories.comicOwner.detailChapterList": 1,
+        },
+      },
+    ]);
+    res.status(200).json(histories);
+  } catch (error) {
+    next(error);
+  }
+};

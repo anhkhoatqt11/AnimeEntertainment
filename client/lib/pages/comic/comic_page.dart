@@ -1,12 +1,14 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicAlbum.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ComicBanner.dart';
-import 'package:anime_and_comic_entertainment/components/CurrentReadingUser.dart';
 import 'package:anime_and_comic_entertainment/components/comic/NewChapterList.dart';
+import 'package:anime_and_comic_entertainment/components/comic/ReadingHistoresList.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/types/gf_button_type.dart';
+import 'package:provider/provider.dart';
 
 class ComicPage extends StatelessWidget {
   const ComicPage({super.key});
@@ -35,25 +37,34 @@ class ComicPage extends StatelessWidget {
           ],
         ),
         body: ListView(
-          children: const [
+          children: [
             ComicBanner(),
-            Padding(
-              padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
-              child: Text(
-                "Đọc tiếp",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-              child: SizedBox(
-                height: 228,
-                child: CurrentReadingUser(),
-              ),
-            ),
+            Consumer(builder: (context, watch, _) {
+              final user = Provider.of<UserProvider>(context).user;
+              return user.authentication['sessionToken'] != ""
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text(
+                            "Đọc tiếp",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 168,
+                          child: ReadingHistoriesList(
+                            userId: user.id,
+                          ),
+                        ),
+                      ],
+                    )
+                  : const SizedBox.shrink();
+            }),
             SizedBox(
               height: 10,
             ),

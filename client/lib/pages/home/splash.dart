@@ -26,7 +26,9 @@ class _SplashState extends State<Splash> {
 
   route() {
     // Navigator.pushReplacementNamed(context, '/home');
-    Navigator.of(context).pushReplacement(_createRoute());
+    // Navigator.of(context).pushReplacement(_createRoute());
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const MyHomePage(title: '')));
   }
 
   Route _createRoute() {

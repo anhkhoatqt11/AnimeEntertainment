@@ -148,47 +148,47 @@ class _WatchAnimePageState extends State<WatchAnimePage>
               isLoadingAnimeDetail = false;
             }));
 
-        _controller = VideoPlayerController.networkUrl(Uri.parse(
-            "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"))
-          ..initialize().then((_) {
-            // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-            _chewieController = ChewieController(
-              videoPlayerController: _controller!,
-              autoPlay: false,
-              looping: false,
-              startAt: Duration(seconds: positionInit),
-              materialProgressColors: ChewieProgressColors(
-                playedColor: Utils.primaryColor,
-                handleColor: Utils.primaryColor,
-              ),
-              optionsTranslation: OptionsTranslation(
-                playbackSpeedButtonText: 'Tốc độ phát',
-                subtitlesButtonText: 'Phụ đề',
-                cancelButtonText: 'Hủy',
-              ),
-            );
-            _playerWidget = Chewie(controller: _chewieController!);
-            _controller!.addListener(() {
-              _handleVideoPlaying();
-            });
-            setState(() {
-              completeInitContent = true;
-            });
-          });
-        _controllerAd = VideoPlayerController.networkUrl(Uri.parse(
-            "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4"))
-          ..initialize().then((_) {
-            _chewieControllerAd = ChewieController(
-                videoPlayerController: _controllerAd!,
-                autoPlay: true,
-                looping: false,
-                startAt: Duration(seconds: 10),
-                showControls: false);
-            _playerWidgetAd = Chewie(controller: _chewieControllerAd!);
-            setState(() {
-              completeInitAd = true;
-            });
-          });
+        _controller =
+            VideoPlayerController.networkUrl(Uri.parse(value.content!))
+              ..initialize().then((_) {
+                // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+                _chewieController = ChewieController(
+                  videoPlayerController: _controller!,
+                  autoPlay: false,
+                  looping: false,
+                  startAt: Duration(seconds: positionInit),
+                  materialProgressColors: ChewieProgressColors(
+                    playedColor: Utils.primaryColor,
+                    handleColor: Utils.primaryColor,
+                  ),
+                  optionsTranslation: OptionsTranslation(
+                    playbackSpeedButtonText: 'Tốc độ phát',
+                    subtitlesButtonText: 'Phụ đề',
+                    cancelButtonText: 'Hủy',
+                  ),
+                );
+                _playerWidget = Chewie(controller: _chewieController!);
+                _controller!.addListener(() {
+                  _handleVideoPlaying();
+                });
+                setState(() {
+                  completeInitContent = true;
+                });
+              });
+        _controllerAd =
+            VideoPlayerController.networkUrl(Uri.parse(value.advertising!))
+              ..initialize().then((_) {
+                _chewieControllerAd = ChewieController(
+                    videoPlayerController: _controllerAd!,
+                    autoPlay: true,
+                    looping: false,
+                    startAt: Duration(seconds: 10),
+                    showControls: false);
+                _playerWidgetAd = Chewie(controller: _chewieControllerAd!);
+                setState(() {
+                  completeInitAd = true;
+                });
+              });
       });
     });
   }
@@ -810,140 +810,164 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                           (index) {
                                     return Padding(
                                       padding: const EdgeInsets.only(top: 12),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color:
-                                                Colors.white.withOpacity(0.05),
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              8, 8, 12, 8),
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                color: Colors.transparent,
-                                                height: 80,
-                                                child: AspectRatio(
-                                                  aspectRatio: 16 / 9,
-                                                  child: CachedNetworkImage(
-                                                    imageUrl: detailAnime
-                                                            .episodes![index]
-                                                        ['coverImage'],
-                                                    placeholder:
-                                                        (context, url) =>
-                                                            Container(
-                                                      width: 125,
-                                                      color: Colors.blue,
-                                                      child: Shimmer.fromColors(
-                                                        baseColor: Colors
-                                                            .grey.shade300,
-                                                        highlightColor: Colors
-                                                            .grey.shade100,
-                                                        child: Container(
-                                                            width: 125,
-                                                            decoration: BoxDecoration(
-                                                                color: Colors
-                                                                    .yellow,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            4))),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Provider.of<VideoProvider>(context,
+                                                  listen: false)
+                                              .setAnime(
+                                                  Animes(
+                                                    id: widget.animeId,
+                                                  ),
+                                                  AnimeEpisodes(
+                                                      id: detailAnime
+                                                              .episodes![index]
+                                                          ['_id'],
+                                                      episodeName: detailAnime
+                                                              .episodes![index]
+                                                          ['episodeName']));
+                                          Provider.of<MiniPlayerControllerProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .setMiniController(
+                                                  PanelState.MAX);
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.white
+                                                  .withOpacity(0.05),
+                                              borderRadius:
+                                                  BorderRadius.circular(8)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                8, 8, 12, 8),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  color: Colors.transparent,
+                                                  height: 80,
+                                                  child: AspectRatio(
+                                                    aspectRatio: 16 / 9,
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: detailAnime
+                                                              .episodes![index]
+                                                          ['coverImage'],
+                                                      placeholder:
+                                                          (context, url) =>
+                                                              Container(
+                                                        width: 125,
+                                                        color: Colors.blue,
+                                                        child:
+                                                            Shimmer.fromColors(
+                                                          baseColor: Colors
+                                                              .grey.shade300,
+                                                          highlightColor: Colors
+                                                              .grey.shade100,
+                                                          child: Container(
+                                                              width: 125,
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors
+                                                                      .yellow,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              4))),
+                                                        ),
                                                       ),
+                                                      imageBuilder: (context,
+                                                          imageProvider) {
+                                                        return Container(
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          4),
+                                                              image: DecorationImage(
+                                                                  image:
+                                                                      imageProvider,
+                                                                  fit: BoxFit
+                                                                      .fill)),
+                                                        );
+                                                      },
                                                     ),
-                                                    imageBuilder: (context,
-                                                        imageProvider) {
-                                                      return Container(
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4),
-                                                            image: DecorationImage(
-                                                                image:
-                                                                    imageProvider,
-                                                                fit: BoxFit
-                                                                    .fill)),
-                                                      );
-                                                    },
                                                   ),
                                                 ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: SizedBox(
-                                                    height: 80,
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          detailAnime.episodes![
-                                                                  index]
-                                                              ['episodeName'],
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: const TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                const FaIcon(
-                                                                  FontAwesomeIcons
-                                                                      .clock,
-                                                                  color: Colors
-                                                                      .grey,
-                                                                  size: 11,
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 4,
-                                                                ),
-                                                                Text(
-                                                                  Utils.convertTotalTime(
-                                                                      detailAnime
-                                                                              .episodes![index]
-                                                                          [
-                                                                          'totalTime']),
-                                                                  style: const TextStyle(
-                                                                      color: Colors
-                                                                          .grey,
-                                                                      fontSize:
-                                                                          11),
-                                                                )
-                                                              ],
-                                                            ),
-                                                            Text(
-                                                              "${Utils.formatNumberWithDots(detailAnime.episodes![index]['views'])} lượt xem",
-                                                              style: TextStyle(
-                                                                  color: Utils
-                                                                      .primaryColor,
-                                                                  fontSize: 11,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                            ),
-                                                          ],
-                                                        )
-                                                      ],
-                                                    )),
-                                              )
-                                            ],
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                  child: SizedBox(
+                                                      height: 80,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            detailAnime.episodes![
+                                                                    index]
+                                                                ['episodeName'],
+                                                            maxLines: 2,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  const FaIcon(
+                                                                    FontAwesomeIcons
+                                                                        .clock,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    size: 11,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 4,
+                                                                  ),
+                                                                  Text(
+                                                                    Utils.convertTotalTime(
+                                                                        detailAnime.episodes![index]
+                                                                            [
+                                                                            'totalTime']),
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        fontSize:
+                                                                            11),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              Text(
+                                                                "${Utils.formatNumberWithDots(detailAnime.episodes![index]['views'])} lượt xem",
+                                                                style: TextStyle(
+                                                                    color: Utils
+                                                                        .primaryColor,
+                                                                    fontSize:
+                                                                        11,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      )),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),

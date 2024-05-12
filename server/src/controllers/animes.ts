@@ -359,7 +359,19 @@ export const getAnimeEpisodeDetailById: RequestHandler = async (
     if (!mongoose.isValidObjectId(episodeId)) {
       throw createHttpError(400, "Invalid episode id");
     }
-    const episode = await AnimeEpisodeModel.findById(episodeId);
+    const episode = await AnimeEpisodeModel.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(episodeId) },
+      },
+      {
+        $lookup: {
+          from: "advertisements",
+          localField: "advertisement",
+          foreignField: "_id",
+          as: "advertisementContent",
+        },
+      },
+    ]);
 
     if (!episode) {
       throw createHttpError(404, "episode not found");
