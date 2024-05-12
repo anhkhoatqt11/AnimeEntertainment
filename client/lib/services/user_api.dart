@@ -70,4 +70,58 @@ class UsersApi {
       }
     }
   }
+
+  static getBookmartList(BuildContext context, userId) async {
+    var url = Uri.parse(
+      "${baseUrl}getBookmarkList?userId=$userId",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        return result;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static Future<void> removeBookmark(BuildContext context, String userId,
+      List<String> bookmarksToRemove) async {
+    var url = Uri.parse("${baseUrl}removeBookmark");
+    try {
+      var body = {
+        "userId": userId,
+        "bookmarksToRemove": bookmarksToRemove,
+      };
+      await http.post(url,
+          body: jsonEncode(body),
+          headers: {'Content-Type': 'application/json'});
+    } catch (e) {
+      handleNetworkError(context);
+    }
+  }
+
+  static void handleNetworkError(BuildContext context) {
+    print(Provider.of<NavigatorProvider>(context, listen: false)
+        .isShowNetworkError);
+    if (!Provider.of<NavigatorProvider>(context, listen: false)
+        .isShowNetworkError) {
+      Provider.of<NavigatorProvider>(context, listen: false)
+          .setShowNetworkError(true);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()));
+    }
+  }
 }

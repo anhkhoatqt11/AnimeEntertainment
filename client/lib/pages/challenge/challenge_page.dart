@@ -10,9 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:anime_and_comic_entertainment/components/challenge/Podium.dart';
 import 'package:provider/provider.dart';
 
-class ChallengePage extends StatelessWidget {
+class ChallengePage extends StatefulWidget {
   const ChallengePage({super.key});
 
+  @override
+  State<ChallengePage> createState() => _ChallengePageState();
+}
+
+class _ChallengePageState extends State<ChallengePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
