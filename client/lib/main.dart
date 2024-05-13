@@ -48,9 +48,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'skylark',
       color: Color(0xFF141414),
-      home: DetailComicPage(
-        comicId: "65ec601305c5cb2ad67cfb37",
-      ),
+      home: Splash(),
     );
   }
 }
