@@ -6,8 +6,8 @@ import 'package:anime_and_comic_entertainment/components/donate/DonatePackageLis
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
-import 'package:anime_and_comic_entertainment/pages/home/search_page.dart';
-import 'package:anime_and_comic_entertainment/pages/home/search_result_page.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_result_page.dart';
 import 'package:anime_and_comic_entertainment/pages/payment.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/edit_profile_page.dart';

@@ -1,11 +1,14 @@
 import 'package:anime_and_comic_entertainment/components/AnimeBookmarkItem.dart';
 import 'package:anime_and_comic_entertainment/components/ComicBookmarkItem.dart';
+import 'package:anime_and_comic_entertainment/components/ui/AlertChoiceDialog.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/services/user_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
+import 'package:provider/provider.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 
 class BookMarkPage extends StatefulWidget {
   const BookMarkPage({Key? key}) : super(key: key);
@@ -21,6 +24,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
   bool isEditing = false;
   List<int> selectedAnimeIndexes = [];
   List<int> selectedComicIndexes = [];
+  late String userId = "";
 
   @override
   void initState() {
@@ -30,8 +34,9 @@ class _BookMarkPageState extends State<BookMarkPage> {
 
   Future<void> _fetchBookmarkList() async {
     try {
-      final result =
-          await UsersApi.getBookmartList(context, '662777d1ba7dff5ac56f1729');
+      userId = Provider.of<UserProvider>(context, listen: false).user.id;
+      if (userId == "") return;
+      final result = await UsersApi.getBookmartList(context, userId);
       setState(() {
         listAnimeItem = (result['animes'] as List)
             .map((item) => Animes(
@@ -223,7 +228,8 @@ class _BookMarkPageState extends State<BookMarkPage> {
   }
 
   void _deleteSelectedItems() async {
-    const userId = '662777d1ba7dff5ac56f1729'; // Replace with actual user ID
+    userId = Provider.of<UserProvider>(context, listen: false).user.id;
+    if (userId == "") return;
     final bookmarksToRemove = <String>[];
 
     // Create copies of the lists to avoid modification during iteration

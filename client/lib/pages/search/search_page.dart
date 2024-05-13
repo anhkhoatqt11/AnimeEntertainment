@@ -1,4 +1,4 @@
-import 'package:anime_and_comic_entertainment/pages/home/search_result_page.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_result_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';

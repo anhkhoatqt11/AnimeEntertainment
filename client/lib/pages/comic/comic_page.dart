@@ -3,10 +3,13 @@ import 'package:anime_and_comic_entertainment/components/comic/ComicBanner.dart'
 import 'package:anime_and_comic_entertainment/components/CurrentReadingUser.dart';
 import 'package:anime_and_comic_entertainment/components/comic/NewChapterList.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/types/gf_button_type.dart';
+import 'package:provider/provider.dart';
 
 class ComicPage extends StatelessWidget {
   const ComicPage({super.key});
@@ -30,6 +33,19 @@ class ComicPage extends StatelessWidget {
                 color: Colors.white,
               ),
               onPressed: () {},
+              type: GFButtonType.transparent,
+            ),
+            GFIconButton(
+              icon: const Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Provider.of<NavigatorProvider>(context, listen: false)
+                    .setShow(false);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SearchPage()));
+              },
               type: GFButtonType.transparent,
             ),
           ],
