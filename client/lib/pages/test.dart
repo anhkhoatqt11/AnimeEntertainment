@@ -1,7 +1,19 @@
-import 'package:anime_and_comic_entertainment/model/comics.dart';
-import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
-import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:anime_and_comic_entertainment/components/animes/WatchingHistoriesList.dart';
+import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.dart';
+import 'package:anime_and_comic_entertainment/components/donate/DonatePackageListHome.dart';
+import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
+import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
+import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_result_page.dart';
+import 'package:anime_and_comic_entertainment/pages/payment.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/edit_profile_page.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
+import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
@@ -23,9 +35,9 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      body: Container(
+    return Scaffold(body: Consumer(builder: (context, watch, _) {
+      final user = Provider.of<UserProvider>(context).user;
+      return Container(
         width: double.infinity,
         color: const Color(0xFF141414),
         child: ListView(children: [
@@ -40,42 +52,61 @@ class _TestPageState extends State<TestPage> {
                   print(result['position']);
                 }
               },
-              child: const Text("test")),
+              child: Text("test")),
           ElevatedButton(
             onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DetailComicPage(
-                      comicId: "65ec601305c5cb2ad67cfb37"),
-                ),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SearchPage();
+              }));
             },
-            child: const Text("Detail comic"),
+            child: Text("Test Search"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ChallengePage();
+              }));
+            },
+            child: Text("Test Challenge"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return PaymentScreenPage();
+              }));
+            },
+            child: Text("Test Payment"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return EditProfilePage();
+              }));
+            },
+            child: Text("Test Edit Profile Page"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return BookMarkPage();
+              }));
+            },
+            child: Text("Test Bookmark Profile Page"),
+          ),
+          // ElevatedButton(
+          //   onPressed: () async {
+          //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //       return SearchResultPage();
+          //     }));
+          //   },
+          //   child: Text("Test Search Result"),
+          // ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+            child: SizedBox(height: 500, child: DonatePackageListHome()),
           ),
         ]),
-      ),
-    ));
+      );
+    }));
   }
 }
-
-  // ElevatedButton(
-  //             onPressed: () async {
-  //               var pdata = {
-  //                 "name": "User1",
-  //                 "phoneNumber": "01234",
-  //                 "total": "10",
-  //                 "payed": "1",
-  //                 "debt": "0"
-  //               };
-  //               await Api.addUser(pdata);
-  //             },
-  //             child: Text("CREATE")),
-  //         ElevatedButton(
-  //             onPressed: () async {
-  //               // var res =
-  //                   // await ComicsApi.getChapterComic("65ec601305c5cb2ad67cfb37");
-  //             },
-  //             child: Text("READ")),
-  //         ElevatedButton(onPressed: () async {}, child: Text("UPDATE")),
-  //         ElevatedButton(onPressed: () async {}, child: Text("DELETE")),
