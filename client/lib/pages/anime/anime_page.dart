@@ -2,6 +2,8 @@ import 'package:anime_and_comic_entertainment/components/animes/AnimeAlbum.dart'
 import 'package:anime_and_comic_entertainment/components/animes/AnimeBanner.dart';
 import 'package:anime_and_comic_entertainment/components/animes/NewEpisodeList.dart';
 import 'package:anime_and_comic_entertainment/components/animes/WatchingHistoriesList.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
@@ -36,6 +38,19 @@ class _AnimePageState extends State<AnimePage> {
                 color: Colors.white,
               ),
               onPressed: () {},
+              type: GFButtonType.transparent,
+            ),
+            GFIconButton(
+              icon: const Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Provider.of<NavigatorProvider>(context, listen: false)
+                    .setShow(false);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SearchPage()));
+              },
               type: GFButtonType.transparent,
             ),
           ],
