@@ -33,18 +33,7 @@ class _AnimePageState extends State<AnimePage> {
           ),
           actions: <Widget>[
             GFIconButton(
-              icon: const Icon(
-                Icons.favorite,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-              type: GFButtonType.transparent,
-            ),
-            GFIconButton(
-              icon: const Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
+              icon: const Icon(Icons.search, color: Colors.white, size: 24),
               onPressed: () {
                 Provider.of<NavigatorProvider>(context, listen: false)
                     .setShow(false);

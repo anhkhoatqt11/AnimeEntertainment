@@ -654,6 +654,27 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                               )
                                             ]),
                                           ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              // forward comment page
+                                            },
+                                            child: const Column(children: [
+                                              FaIcon(
+                                                FontAwesomeIcons.solidMessage,
+                                                color: Colors.grey,
+                                                size: 18,
+                                              ),
+                                              SizedBox(
+                                                height: 4,
+                                              ),
+                                              Text(
+                                                "Bình luận",
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 12),
+                                              )
+                                            ]),
+                                          ),
                                         ],
                                       ),
                                     );

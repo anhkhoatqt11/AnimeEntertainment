@@ -81,7 +81,10 @@ class _AnimeAlbumItemState extends State<AnimeAlbumItem> {
           if (index < listAnimeItem.length) {
             final item = listAnimeItem[index];
             return AnimeItem(
-                urlImage: item.coverImage, nameItem: item.movieName);
+              urlImage: item.coverImage,
+              nameItem: item.movieName,
+              animeId: item.id,
+            );
           } else {
             return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 32),

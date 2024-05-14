@@ -1,6 +1,7 @@
 import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
@@ -71,6 +72,8 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                   size: 24,
                 ),
                 onPressed: () {
+                  Provider.of<NavigatorProvider>(context, listen: false)
+                      .setShow(true);
                   Navigator.of(context).pop();
                 },
                 type: GFButtonType.transparent,
@@ -94,6 +97,8 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                   size: 24,
                 ),
                 onPressed: () {
+                  Provider.of<NavigatorProvider>(context, listen: false)
+                      .setShow(true);
                   Navigator.of(context).pop();
                 },
                 type: GFButtonType.transparent,
@@ -137,30 +142,51 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                                         stops: const [0.0, 0.86],
                                       )),
                                     ),
-                                    Container(
-                                      width: 80,
-                                      height: 80,
-                                      decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.6),
-                                          borderRadius:
-                                              BorderRadius.circular(360)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            6, 2, 0, 0),
-                                        child: Center(
-                                            child: ShaderMask(
-                                                shaderCallback: (rect) =>
-                                                    LinearGradient(
-                                                      colors:
-                                                          Utils.gradientColors,
-                                                      begin:
-                                                          Alignment.topCenter,
-                                                    ).createShader(rect),
-                                                child: const FaIcon(
-                                                  FontAwesomeIcons.play,
-                                                  color: Colors.white,
-                                                  size: 40,
-                                                ))),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Provider.of<VideoProvider>(context,
+                                                listen: false)
+                                            .setAnime(
+                                                Animes(
+                                                  id: widget.animeId,
+                                                ),
+                                                AnimeEpisodes(
+                                                    id: detailAnime.episodes![0]
+                                                        ['_id'],
+                                                    episodeName:
+                                                        detailAnime.episodes![0]
+                                                            ['episodeName']));
+                                        Provider.of<MiniPlayerControllerProvider>(
+                                                context,
+                                                listen: false)
+                                            .setMiniController(PanelState.MAX);
+                                      },
+                                      child: Container(
+                                        width: 80,
+                                        height: 80,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withOpacity(0.6),
+                                            borderRadius:
+                                                BorderRadius.circular(360)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              6, 2, 0, 0),
+                                          child: Center(
+                                              child: ShaderMask(
+                                                  shaderCallback: (rect) =>
+                                                      LinearGradient(
+                                                        colors: Utils
+                                                            .gradientColors,
+                                                        begin:
+                                                            Alignment.topCenter,
+                                                      ).createShader(rect),
+                                                  child: const FaIcon(
+                                                    FontAwesomeIcons.play,
+                                                    color: Colors.white,
+                                                    size: 40,
+                                                  ))),
+                                        ),
                                       ),
                                     ),
                                   ]),

@@ -37,23 +37,23 @@ class ComicItem extends StatelessWidget {
           );
         },
         child: Container(
-          width: 125,
+          width: 118,
           child: Column(children: [
             CachedNetworkImage(
               imageUrl: urlImage!,
-              width: 125,
-              height: 187,
+              width: 118,
+              height: 180,
               placeholder: (context, url) => Container(
-                height: 187,
-                width: 125,
+                height: 180,
+                width: 118,
                 decoration: BoxDecoration(
                     color: Colors.blue, borderRadius: BorderRadius.circular(4)),
                 child: Shimmer.fromColors(
                   baseColor: Colors.grey.shade300,
                   highlightColor: Colors.grey.shade100,
                   child: Container(
-                    width: 125,
-                    height: 187,
+                    width: 118,
+                    height: 180,
                     decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(4)),
@@ -81,7 +81,7 @@ class ComicItem extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),

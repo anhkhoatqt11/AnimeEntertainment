@@ -79,6 +79,7 @@ class UsersApi {
       final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
+        print(result);
         return result;
       } else {
         return [];

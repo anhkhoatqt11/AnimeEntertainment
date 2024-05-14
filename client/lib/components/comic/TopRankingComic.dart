@@ -1,4 +1,5 @@
 import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -96,128 +97,146 @@ class _TopRankingComicState extends State<TopRankingComic> {
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           top: 8, bottom: 0),
-                                      child: Container(
-                                        width: 1000,
-                                        height: 60,
-                                        color: Colors.transparent,
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              color: Colors.transparent,
-                                              height: 50,
-                                              width: 50,
-                                              child: Center(
-                                                child: ShaderMask(
-                                                    shaderCallback: (rect) =>
-                                                        LinearGradient(
-                                                            colors: index == 1
-                                                                ? Utils
-                                                                    .top1gradientColors
-                                                                : Utils.topgradientColors,
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                            stops: const [
-                                                              0,
-                                                              0.4
-                                                            ]).createShader(
-                                                            rect),
-                                                    child: Text(
-                                                      index == 1
-                                                          ? "#1"
-                                                          : "${(index - 1) * 5 + 1}",
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w900),
-                                                    )),
-                                              ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DetailComicPage(
+                                                      comicId: listRanking[
+                                                              (index - 1) * 5]
+                                                          .id!),
                                             ),
-                                            CachedNetworkImage(
-                                              imageUrl:
-                                                  listRanking[(index - 1) * 5]
-                                                      .coverImage!,
-                                              width: 50,
-                                              height: 50,
-                                              placeholder: (context, url) =>
-                                                  Container(
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 1000,
+                                          height: 60,
+                                          color: Colors.transparent,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                color: Colors.transparent,
                                                 height: 50,
                                                 width: 50,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4)),
-                                                child: Shimmer.fromColors(
-                                                  baseColor: Colors.grey,
-                                                  highlightColor:
-                                                      Colors.grey.shade400,
-                                                  child: Container(
-                                                    width: 50,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.yellow,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4)),
-                                                  ),
+                                                child: Center(
+                                                  child: ShaderMask(
+                                                      shaderCallback: (rect) =>
+                                                          LinearGradient(
+                                                              colors: index == 1
+                                                                  ? Utils
+                                                                      .top1gradientColors
+                                                                  : Utils.topgradientColors,
+                                                              begin: Alignment.topCenter,
+                                                              end: Alignment.bottomCenter,
+                                                              stops: const [
+                                                                0,
+                                                                0.4
+                                                              ]).createShader(
+                                                              rect),
+                                                      child: Text(
+                                                        index == 1
+                                                            ? "#1"
+                                                            : "${(index - 1) * 5 + 1}",
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      )),
                                                 ),
                                               ),
-                                              imageBuilder:
-                                                  (context, imageProvider) {
-                                                return Container(
+                                              CachedNetworkImage(
+                                                imageUrl:
+                                                    listRanking[(index - 1) * 5]
+                                                        .coverImage!,
+                                                width: 50,
+                                                height: 50,
+                                                placeholder: (context, url) =>
+                                                    Container(
+                                                  height: 50,
+                                                  width: 50,
                                                   decoration: BoxDecoration(
+                                                      color: Colors.blue,
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              4),
-                                                      image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover)),
-                                                );
-                                              },
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        14, 2, 0, 2),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      listRanking[
-                                                              (index - 1) * 5]
-                                                          .comicName!,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 13),
+                                                              4)),
+                                                  child: Shimmer.fromColors(
+                                                    baseColor: Colors.grey,
+                                                    highlightColor:
+                                                        Colors.grey.shade400,
+                                                    child: Container(
+                                                      width: 50,
+                                                      height: 50,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.yellow,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4)),
                                                     ),
-                                                    Text(
-                                                      convertGenreArrayToString(
-                                                          listRanking[
-                                                                  (index - 1) *
-                                                                      5]
-                                                              .genres!),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: Colors.grey,
-                                                          fontSize: 11),
-                                                    )
-                                                  ],
+                                                  ),
                                                 ),
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                        image: DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.cover)),
+                                                  );
+                                                },
                                               ),
-                                            )
-                                          ],
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          14, 2, 0, 2),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        listRanking[
+                                                                (index - 1) * 5]
+                                                            .comicName!,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13),
+                                                      ),
+                                                      Text(
+                                                        convertGenreArrayToString(
+                                                            listRanking[(index -
+                                                                        1) *
+                                                                    5]
+                                                                .genres!),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 11),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -225,130 +244,150 @@ class _TopRankingComicState extends State<TopRankingComic> {
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           top: 0, bottom: 0),
-                                      child: Container(
-                                        width: 1000,
-                                        height: 60,
-                                        color: Colors.transparent,
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              color: Colors.transparent,
-                                              height: 50,
-                                              width: 50,
-                                              child: Center(
-                                                child: ShaderMask(
-                                                    shaderCallback: (rect) =>
-                                                        LinearGradient(
-                                                            colors: index == 1
-                                                                ? Utils
-                                                                    .top2gradientColors
-                                                                : Utils.topgradientColors,
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                            stops: const [
-                                                              0,
-                                                              0.4
-                                                            ]).createShader(
-                                                            rect),
-                                                    child: Text(
-                                                      index == 1
-                                                          ? "#2"
-                                                          : "${(index - 1) * 5 + 2}",
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w900),
-                                                    )),
-                                              ),
-                                            ),
-                                            CachedNetworkImage(
-                                              imageUrl: listRanking[
-                                                      (index - 1) * 5 + 1]
-                                                  .coverImage!,
-                                              width: 50,
-                                              height: 50,
-                                              placeholder: (context, url) =>
-                                                  Container(
-                                                height: 50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4)),
-                                                child: Shimmer.fromColors(
-                                                  baseColor: Colors.grey,
-                                                  highlightColor:
-                                                      Colors.grey.shade400,
-                                                  child: Container(
-                                                    width: 50,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.yellow,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4)),
-                                                  ),
-                                                ),
-                                              ),
-                                              imageBuilder:
-                                                  (context, imageProvider) {
-                                                return Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover)),
-                                                );
-                                              },
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        14, 2, 0, 2),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      listRanking[
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DetailComicPage(
+                                                      comicId: listRanking[
                                                               (index - 1) * 5 +
                                                                   1]
-                                                          .comicName!,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 13),
-                                                    ),
-                                                    Text(
-                                                      convertGenreArrayToString(
-                                                          listRanking[
-                                                                  (index - 1) *
-                                                                          5 +
-                                                                      1]
-                                                              .genres!),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: Colors.grey,
-                                                          fontSize: 11),
-                                                    )
-                                                  ],
+                                                          .id!),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 1000,
+                                          height: 60,
+                                          color: Colors.transparent,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                color: Colors.transparent,
+                                                height: 50,
+                                                width: 50,
+                                                child: Center(
+                                                  child: ShaderMask(
+                                                      shaderCallback: (rect) =>
+                                                          LinearGradient(
+                                                              colors: index == 1
+                                                                  ? Utils
+                                                                      .top2gradientColors
+                                                                  : Utils.topgradientColors,
+                                                              begin: Alignment.topCenter,
+                                                              end: Alignment.bottomCenter,
+                                                              stops: const [
+                                                                0,
+                                                                0.4
+                                                              ]).createShader(
+                                                              rect),
+                                                      child: Text(
+                                                        index == 1
+                                                            ? "#2"
+                                                            : "${(index - 1) * 5 + 2}",
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      )),
                                                 ),
                                               ),
-                                            )
-                                          ],
+                                              CachedNetworkImage(
+                                                imageUrl: listRanking[
+                                                        (index - 1) * 5 + 1]
+                                                    .coverImage!,
+                                                width: 50,
+                                                height: 50,
+                                                placeholder: (context, url) =>
+                                                    Container(
+                                                  height: 50,
+                                                  width: 50,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4)),
+                                                  child: Shimmer.fromColors(
+                                                    baseColor: Colors.grey,
+                                                    highlightColor:
+                                                        Colors.grey.shade400,
+                                                    child: Container(
+                                                      width: 50,
+                                                      height: 50,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.yellow,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4)),
+                                                    ),
+                                                  ),
+                                                ),
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                        image: DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.cover)),
+                                                  );
+                                                },
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          14, 2, 0, 2),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        listRanking[
+                                                                (index - 1) *
+                                                                        5 +
+                                                                    1]
+                                                            .comicName!,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13),
+                                                      ),
+                                                      Text(
+                                                        convertGenreArrayToString(
+                                                            listRanking[(index -
+                                                                            1) *
+                                                                        5 +
+                                                                    1]
+                                                                .genres!),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 11),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -356,130 +395,150 @@ class _TopRankingComicState extends State<TopRankingComic> {
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           top: 0, bottom: 0),
-                                      child: Container(
-                                        width: 1000,
-                                        height: 60,
-                                        color: Colors.transparent,
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              color: Colors.transparent,
-                                              height: 50,
-                                              width: 50,
-                                              child: Center(
-                                                child: ShaderMask(
-                                                    shaderCallback: (rect) =>
-                                                        LinearGradient(
-                                                            colors: index == 1
-                                                                ? Utils
-                                                                    .top3gradientColors
-                                                                : Utils.topgradientColors,
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                            stops: const [
-                                                              0,
-                                                              0.4
-                                                            ]).createShader(
-                                                            rect),
-                                                    child: Text(
-                                                      index == 1
-                                                          ? "#3"
-                                                          : "${(index - 1) * 5 + 3}",
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w900),
-                                                    )),
-                                              ),
-                                            ),
-                                            CachedNetworkImage(
-                                              imageUrl: listRanking[
-                                                      (index - 1) * 5 + 2]
-                                                  .coverImage!,
-                                              width: 50,
-                                              height: 50,
-                                              placeholder: (context, url) =>
-                                                  Container(
-                                                height: 50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4)),
-                                                child: Shimmer.fromColors(
-                                                  baseColor: Colors.grey,
-                                                  highlightColor:
-                                                      Colors.grey.shade400,
-                                                  child: Container(
-                                                    width: 50,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.yellow,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4)),
-                                                  ),
-                                                ),
-                                              ),
-                                              imageBuilder:
-                                                  (context, imageProvider) {
-                                                return Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover)),
-                                                );
-                                              },
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        14, 2, 0, 2),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      listRanking[
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DetailComicPage(
+                                                      comicId: listRanking[
                                                               (index - 1) * 5 +
                                                                   2]
-                                                          .comicName!,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 13),
-                                                    ),
-                                                    Text(
-                                                      convertGenreArrayToString(
-                                                          listRanking[
-                                                                  (index - 1) *
-                                                                          5 +
-                                                                      2]
-                                                              .genres!),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: Colors.grey,
-                                                          fontSize: 11),
-                                                    )
-                                                  ],
+                                                          .id!),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 1000,
+                                          height: 60,
+                                          color: Colors.transparent,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                color: Colors.transparent,
+                                                height: 50,
+                                                width: 50,
+                                                child: Center(
+                                                  child: ShaderMask(
+                                                      shaderCallback: (rect) =>
+                                                          LinearGradient(
+                                                              colors: index == 1
+                                                                  ? Utils
+                                                                      .top3gradientColors
+                                                                  : Utils.topgradientColors,
+                                                              begin: Alignment.topCenter,
+                                                              end: Alignment.bottomCenter,
+                                                              stops: const [
+                                                                0,
+                                                                0.4
+                                                              ]).createShader(
+                                                              rect),
+                                                      child: Text(
+                                                        index == 1
+                                                            ? "#3"
+                                                            : "${(index - 1) * 5 + 3}",
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      )),
                                                 ),
                                               ),
-                                            )
-                                          ],
+                                              CachedNetworkImage(
+                                                imageUrl: listRanking[
+                                                        (index - 1) * 5 + 2]
+                                                    .coverImage!,
+                                                width: 50,
+                                                height: 50,
+                                                placeholder: (context, url) =>
+                                                    Container(
+                                                  height: 50,
+                                                  width: 50,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4)),
+                                                  child: Shimmer.fromColors(
+                                                    baseColor: Colors.grey,
+                                                    highlightColor:
+                                                        Colors.grey.shade400,
+                                                    child: Container(
+                                                      width: 50,
+                                                      height: 50,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.yellow,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4)),
+                                                    ),
+                                                  ),
+                                                ),
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                        image: DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.cover)),
+                                                  );
+                                                },
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          14, 2, 0, 2),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        listRanking[
+                                                                (index - 1) *
+                                                                        5 +
+                                                                    2]
+                                                            .comicName!,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13),
+                                                      ),
+                                                      Text(
+                                                        convertGenreArrayToString(
+                                                            listRanking[(index -
+                                                                            1) *
+                                                                        5 +
+                                                                    2]
+                                                                .genres!),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 11),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -487,127 +546,146 @@ class _TopRankingComicState extends State<TopRankingComic> {
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           top: 0, bottom: 0),
-                                      child: Container(
-                                        width: 1000,
-                                        height: 60,
-                                        color: Colors.transparent,
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              color: Colors.transparent,
-                                              height: 50,
-                                              width: 50,
-                                              child: Center(
-                                                child: ShaderMask(
-                                                    shaderCallback: (rect) => LinearGradient(
-                                                            colors: Utils
-                                                                .topgradientColors,
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
-                                                            stops: const [
-                                                              0,
-                                                              0.4
-                                                            ]).createShader(
-                                                            rect),
-                                                    child: Text(
-                                                      "${(index - 1) * 5 + 4}",
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w900),
-                                                    )),
-                                              ),
-                                            ),
-                                            CachedNetworkImage(
-                                              imageUrl: listRanking[
-                                                      (index - 1) * 5 + 3]
-                                                  .coverImage!,
-                                              width: 50,
-                                              height: 50,
-                                              placeholder: (context, url) =>
-                                                  Container(
-                                                height: 50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4)),
-                                                child: Shimmer.fromColors(
-                                                  baseColor: Colors.grey,
-                                                  highlightColor:
-                                                      Colors.grey.shade400,
-                                                  child: Container(
-                                                    width: 50,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.yellow,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4)),
-                                                  ),
-                                                ),
-                                              ),
-                                              imageBuilder:
-                                                  (context, imageProvider) {
-                                                return Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover)),
-                                                );
-                                              },
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        14, 2, 0, 2),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      listRanking[
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DetailComicPage(
+                                                      comicId: listRanking[
                                                               (index - 1) * 5 +
                                                                   3]
-                                                          .comicName!,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 13),
-                                                    ),
-                                                    Text(
-                                                      convertGenreArrayToString(
-                                                          listRanking[
-                                                                  (index - 1) *
-                                                                          5 +
-                                                                      3]
-                                                              .genres!),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: Colors.grey,
-                                                          fontSize: 11),
-                                                    )
-                                                  ],
+                                                          .id!),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 1000,
+                                          height: 60,
+                                          color: Colors.transparent,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                color: Colors.transparent,
+                                                height: 50,
+                                                width: 50,
+                                                child: Center(
+                                                  child: ShaderMask(
+                                                      shaderCallback: (rect) =>
+                                                          LinearGradient(
+                                                              colors: Utils
+                                                                  .topgradientColors,
+                                                              begin: Alignment.topCenter,
+                                                              end: Alignment.bottomCenter,
+                                                              stops: const [
+                                                                0,
+                                                                0.4
+                                                              ]).createShader(
+                                                              rect),
+                                                      child: Text(
+                                                        "${(index - 1) * 5 + 4}",
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      )),
                                                 ),
                                               ),
-                                            )
-                                          ],
+                                              CachedNetworkImage(
+                                                imageUrl: listRanking[
+                                                        (index - 1) * 5 + 3]
+                                                    .coverImage!,
+                                                width: 50,
+                                                height: 50,
+                                                placeholder: (context, url) =>
+                                                    Container(
+                                                  height: 50,
+                                                  width: 50,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4)),
+                                                  child: Shimmer.fromColors(
+                                                    baseColor: Colors.grey,
+                                                    highlightColor:
+                                                        Colors.grey.shade400,
+                                                    child: Container(
+                                                      width: 50,
+                                                      height: 50,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.yellow,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4)),
+                                                    ),
+                                                  ),
+                                                ),
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                        image: DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.cover)),
+                                                  );
+                                                },
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          14, 2, 0, 2),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        listRanking[
+                                                                (index - 1) *
+                                                                        5 +
+                                                                    3]
+                                                            .comicName!,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13),
+                                                      ),
+                                                      Text(
+                                                        convertGenreArrayToString(
+                                                            listRanking[(index -
+                                                                            1) *
+                                                                        5 +
+                                                                    3]
+                                                                .genres!),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 11),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -615,127 +693,146 @@ class _TopRankingComicState extends State<TopRankingComic> {
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           top: 0, bottom: 0),
-                                      child: Container(
-                                        width: 1000,
-                                        height: 60,
-                                        color: Colors.transparent,
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              color: Colors.transparent,
-                                              height: 50,
-                                              width: 50,
-                                              child: Center(
-                                                child: ShaderMask(
-                                                    shaderCallback: (rect) => LinearGradient(
-                                                            colors: Utils
-                                                                .topgradientColors,
-                                                            begin: Alignment
-                                                                .topCenter,
-                                                            end: Alignment
-                                                                .bottomCenter,
-                                                            stops: const [
-                                                              0,
-                                                              0.4
-                                                            ]).createShader(
-                                                            rect),
-                                                    child: Text(
-                                                      "${(index - 1) * 5 + 5}",
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w900),
-                                                    )),
-                                              ),
-                                            ),
-                                            CachedNetworkImage(
-                                              imageUrl: listRanking[
-                                                      (index - 1) * 5 + 4]
-                                                  .coverImage!,
-                                              width: 50,
-                                              height: 50,
-                                              placeholder: (context, url) =>
-                                                  Container(
-                                                height: 50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4)),
-                                                child: Shimmer.fromColors(
-                                                  baseColor: Colors.grey,
-                                                  highlightColor:
-                                                      Colors.grey.shade400,
-                                                  child: Container(
-                                                    width: 50,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.yellow,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4)),
-                                                  ),
-                                                ),
-                                              ),
-                                              imageBuilder:
-                                                  (context, imageProvider) {
-                                                return Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              4),
-                                                      image: DecorationImage(
-                                                          image: imageProvider,
-                                                          fit: BoxFit.cover)),
-                                                );
-                                              },
-                                            ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        14, 2, 0, 2),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      listRanking[
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DetailComicPage(
+                                                      comicId: listRanking[
                                                               (index - 1) * 5 +
                                                                   4]
-                                                          .comicName!,
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 13),
-                                                    ),
-                                                    Text(
-                                                      convertGenreArrayToString(
-                                                          listRanking[
-                                                                  (index - 1) *
-                                                                          5 +
-                                                                      4]
-                                                              .genres!),
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: Colors.grey,
-                                                          fontSize: 11),
-                                                    )
-                                                  ],
+                                                          .id!),
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 1000,
+                                          height: 60,
+                                          color: Colors.transparent,
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                color: Colors.transparent,
+                                                height: 50,
+                                                width: 50,
+                                                child: Center(
+                                                  child: ShaderMask(
+                                                      shaderCallback: (rect) =>
+                                                          LinearGradient(
+                                                              colors: Utils
+                                                                  .topgradientColors,
+                                                              begin: Alignment.topCenter,
+                                                              end: Alignment.bottomCenter,
+                                                              stops: const [
+                                                                0,
+                                                                0.4
+                                                              ]).createShader(
+                                                              rect),
+                                                      child: Text(
+                                                        "${(index - 1) * 5 + 5}",
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w900),
+                                                      )),
                                                 ),
                                               ),
-                                            )
-                                          ],
+                                              CachedNetworkImage(
+                                                imageUrl: listRanking[
+                                                        (index - 1) * 5 + 4]
+                                                    .coverImage!,
+                                                width: 50,
+                                                height: 50,
+                                                placeholder: (context, url) =>
+                                                    Container(
+                                                  height: 50,
+                                                  width: 50,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.blue,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4)),
+                                                  child: Shimmer.fromColors(
+                                                    baseColor: Colors.grey,
+                                                    highlightColor:
+                                                        Colors.grey.shade400,
+                                                    child: Container(
+                                                      width: 50,
+                                                      height: 50,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.yellow,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4)),
+                                                    ),
+                                                  ),
+                                                ),
+                                                imageBuilder:
+                                                    (context, imageProvider) {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                        image: DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit.cover)),
+                                                  );
+                                                },
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          14, 2, 0, 2),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        listRanking[
+                                                                (index - 1) *
+                                                                        5 +
+                                                                    4]
+                                                            .comicName!,
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 13),
+                                                      ),
+                                                      Text(
+                                                        convertGenreArrayToString(
+                                                            listRanking[(index -
+                                                                            1) *
+                                                                        5 +
+                                                                    4]
+                                                                .genres!),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 11),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),

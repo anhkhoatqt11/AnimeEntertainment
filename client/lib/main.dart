@@ -6,7 +6,9 @@ import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/splash.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
@@ -27,7 +29,7 @@ import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_pag
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = KhoaStripeApiKey.stripePublicKey;
+  Stripe.publishableKey = StripeApiKey.publishableKey;
   await Stripe.instance.applySettings();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => UserProvider()),
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'skylark',
       color: Color(0xFF141414),
-      home: Splash(),
+      home: BookMarkPage(),
     );
   }
 }
