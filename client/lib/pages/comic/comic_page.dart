@@ -1,6 +1,5 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicAlbum.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ComicBanner.dart';
-import 'package:anime_and_comic_entertainment/components/CurrentReadingUser.dart';
 import 'package:anime_and_comic_entertainment/components/comic/NewChapterList.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
@@ -63,13 +62,13 @@ class ComicPage extends StatelessWidget {
                     fontWeight: FontWeight.w600),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-              child: SizedBox(
-                height: 228,
-                child: CurrentReadingUser(),
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+            //   child: SizedBox(
+            //     height: 228,
+            //     child: CurrentReadingUser(),
+            //   ),
+            // ),
             SizedBox(
               height: 10,
             ),

@@ -5,6 +5,7 @@ import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_res
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/splash.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/payment_history_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'skylark',
       color: Color(0xFF141414),
-      home: Splash(),
+      home: PaymentHistory(),
     );
   }
 }
