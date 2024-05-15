@@ -49,6 +49,7 @@ export const getLogin: RequestHandler = async (req, res) => {
           watchingTime: 0,
           received: [],
           finalTime: new Date(),
+          hasReceivedDailyGift: false,
         };
         await result.save();
       }
@@ -67,6 +68,7 @@ export const getLogin: RequestHandler = async (req, res) => {
                   watchingTime: 0,
                   received: [],
                   finalTime: new Date(),
+                  hasReceivedDailyGift: false,
                 }
               : result["questLog"],
         })
@@ -123,6 +125,7 @@ export const postLogin: RequestHandler = async (req, res) => {
           watchingTime: 0,
           received: [],
           finalTime: new Date(),
+          hasReceivedDailyGift: false,
         };
       }
     }
@@ -167,6 +170,7 @@ export const register: RequestHandler = async (req, res) => {
         watchingTime: 0,
         received: [],
         finalTime: new Date(),
+        hasReceivedDailyGift: false,
       },
     });
 

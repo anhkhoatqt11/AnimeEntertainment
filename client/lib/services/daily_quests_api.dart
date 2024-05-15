@@ -82,4 +82,39 @@ class DailyQuestsApi {
       }
     }
   }
+
+  static updateLoginLog(BuildContext context) async {
+    var url = Uri.parse(
+      "${baseUrl}updateLoginLog",
+    );
+    try {
+      var userInfo = Provider.of<UserProvider>(context, listen: false).user;
+      if (userInfo.authentication["sessionToken"] != "") {
+        var body = {
+          "userId": userInfo.id,
+        };
+        var res = await http.post(url, body: body);
+        if (res.statusCode == 200) {
+          Provider.of<UserProvider>(context, listen: false)
+              .setReceivedDailyGift(true);
+          var result = (jsonDecode(res.body));
+          Provider.of<UserProvider>(context, listen: false)
+              .setCoinPoint(result["coinPoint"]);
+          Provider.of<UserProvider>(context, listen: false)
+              .setReceivedDailyGift(true);
+        }
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
 }

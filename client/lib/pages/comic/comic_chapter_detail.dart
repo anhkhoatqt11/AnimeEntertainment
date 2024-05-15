@@ -7,6 +7,7 @@ import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.da
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -46,7 +47,7 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
     checkUserHasLikeOrSaveAndWatchChapter();
   }
 
-  void _scrollListener() {
+  Future<void> _scrollListener() async {
     double maxScrollExtent = _scrollController.position.maxScrollExtent;
     double currentScrollPosition = _scrollController.position.pixels;
     double scrollPercentage = (currentScrollPosition / maxScrollExtent) * 100;
@@ -61,6 +62,13 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
       viewDone = true;
       ComicsApi.updateChapterView(
           context, widget.comic.chapterList![widget.index]['_id']);
+      if (Provider.of<UserProvider>(context, listen: false)
+              .user
+              .authentication['sessionToken'] !=
+          "") {
+        Provider.of<UserProvider>(context, listen: false).setReadingTime(1);
+        await DailyQuestsApi.updateQuestLog(context, "");
+      }
     }
   }
 

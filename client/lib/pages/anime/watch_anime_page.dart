@@ -8,6 +8,7 @@ import 'package:anime_and_comic_entertainment/providers/mini_player_controller_p
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
+import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,11 +73,18 @@ class _WatchAnimePageState extends State<WatchAnimePage>
     }
   }
 
-  void handlePush(int value) {
+  Future<void> handlePush(int value) async {
     if (bufferWatchRecord.length == 2) {
       if (viewDone == false) {
         viewDone = !viewDone;
         AnimesApi.updateEpisodeView(context, widget.videoId);
+        if (Provider.of<UserProvider>(context, listen: false)
+                .user
+                .authentication['sessionToken'] !=
+            "") {
+          Provider.of<UserProvider>(context, listen: false).setWatchingTime(1);
+          await DailyQuestsApi.updateQuestLog(context, "");
+        }
       }
       ;
       return;

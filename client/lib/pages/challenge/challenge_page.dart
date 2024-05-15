@@ -1,3 +1,4 @@
+import 'package:anime_and_comic_entertainment/components/challenge/DailyLoginList.dart';
 import 'package:anime_and_comic_entertainment/components/challenge/DailyQuest.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_page.dart';
@@ -69,7 +70,7 @@ class _ChallengePageState extends State<ChallengePage> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ChallengeTest()));
+                              builder: (context) => const ChallengeTest()));
                     },
                     height: 45,
                     width: 160,
@@ -95,26 +96,12 @@ class _ChallengePageState extends State<ChallengePage> {
                         .authentication['sessionToken'] ==
                     ""
                 ? Text(
-                    "Vui lòng đăng nhập để làm nhiệm vụ",
+                    "Vui lòng đăng nhập để nhận thưởng",
                     style: TextStyle(color: Utils.accentColor, fontSize: 10),
                   )
-                : SizedBox.shrink(),
+                : const SizedBox.shrink(),
           ),
-          DailyQuestList(),
-          ElevatedButton(
-              onPressed: () async {
-                Provider.of<UserProvider>(context, listen: false)
-                    .setWatchingTime(1);
-                await DailyQuestsApi.updateQuestLog(context, "");
-              },
-              child: Text("tang luot xem")),
-          ElevatedButton(
-              onPressed: () async {
-                Provider.of<UserProvider>(context, listen: false)
-                    .setReadingTime(1);
-                await DailyQuestsApi.updateQuestLog(context, "");
-              },
-              child: Text("tang luot doc"))
+          const DailyQuestList(),
         ],
       ),
     );
