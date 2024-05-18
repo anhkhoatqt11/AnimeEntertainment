@@ -6,7 +6,7 @@ import Comics from "../models/comics";
 import BannerModel from "../models/banner";
 import ComicChapterModel from "../models/comicChapter";
 import UserModel from "../models/user";
-
+import * as admin from 'firebase-admin';
 import ComicAlbumModel from "../models/comicAlbum";
 import qs from "qs";
 
@@ -758,6 +758,49 @@ export const addUserLikeComment: RequestHandler = async (req, res, next) => {
     console.log(chapter.comments.at(findIndex));
 
     return res.status(200).json(chapter).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const sendPushNoti: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    try {
+      var serviceAccount = require("../../pushnotiflutter-95328-firebase-adminsdk-rdiar-9008d7c00f.json");
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+      });
+    }
+    catch {
+
+    }
+
+    const token = "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";
+
+    const message = {
+      notification: {
+        title: req.body.title,
+        body: req.body.body,
+      },
+      token: token, // This is the device token
+    };
+
+    // Send a message to the device corresponding to the provided
+    // registration token.
+    admin.messaging().send(message)
+      .then((response) => {
+        // Response is a message ID string.
+        console.log('Successfully sent message:', response);
+        res.send('Successfully sent message: ' + response);
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+        res.send('Error sending message: ' + error);
+      });
   } catch (error) {
     next(error);
   }
