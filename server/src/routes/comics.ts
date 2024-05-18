@@ -53,4 +53,5 @@ router.post("/addRootChapterComments", ComicsController.addRootChapterComments);
 
 router.get("/searchComic", ComicsController.searchComics);
 
+router.get("/getReadingHistories", ComicsController.getReadingHistories);
 export default router;

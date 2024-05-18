@@ -6,6 +6,7 @@ import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/model/banner.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/model/comment.dart';
+import 'package:anime_and_comic_entertainment/model/readingHistories.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
@@ -397,6 +398,41 @@ class ComicsApi {
         });
 
         return comments;
+      } else {
+        return {};
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static getReadingHistories(BuildContext context, userId, limit, page) async {
+    var url = Uri.parse(
+      "${baseUrl}getReadingHistories?userId=$userId&limit=$limit&page=$page",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<ReadingHistories> histories = [];
+        result[0]['detailHistories'].forEach((element) {
+          histories.add(ReadingHistories(
+              id: element['_id'],
+              coverImage: element['coverImage'],
+              chapterName: element['chapterName'],
+              ownerId: element['comicOwner'][0]['_id'],
+              ownerChapterList: element['comicOwner'][0]['detailChapterList']));
+        });
+        return histories;
       } else {
         return {};
       }
