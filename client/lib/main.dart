@@ -13,9 +13,11 @@ import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart'
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/tab_navigator.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -29,6 +31,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = StripeApiKey.publishableKey;
   await Stripe.instance.applySettings();
+  print('start init Firebase');
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: 'AIzaSyDtoKADEsE3QxNeflKMKcyRIOqzG3eScsA',
+          appId: '1:198652970229:android:4e38bd8f3a5553e7f0f1bc',
+          messagingSenderId: '198652970229',
+          projectId: 'pushnotiflutter-95328'));
+  print('start init Firebase API');
+  await FirebaseApi().initNotification();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => UserProvider()),
     ChangeNotifierProvider(create: (context) => VideoProvider()),

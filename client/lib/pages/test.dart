@@ -1,3 +1,4 @@
+import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
@@ -10,6 +11,7 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
 import 'package:getwidget/size/gf_size.dart';
 import 'package:getwidget/types/gf_button_type.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -52,6 +54,18 @@ class _TestPageState extends State<TestPage> {
               );
             },
             child: const Text("Detail comic"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+              String packageName = packageInfo.packageName;
+              showDialog(
+                  context: context,
+                  builder: (_) => CustomAlertDialog(
+                      content: packageName, title: 'Thông báo', action: () {}));
+            },
+            child: const Text("Push Noti"),
           ),
         ]),
       ),
