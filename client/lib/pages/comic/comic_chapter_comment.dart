@@ -114,15 +114,15 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                       color: Colors.grey[700], fontWeight: FontWeight.bold),
                   child: Padding(
                     padding: EdgeInsets.only(top: 4),
-                    child: Row(
+                    child: const Row(
                       children: [
                         SizedBox(
                           width: 8,
                         ),
-                        GestureDetector(
-                          child: Text('Thích'),
-                          onTap: () {},
-                        ),
+                        // GestureDetector(
+                        //   child: Text('Thích'),
+                        //   onTap: () {},
+                        // ),
                         // SizedBox(
                         //   width: 24,
                         // ),
@@ -181,13 +181,13 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                         SizedBox(
                           width: 8,
                         ),
-                        GestureDetector(
-                          child: Text('Thích'),
-                          onTap: () {},
-                        ),
-                        SizedBox(
-                          width: 24,
-                        ),
+                        // GestureDetector(
+                        //   child: Text('Thích'),
+                        //   onTap: () {},
+                        // ),
+                        // SizedBox(
+                        //   width: 24,
+                        // ),
                         GestureDetector(
                           child: Text('Trả lời'),
                           onTap: () {
@@ -321,6 +321,7 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                             'Bạn đang bị cấm bình luận vì vi phạm quy tắc cộng đồng. Thời gian bạn có thể bình luận tiếp là $formattedDate',
                                         title: 'Thông báo',
                                         action: () {}));
+                                commentController.text = '';
                                 return;
                               }
 
@@ -343,6 +344,7 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                         listen: false)
                                     .banUser(context, userId);
 
+                                commentController.text = '';
                                 return;
                               }
 
@@ -361,6 +363,9 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                         userId,
                                         commentController.text);
                               }
+
+                              commentController.text = '';
+                              commentReplied = '';
 
                               await getComicChapterComments()
                                   .then((value) => setState(() {

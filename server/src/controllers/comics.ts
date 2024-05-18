@@ -559,7 +559,6 @@ export const addRootChapterComments: RequestHandler = async (req, res, next) => 
   try {
     const { chapterId, userId, content } = req.body;
     var chapter = await ComicChapterModel.findById(chapterId);
-    console.log(chapter);
     if (!chapter) {
       return res.sendStatus(400);
     }
@@ -578,6 +577,8 @@ export const addRootChapterComments: RequestHandler = async (req, res, next) => 
       avatar: user.avatar,
       userName: user.username === null ? "" : user.username
     });
+
+    console.log(chapter.comments);
 
     await chapter?.save();
     return res.status(200).json(chapter).end();
@@ -624,7 +625,10 @@ export const addChildChapterComments: RequestHandler = async (req, res, next) =>
       userName: user?.username === null ? "aa" : user?.username
     });
 
-    await chapter?.save();
+    await chapter.save();
+
+    console.log(chapter.comments.at(findIndex));
+
     return res.status(200).json(chapter).end();
   } catch (error) {
     next(error);
@@ -714,6 +718,46 @@ export const banUser: RequestHandler = async (req, res, next) => {
 
     await user?.save();
     return res.status(200).json(user.accessCommentDate).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addUserLikeComment: RequestHandler = async (req, res, next) => {
+  try {
+    const { chapterId, commentId, userId } = req.body;
+    var chapter = await ComicChapterModel.findById(chapterId);
+    //console.log(chapter);
+    if (!chapter) {
+      return res.sendStatus(400);
+    }
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    var index = 0;
+    var findIndex = -1;
+
+    chapter.comments.forEach(element => {
+      //console.log(element["_id"]);
+      if (element["_id"].toString().includes(commentId)) {
+        console.log(element["replies"]);
+        //element["replies"]
+        findIndex = index;
+        console.log(findIndex);
+      }
+      index++;
+    });
+
+    chapter.comments.at(findIndex)["likes"].push(new mongoose.Types.ObjectId(userId));
+
+    await chapter.save();
+
+    console.log(chapter.comments.at(findIndex));
+
+    return res.status(200).json(chapter).end();
   } catch (error) {
     next(error);
   }
