@@ -6,7 +6,6 @@ import Comics from "../models/comics";
 import BannerModel from "../models/banner";
 import ComicChapterModel from "../models/comicChapter";
 import UserModel from "../models/user";
-import * as admin from 'firebase-admin';
 import ComicAlbumModel from "../models/comicAlbum";
 import qs from "qs";
 
@@ -331,6 +330,27 @@ export const getDetailComicById: RequestHandler = async (req, res, next) => {
       throw createHttpError(404, "comic not found");
     }
     res.status(200).json(comic);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getComicChapter: RequestHandler = async (req, res, next) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const chapterId: string =
+    typeof parsedParams.chapterId === "string" ? parsedParams.chapterId : "0";
+  try {
+    if (!mongoose.isValidObjectId(chapterId)) {
+      throw createHttpError(400, "Invalid comic id");
+    }
+    // Mỗi một comic có một field gọi là chapterList chứa id của các chapter
+    const chapter = await ComicChapterModel.findById(chapterId);
+    if (!chapter) {
+      throw createHttpError(404, "comic not found");
+    }
+    res.status(200).json(chapter);
   } catch (error) {
     next(error);
   }
@@ -763,44 +783,23 @@ export const addUserLikeComment: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const sendPushNoti: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const updateNotiComment: RequestHandler = async (req, res, next) => {
   try {
-    try {
-      var serviceAccount = require("../../pushnotiflutter-95328-firebase-adminsdk-rdiar-9008d7c00f.json");
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-      });
-    }
-    catch {
+    const { userId, chapterId } = req.body;
 
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
     }
 
-    const token = "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";
+    user.notifications.push({
+      sourceId: new mongoose.Types.ObjectId(chapterId),
+      type: "comment",
+      content: "Ai đó đã trả lời bình luận của bạn"
+    });
 
-    const message = {
-      notification: {
-        title: req.body.title,
-        body: req.body.body,
-      },
-      token: token, // This is the device token
-    };
-
-    // Send a message to the device corresponding to the provided
-    // registration token.
-    admin.messaging().send(message)
-      .then((response) => {
-        // Response is a message ID string.
-        console.log('Successfully sent message:', response);
-        res.send('Successfully sent message: ' + response);
-      })
-      .catch((error) => {
-        console.log('Error sending message:', error);
-        res.send('Error sending message: ' + error);
-      });
+    await user?.save();
+    return res.status(200).json(user.accessCommentDate).end();
   } catch (error) {
     next(error);
   }

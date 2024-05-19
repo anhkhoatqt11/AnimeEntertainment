@@ -1,10 +1,12 @@
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
+import 'package:anime_and_comic_entertainment/pages/notification/notification.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_button.dart';
@@ -23,6 +25,12 @@ class TestPage extends StatefulWidget {
 }
 
 class _TestPageState extends State<TestPage> {
+  @override
+  void initState() {
+    super.initState();
+    FirebaseApi().listenEvent(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,15 +65,14 @@ class _TestPageState extends State<TestPage> {
           ),
           ElevatedButton(
             onPressed: () async {
-              PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-              String packageName = packageInfo.packageName;
-              showDialog(
-                  context: context,
-                  builder: (_) => CustomAlertDialog(
-                      content: packageName, title: 'Thông báo', action: () {}));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationPage(),
+                ),
+              );
             },
-            child: const Text("Push Noti"),
+            child: const Text("Notifications"),
           ),
         ]),
       ),
