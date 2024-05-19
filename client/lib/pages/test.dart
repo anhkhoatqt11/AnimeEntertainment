@@ -12,6 +12,10 @@ import 'package:anime_and_comic_entertainment/pages/payment.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/edit_profile_page.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
+import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
@@ -22,6 +26,7 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
 import 'package:getwidget/size/gf_size.dart';
 import 'package:getwidget/types/gf_button_type.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -52,58 +57,30 @@ class _TestPageState extends State<TestPage> {
                   print(result['position']);
                 }
               },
-              child: Text("test")),
+              child: const Text("test")),
           ElevatedButton(
             onPressed: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return SearchPage();
-              }));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const DetailComicPage(
+                      comicId: "65ec601305c5cb2ad67cfb37"),
+                ),
+              );
             },
-            child: Text("Test Search"),
+            child: const Text("Detail comic"),
           ),
           ElevatedButton(
             onPressed: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return ChallengePage();
-              }));
+              PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+              String packageName = packageInfo.packageName;
+              showDialog(
+                  context: context,
+                  builder: (_) => CustomAlertDialog(
+                      content: packageName, title: 'Thông báo', action: () {}));
             },
-            child: Text("Test Challenge"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return PaymentScreenPage();
-              }));
-            },
-            child: Text("Test Payment"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return EditProfilePage();
-              }));
-            },
-            child: Text("Test Edit Profile Page"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return BookMarkPage();
-              }));
-            },
-            child: Text("Test Bookmark Profile Page"),
-          ),
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //       return SearchResultPage();
-          //     }));
-          //   },
-          //   child: Text("Test Search Result"),
-          // ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-            child: SizedBox(height: 500, child: DonatePackageListHome()),
+            child: const Text("Push Noti"),
           ),
         ]),
       );

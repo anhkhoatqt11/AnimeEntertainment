@@ -21,6 +21,7 @@ const userSchema = new Schema({
   paymentHistories: { type: Array },
   challenges: { type: Array },
   questLog: { type: Object },
+  accessCommentDate: { type: Date }
 });
 
 type User = InferSchemaType<typeof userSchema>;
