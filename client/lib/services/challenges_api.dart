@@ -83,8 +83,7 @@ class ChallengesApi {
     }
   }
 
-  static Future<List<UserChallenge>> getUsersChallengesPoints(
-      ) async {
+  static Future<List<UserChallenge>> getUsersChallengesPoints() async {
     var url = Uri.parse("${baseUrl}getUsersChallengesPoint");
     try {
       final res = await http.get(url);
@@ -96,11 +95,101 @@ class ChallengesApi {
         }
         print(data);
         return userChallenges;
-        } else {
-          return []; // Return an empty list if there's no data
+      } else {
+        return []; // Return an empty list if there's no data
+      }
+    } catch (e) {
+      print('Error fetching leaderboard: $e');
+      throw Exception('Error: $e');
+    }
+  }
+
+  // static Future<UserChallenge?> getUserCurrentPosition(String userId) async {
+  //   try {
+  //     List<UserChallenge> userChallenges = await getUsersChallengesPoints();
+  //     UserChallenge? currentUser;
+  //     List<UserChallenge> currentWeekChallenges = [];
+
+  //     DateTime now = DateTime.now();
+  //     DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+  //     DateTime endOfWeek =
+  //         now.add(Duration(days: DateTime.daysPerWeek - now.weekday));
+
+  //     for (var user in userChallenges) {
+  //       var weeklyPoints = user.points.where((point) {
+  //         return point.date.isAfter(startOfWeek) &&
+  //             point.date.isBefore(endOfWeek);
+  //       }).toList();
+
+  //       if (weeklyPoints.isNotEmpty) {
+  //         var totalPoints =
+  //             weeklyPoints.fold<int>(0, (sum, item) => sum + item.point);
+  //         var totalTime =
+  //             weeklyPoints.fold<int>(0, (sum, item) => sum + item.time);
+
+  //         currentWeekChallenges.add(UserChallenge(
+  //           userId: user.userId,
+  //           name: user.name,
+  //           avatar: user.avatar,
+  //           points: [
+  //             Point(date: DateTime.now(), point: totalPoints, time: totalTime)
+  //           ],
+  //         ));
+
+  //         if (user.userId == userId) {
+  //           currentUser = UserChallenge(
+  //             userId: user.userId,
+  //             name: user.name,
+  //             avatar: user.avatar,
+  //             points: [
+  //               Point(date: DateTime.now(), point: totalPoints, time: totalTime)
+  //             ],
+  //           );
+  //         }
+  //       }
+  //     }
+
+  //     currentWeekChallenges.sort((a, b) {
+  //       var pointComparison =
+  //           b.points.first.point.compareTo(a.points.first.point);
+  //       if (pointComparison != 0) {
+  //         return pointComparison;
+  //       } else {
+  //         return b.points.first.time.compareTo(a.points.first.time);
+  //       }
+  //     });
+
+  //     return currentUser;
+  //   } catch (e) {
+  //     print('Error fetching user current position: $e');
+  //     throw Exception('Error: $e');
+  //   }
+  // }
+  static Future<int> getUserCurrentPosition(String userId) async {
+    var url = Uri.parse("${baseUrl}getUsersChallengesPoint");
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        final List<dynamic> data = json.decode(res.body);
+        List<UserChallenge> userChallenges = [];
+        for (var item in data) {
+          userChallenges.add(UserChallenge.fromJson(item));
         }
-      } catch (e) {
-        print('Error fetching leaderboard: $e');
+        // Sort the userChallenges list based on max weekly points
+        userChallenges.sort(
+            (a, b) => b.getMaxWeeklyPoints().compareTo(a.getMaxWeeklyPoints()));
+        // Find the position of the user
+        for (int i = 0; i < userChallenges.length; i++) {
+          if (userChallenges[i].userId == userId) {
+            return i + 1; // Position is index + 1
+          }
+        }
+        return -1; // User not found
+      } else {
+        throw Exception('Failed to load user challenges');
+      }
+    } catch (e) {
+      print('Error fetching user position: $e');
       throw Exception('Error: $e');
     }
   }

@@ -11,6 +11,8 @@ import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ChallengeTest extends StatefulWidget {
   const ChallengeTest({Key? key}) : super(key: key);
@@ -20,7 +22,7 @@ class ChallengeTest extends StatefulWidget {
 }
 
 class _ChallengeTestState extends State<ChallengeTest> {
-  //Define data
+  // Define data
   List<ChallengeQuestion> _questions = [];
   int _currentQuestionIndex = 0;
   final Map<int, int?> _userAnswers = {};
@@ -63,6 +65,8 @@ class _ChallengeTestState extends State<ChallengeTest> {
   }
 
   Future<void> _fetchQuestions() async {
+    // Simulate network delay
+    await Future.delayed(const Duration(seconds: 2));
     var result = await ChallengesApi.getChallengesQuestion(context);
     setState(() {
       _questions = result;
@@ -127,7 +131,7 @@ class _ChallengeTestState extends State<ChallengeTest> {
     // Ensure total points don't exceed 1000
     int score = totalPoints > 1000 ? 1000 : totalPoints;
 
-    //Push user result to database
+    // Push user result to database
     ChallengesApi.uploadUsersChallengesPoint(
       userId: userId,
       point: totalPoints,
@@ -241,11 +245,21 @@ class _ChallengeTestState extends State<ChallengeTest> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  question.mediaUrl,
+                child: CachedNetworkImage(
+                  imageUrl: question.mediaUrl,
                   height: 200,
                   width: 200,
                   fit: BoxFit.fill,
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(
+                      height: 200,
+                      width: 200,
+                      color: Colors.white,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
             ),

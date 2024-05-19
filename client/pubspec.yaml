@@ -36,6 +36,7 @@ dependencies:
   url_launcher: ^6.2.5
   comment_tree: ^0.3.0
 
+
 flutter_icons:
   android: true
   ios: true
@@ -74,6 +75,8 @@ flutter:
     - assets/images/receivedcoin.gif
     - assets/images/user.png
     - assets/images/empty-box.png
+    - assets/images/VNPayLogo.png
+    - assets/images/ZaloPayLogo.png
     - assets/
   #   - images/a_dot_ham.jpeg
 

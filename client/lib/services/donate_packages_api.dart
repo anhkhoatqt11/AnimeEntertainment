@@ -49,4 +49,36 @@ class DonatePackagesApi {
       }
     }
   }
+
+  static Future<bool> uploadDonateRecord(
+      BuildContext context, String packageId, String userId) async {
+    var url = Uri.parse("${baseUrl}uploadDonateRecord");
+    try {
+      final res = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "packageId": packageId,
+          "userId": userId,
+          "datetime": DateTime.now().toIso8601String(),
+        }),
+      );
+      if (res.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      if (!Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()),
+        );
+      }
+      return false;
+    }
+  }
 }
