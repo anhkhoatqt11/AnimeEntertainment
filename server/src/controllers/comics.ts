@@ -659,3 +659,38 @@ export const getReadingHistories: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const testComment: RequestHandler = async (req, res, next) => {
+  try {
+    const { chapterId, userId, commentId, content } = req.body;
+    var chapter = await ComicChapterModel.findById(chapterId);
+    if (!chapter) {
+      return res.sendStatus(400);
+    }
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    chapter.comments.forEach(async (item, index) => {
+      if (item._id.toString() === commentId) {
+        item.replies.push({
+          _id: new mongoose.Types.ObjectId(),
+          userId: new mongoose.Types.ObjectId(userId),
+          likes: new mongoose.Types.Array(),
+          content: content,
+          avatar: user?.avatar,
+          userName: user?.username,
+        });
+        const changed = await ComicChapterModel.findByIdAndUpdate(
+          chapterId,
+          chapter!
+        );
+        return res.status(200).json(changed).end();
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
