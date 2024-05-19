@@ -50,8 +50,23 @@ router.get(
 );
 
 router.post("/addRootChapterComments", ComicsController.addRootChapterComments);
+router.post(
+  "/addChildChapterComments",
+  ComicsController.addChildChapterComments
+);
+
+router.get(
+  "/checkValidCommentContent",
+  ComicsController.checkValidCommentContent
+);
+router.get("/checkUserBanned", ComicsController.checkUserBanned);
+router.put("/banUser", ComicsController.banUser);
 
 router.get("/searchComic", ComicsController.searchComics);
+router.put("/addUserLikeComment", ComicsController.addUserLikeComment);
+router.post("/sendPushNoti", ComicsController.sendPushNoti);
 
 router.get("/getReadingHistories", ComicsController.getReadingHistories);
+
+router.post("/testComment", ComicsController.testComment);
 export default router;

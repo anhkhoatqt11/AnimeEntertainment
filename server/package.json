@@ -37,6 +37,7 @@
     "envalid": "^7.3.1",
     "express": "^4.19.1",
     "express-session": "^1.18.0",
+    "firebase-admin": "^12.1.0",
     "follow-redirects": "^1.15.6",
     "http-errors": "^2.0.0",
     "lodash": "^4.17.21",

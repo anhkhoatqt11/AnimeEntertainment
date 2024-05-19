@@ -357,6 +357,7 @@ class AnimesApi {
         return [];
       }
     } catch (e) {
+      print(e.toString());
       print(Provider.of<NavigatorProvider>(context, listen: false)
           .isShowNetworkError);
       if (Provider.of<NavigatorProvider>(context, listen: false)

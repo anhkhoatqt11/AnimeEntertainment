@@ -6,7 +6,7 @@ import Comics from "../models/comics";
 import BannerModel from "../models/banner";
 import ComicChapterModel from "../models/comicChapter";
 import UserModel from "../models/user";
-
+import * as admin from 'firebase-admin';
 import ComicAlbumModel from "../models/comicAlbum";
 import qs from "qs";
 
@@ -391,6 +391,7 @@ export const searchComics: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+=======
 export const checkUserHasLikeOrSaveChapter: RequestHandler = async (
   req,
   res,
@@ -561,7 +562,6 @@ export const addRootChapterComments: RequestHandler = async (
   try {
     const { chapterId, userId, content } = req.body;
     var chapter = await ComicChapterModel.findById(chapterId);
-    console.log(chapter);
     if (!chapter) {
       return res.sendStatus(400);
     }
@@ -578,8 +578,10 @@ export const addRootChapterComments: RequestHandler = async (
       replies: new mongoose.Types.Array(),
       content: content,
       avatar: user.avatar,
-      userName: user.username,
+      userName: user.username === null ? "" : user.username
     });
+
+    console.log(chapter.comments);
 
     await chapter?.save();
     return res.status(200).json(chapter).end();
@@ -655,6 +657,261 @@ export const getReadingHistories: RequestHandler = async (req, res, next) => {
       },
     ]);
     res.status(200).json(histories);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const testComment: RequestHandler = async (req, res, next) => {
+  try {
+    const { chapterId, userId, commentId, content } = req.body;
+    var chapter = await ComicChapterModel.findById(chapterId);
+    if (!chapter) {
+      return res.sendStatus(400);
+    }
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    chapter.comments.forEach(async (item, index) => {
+      if (item._id.toString() === commentId) {
+        item.replies.push({
+          _id: new mongoose.Types.ObjectId(),
+          userId: new mongoose.Types.ObjectId(userId),
+          likes: new mongoose.Types.Array(),
+          content: content,
+          avatar: user?.avatar,
+          userName: user?.username,
+        });
+        const changed = await ComicChapterModel.findByIdAndUpdate(
+          chapterId,
+          chapter!
+        );
+        return res.status(200).json(changed).end();
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const addChildChapterComments: RequestHandler = async (req, res, next) => {
+  try {
+    const { chapterId, commentId, userId, content } = req.body;
+    var chapter = await ComicChapterModel.findById(chapterId);
+    //console.log(chapter);
+    if (!chapter) {
+      return res.sendStatus(400);
+    }
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    var index = 0;
+    var findIndex = -1;
+
+    chapter.comments.forEach(element => {
+      //console.log(element["_id"]);
+      if (element["_id"].toString().includes(commentId)) {
+        console.log(element["replies"]);
+        //element["replies"]
+        findIndex = index;
+        console.log(findIndex);
+      }
+      index++;
+    });
+
+    chapter.comments.at(findIndex)["replies"].push({
+      _id: new mongoose.Types.ObjectId(),
+      userId: new mongoose.Types.ObjectId(userId),
+      likes: new mongoose.Types.Array(),
+      replies: new mongoose.Types.Array(),
+      content: content,
+      avatar: user?.avatar,
+      userName: user?.username === null ? "aa" : user?.username
+    });
+
+    await chapter.save();
+
+    console.log(chapter.comments.at(findIndex));
+
+    return res.status(200).json(chapter).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkValidCommentContent: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  var content =
+    typeof parsedParams.content === "string" ? parsedParams.content : "";
+
+  content = content.toLowerCase();
+
+  const sensitiveWords = ['fuck', 'dick', 'pussy', 'fucker', 'cặc', 'lồn', 'loz', 'cak', 'địt', 'đụ', 'cc']
+  try {
+    var isValid = true;
+
+    if (content.includes('https') || content.includes('http')) {
+      isValid = false;
+    }
+
+    sensitiveWords.forEach((word) => {
+      if (content.includes(word)) {
+        isValid = false;
+      }
+    })
+
+    res.status(200).json(isValid === undefined ? {} : isValid);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const checkUserBanned: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const userId =
+    typeof parsedParams.userId === "string" ? parsedParams.userId : "";
+
+  try {
+    var user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(400);
+    }
+
+    if (user.accessCommentDate === null || user.accessCommentDate === undefined) {
+      return res.status(200).json("2020");
+    }
+
+    const accessDate = user?.accessCommentDate;
+
+    if (accessDate !== null && accessDate !== undefined && accessDate <= new Date()) {
+      return res.status(200).json("2020");
+    }
+
+    res.status(200).json(user?.accessCommentDate).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const banUser: RequestHandler = async (req, res, next) => {
+  try {
+    const { userId } = req.body;
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    var newAccessDate = new Date();
+    newAccessDate.setDate(newAccessDate.getDate() + 3);
+
+    user.accessCommentDate = newAccessDate;
+
+    await user?.save();
+    return res.status(200).json(user.accessCommentDate).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const addUserLikeComment: RequestHandler = async (req, res, next) => {
+  try {
+    const { chapterId, commentId, userId } = req.body;
+    var chapter = await ComicChapterModel.findById(chapterId);
+    //console.log(chapter);
+    if (!chapter) {
+      return res.sendStatus(400);
+    }
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    var index = 0;
+    var findIndex = -1;
+
+    chapter.comments.forEach(element => {
+      //console.log(element["_id"]);
+      if (element["_id"].toString().includes(commentId)) {
+        console.log(element["replies"]);
+        //element["replies"]
+        findIndex = index;
+        console.log(findIndex);
+      }
+      index++;
+    });
+
+    chapter.comments.at(findIndex)["likes"].push(new mongoose.Types.ObjectId(userId));
+
+    await chapter.save();
+
+    console.log(chapter.comments.at(findIndex));
+
+    return res.status(200).json(chapter).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const sendPushNoti: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    try {
+      var serviceAccount = require("../../pushnotiflutter-95328-firebase-adminsdk-rdiar-9008d7c00f.json");
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+      });
+    }
+    catch {
+
+    }
+
+    const token = "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";
+
+    const message = {
+      notification: {
+        title: req.body.title,
+        body: req.body.body,
+      },
+      token: token, // This is the device token
+    };
+
+    // Send a message to the device corresponding to the provided
+    // registration token.
+    admin.messaging().send(message)
+      .then((response) => {
+        // Response is a message ID string.
+        console.log('Successfully sent message:', response);
+        res.send('Successfully sent message: ' + response);
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+        res.send('Error sending message: ' + error);
+      });
   } catch (error) {
     next(error);
   }

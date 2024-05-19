@@ -10,6 +10,7 @@ class Animes {
   final String? ageFor;
   final String? publisher;
   final String? description;
+  final List? genreNames;
   final List? episodes;
   final int? totalView;
   final int? totalLike;
@@ -24,6 +25,7 @@ class Animes {
       this.ageFor,
       this.publisher,
       this.description,
+      this.genreNames,
       this.episodes,
       this.totalView,
       this.totalLike});

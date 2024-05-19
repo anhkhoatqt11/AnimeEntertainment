@@ -59,10 +59,12 @@ class _DetailComicPageState extends State<DetailComicPage> {
                 Stack(children: [
                   Column(
                     children: [
-                      Image.network(
+                      FadeInImage.assetNetwork(
+                          placeholder: 'assets/images/loadingcomicimage.png',
+                          image: comic.landspaceImage.toString(),
                           width: double.infinity,
-                          //height: 100,
-                          comic.landspaceImage.toString()),
+                          height: MediaQuery.of(context).size.width * 9 / 16,
+                          fit: BoxFit.cover),
                       const SizedBox(
                         height: 25,
                       )

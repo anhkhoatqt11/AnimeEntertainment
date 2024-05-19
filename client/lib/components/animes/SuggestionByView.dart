@@ -57,6 +57,7 @@ class _SuggestionByViewState extends State<SuggestionByView> {
                 children: List.generate(listEpisodeItem.length, (index) {
               return GestureDetector(
                 onTap: () {
+                  print(listEpisodeItem[index].movieOwnerId);
                   Provider.of<VideoProvider>(context, listen: false).setAnime(
                       Animes(
                         id: listEpisodeItem[index].movieOwnerId,

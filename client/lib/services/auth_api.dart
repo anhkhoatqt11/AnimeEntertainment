@@ -38,7 +38,8 @@ class AuthApi {
             data["questLog"]["readingTime"],
             data["questLog"]["watchingTime"],
             data["questLog"]["received"],
-            data["questLog"]["finalTime"]);
+            data["questLog"]["finalTime"],
+            data["questLog"]["hasReceivedDailyGift"]);
 
         await prefs.setString(
             'auth-session-token', data['authentication']['sessionToken']);
@@ -93,7 +94,8 @@ class AuthApi {
             jsonDecode(res.body)["questLog"]["readingTime"],
             jsonDecode(res.body)["questLog"]["watchingTime"],
             jsonDecode(res.body)["questLog"]["received"],
-            jsonDecode(res.body)["questLog"]["finalTime"]);
+            jsonDecode(res.body)["questLog"]["finalTime"],
+            jsonDecode(res.body)["questLog"]["hasReceivedDailyGift"]);
       }
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)
@@ -143,6 +145,7 @@ class AuthApi {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
     userProvider.setUserToken("");
     userProvider.setUserId("");
+    userProvider.setReceivedDailyGift(false);
     RestartWidget.restartApp(context);
   }
 
