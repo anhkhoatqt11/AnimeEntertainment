@@ -1,6 +1,7 @@
 import 'package:anime_and_comic_entertainment/components/notifications/NotiComponent.dart';
 import 'package:anime_and_comic_entertainment/model/notification.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/services/notification_api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   void initState() {
     super.initState();
+    FirebaseApi().listenEvent(context);
     if (Provider.of<UserProvider>(context, listen: false)
             .user
             .authentication['sessionToken'] !=

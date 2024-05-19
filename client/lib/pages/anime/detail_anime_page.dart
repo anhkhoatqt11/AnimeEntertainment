@@ -4,6 +4,7 @@ import 'package:anime_and_comic_entertainment/providers/mini_player_controller_p
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,6 +49,7 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
   @override
   void initState() {
     super.initState();
+    FirebaseApi().listenEvent(context);
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     getAnimeDetailById().then((value) => setState(() {
