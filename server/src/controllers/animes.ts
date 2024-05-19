@@ -87,6 +87,7 @@ export const getNewEpisodeAnime: RequestHandler = async (req, res, next) => {
           coverImage: 1,
           episodeName: 1,
           "animeOwner.movieName": 1,
+          "animeOwner._id": 1,
           publicTime: 1,
         },
       },
@@ -317,6 +318,14 @@ export const getSomeTopViewEpisodes: RequestHandler = async (
 ) => {
   try {
     const animes = await AnimeEpisodeModel.aggregate([
+      {
+        $lookup: {
+          from: "animes",
+          localField: "_id",
+          foreignField: "episodes",
+          as: "movieOwner",
+        },
+      },
       { $sort: { views: -1 } },
       {
         $project: {
@@ -325,6 +334,7 @@ export const getSomeTopViewEpisodes: RequestHandler = async (
           episodeName: 1,
           totalTime: 1,
           views: 1,
+          "movieOwner._id": 1,
         },
       },
       { $limit: 12 },
@@ -349,7 +359,19 @@ export const getAnimeEpisodeDetailById: RequestHandler = async (
     if (!mongoose.isValidObjectId(episodeId)) {
       throw createHttpError(400, "Invalid episode id");
     }
-    const episode = await AnimeEpisodeModel.findById(episodeId);
+    const episode = await AnimeEpisodeModel.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(episodeId) },
+      },
+      {
+        $lookup: {
+          from: "advertisements",
+          localField: "advertisement",
+          foreignField: "_id",
+          as: "advertisementContent",
+        },
+      },
+    ]);
 
     if (!episode) {
       throw createHttpError(404, "episode not found");
@@ -612,7 +634,18 @@ export const getWatchingHistories: RequestHandler = async (req, res, next) => {
           from: "animeepisodes",
           localField: "histories.watchingMovie.episodeId",
           foreignField: "_id",
-          pipeline: [{ $skip: (page - 1) * limit }, { $limit: limit }],
+          pipeline: [
+            {
+              $lookup: {
+                from: "animes",
+                localField: "_id",
+                foreignField: "episodes",
+                as: "movieOwner",
+              },
+            },
+            { $skip: (page - 1) * limit },
+            { $limit: limit },
+          ],
           as: "detailHistories",
         },
       },
@@ -624,6 +657,7 @@ export const getWatchingHistories: RequestHandler = async (req, res, next) => {
           "detailHistories.coverImage": 1,
           "detailHistories.totalTime": 1,
           "detailHistories.position": 1,
+          "detailHistories.movieOwner._id": 1,
         },
       },
     ]);
@@ -633,8 +667,11 @@ export const getWatchingHistories: RequestHandler = async (req, res, next) => {
   }
 };
 
-
-export const searchAnimeAndEpisodes: RequestHandler = async (req, res, next) => {
+export const searchAnimeAndEpisodes: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
     const { query } = req.query;
 
@@ -644,7 +681,10 @@ export const searchAnimeAndEpisodes: RequestHandler = async (req, res, next) => 
     }
 
     // Construct regex pattern for partial word matching
-    const regexQuery = query.split(" ").map(word => `(?=.*${word})`).join("");
+    const regexQuery = query
+      .split(" ")
+      .map((word) => `(?=.*${word})`)
+      .join("");
 
     // Search for anime
     const animeResults = await AnimesModel.find({

@@ -411,7 +411,7 @@ export const searchComics: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
+=======
 export const checkUserHasLikeOrSaveChapter: RequestHandler = async (
   req,
   res,
@@ -538,7 +538,7 @@ export const updateUserHistoryHadSeenChapter: RequestHandler = async (
       const indexOfItem = userInfo?.histories?.readingComic.indexOf(check);
       if (indexOfItem !== undefined) {
         userInfo?.histories?.readingComic.splice(indexOfItem, 1, {
-          chapterId: new mongoose.Types.ObjectId(chapterId)
+          chapterId: new mongoose.Types.ObjectId(chapterId),
         });
       }
     }
@@ -561,21 +561,24 @@ export const getComicChapterComments: RequestHandler = async (
     const chapterId =
       typeof parsedParams.chapterId === "string" ? parsedParams.chapterId : "";
 
-    var chapter = await ComicChapterModel.findById(chapterId).select('comments');
+    var chapter = await ComicChapterModel.findById(chapterId).select(
+      "comments"
+    );
     if (!chapter) {
       return res.sendStatus(400);
     }
 
-    return res
-      .status(200)
-      .json(chapter.comments)
-      .end();
+    return res.status(200).json(chapter.comments).end();
   } catch (error) {
     next(error);
   }
 };
 
-export const addRootChapterComments: RequestHandler = async (req, res, next) => {
+export const addRootChapterComments: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
     const { chapterId, userId, content } = req.body;
     var chapter = await ComicChapterModel.findById(chapterId);
@@ -606,6 +609,114 @@ export const addRootChapterComments: RequestHandler = async (req, res, next) => 
     next(error);
   }
 };
+
+export const getReadingHistories: RequestHandler = async (req, res, next) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const page = parseInt(
+    typeof parsedParams.page === "string" ? parsedParams.page : "0"
+  );
+  const limit = parseInt(
+    typeof parsedParams.limit === "string" ? parsedParams.limit : "0"
+  );
+  const userId =
+    typeof parsedParams.userId === "string" ? parsedParams.userId : "";
+  try {
+    if (!mongoose.isValidObjectId(userId)) {
+      throw createHttpError(400, "Invalid user id");
+    }
+    const histories = await UserModel.aggregate([
+      {
+        $match: { _id: new mongoose.Types.ObjectId(userId) },
+      },
+      {
+        $project: { histories: 1 },
+      },
+      {
+        $lookup: {
+          from: "comicchapters",
+          localField: "histories.readingComic.chapterId",
+          foreignField: "_id",
+          pipeline: [
+            {
+              $lookup: {
+                from: "comics",
+                localField: "_id",
+                foreignField: "chapterList",
+                pipeline: [
+                  {
+                    $lookup: {
+                      from: "comicchapters",
+                      localField: "chapterList",
+                      foreignField: "_id",
+                      pipeline: [],
+                      as: "detailChapterList",
+                    },
+                  },
+                ],
+                as: "comicOwner",
+              },
+            },
+            { $skip: (page - 1) * limit },
+            { $limit: limit },
+          ],
+          as: "detailHistories",
+        },
+      },
+      {
+        $project: {
+          histories: 1,
+          "detailHistories._id": 1,
+          "detailHistories.chapterName": 1,
+          "detailHistories.coverImage": 1,
+          "detailHistories.comicOwner._id": 1,
+          "detailHistories.comicOwner.chapterList": 1,
+          "detailHistories.comicOwner.detailChapterList": 1,
+        },
+      },
+    ]);
+    res.status(200).json(histories);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const testComment: RequestHandler = async (req, res, next) => {
+  try {
+    const { chapterId, userId, commentId, content } = req.body;
+    var chapter = await ComicChapterModel.findById(chapterId);
+    if (!chapter) {
+      return res.sendStatus(400);
+    }
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    chapter.comments.forEach(async (item, index) => {
+      if (item._id.toString() === commentId) {
+        item.replies.push({
+          _id: new mongoose.Types.ObjectId(),
+          userId: new mongoose.Types.ObjectId(userId),
+          likes: new mongoose.Types.Array(),
+          content: content,
+          avatar: user?.avatar,
+          userName: user?.username,
+        });
+        const changed = await ComicChapterModel.findByIdAndUpdate(
+          chapterId,
+          chapter!
+        );
+        return res.status(200).json(changed).end();
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const addChildChapterComments: RequestHandler = async (req, res, next) => {
   try {

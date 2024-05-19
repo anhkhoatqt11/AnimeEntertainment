@@ -1,21 +1,22 @@
-import 'package:anime_and_comic_entertainment/components/animes/CurrentView.dart';
-import 'package:anime_and_comic_entertainment/model/watchingHistories.dart';
-import 'package:anime_and_comic_entertainment/services/animes_api.dart';
+import 'package:anime_and_comic_entertainment/components/comic/CurrentRead.dart';
+import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/model/readingHistories.dart';
+import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:shimmer/shimmer.dart';
 
-class WatchingHistoriesList extends StatefulWidget {
+class ReadingHistoriesList extends StatefulWidget {
   final String userId;
-  const WatchingHistoriesList({super.key, required this.userId});
+  const ReadingHistoriesList({super.key, required this.userId});
 
   @override
-  State<WatchingHistoriesList> createState() => _WatchingHistoriesListState();
+  State<ReadingHistoriesList> createState() => _ReadingHistoriesListState();
 }
 
-class _WatchingHistoriesListState extends State<WatchingHistoriesList> {
-  List<WatchingHistories> listEpisode = [];
+class _ReadingHistoriesListState extends State<ReadingHistoriesList> {
+  List<ReadingHistories> listChapter = [];
   final controller = ScrollController();
   static const limit = 5;
   int page = 1;
@@ -35,18 +36,17 @@ class _WatchingHistoriesListState extends State<WatchingHistoriesList> {
   Future fetch() async {
     try {
       if (hasData == false) return;
-      var newItems = await AnimesApi.getWatchingHistories(
+      var newItems = await ComicsApi.getReadingHistories(
           context, widget.userId, limit.toString(), page.toString());
       final isLastPage = newItems.length < limit;
       newItems.forEach((element) {
         setState(() {
-          listEpisode.add(WatchingHistories(
+          listChapter.add(ReadingHistories(
               id: element.id,
               coverImage: element.coverImage,
-              episodeName: element.episodeName,
-              totalTime: element.totalTime,
-              position: element.position,
-              movieOwnerId: element.movieOwnerId));
+              chapterName: element.chapterName,
+              ownerId: element.ownerId,
+              ownerChapterList: element.ownerChapterList));
         });
       });
       if (isLastPage) {
@@ -65,7 +65,7 @@ class _WatchingHistoriesListState extends State<WatchingHistoriesList> {
 
   @override
   Widget build(BuildContext context) {
-    return listEpisode.isEmpty
+    return listChapter.isEmpty
         ? ListView(
             scrollDirection: Axis.horizontal,
             children: [
@@ -112,17 +112,17 @@ class _WatchingHistoriesListState extends State<WatchingHistoriesList> {
           )
         : ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: listEpisode.length,
+            itemCount: listChapter.length,
             controller: controller,
             itemBuilder: (context, index) {
-              if (index < listEpisode.length) {
-                return CurrentView(
-                  urlImage: listEpisode[index].coverImage!,
-                  nameItem: listEpisode[index].episodeName!,
-                  percentage: listEpisode[index].position! /
-                      listEpisode[index].totalTime!,
-                  animeId: listEpisode[index].movieOwnerId!,
-                  episodeId: listEpisode[index].id!,
+              if (index < listChapter.length) {
+                return CurrentRead(
+                  urlImage: listChapter[index].coverImage!,
+                  nameItem: listChapter[index].chapterName!,
+                  comic: Comics(
+                      id: listChapter[index].ownerId!,
+                      chapterList: listChapter[index].ownerChapterList!),
+                  chapterId: listChapter[index].id!,
                 );
               } else {
                 return Padding(

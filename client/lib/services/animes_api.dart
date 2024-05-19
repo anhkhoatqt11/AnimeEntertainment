@@ -132,7 +132,8 @@ class AnimesApi {
               id: element['_id'],
               coverImage: element['coverImage'],
               episodeName: element['episodeName'],
-              movieOwner: element['animeOwner'][0]['movieName']));
+              movieOwner: element['animeOwner'][0]['movieName'],
+              movieOwnerId: element['animeOwner'][0]['_id']));
         });
         return newEpisodeArray;
       } else {
@@ -305,15 +306,15 @@ class AnimesApi {
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         AnimeEpisodes episodeDetail = AnimeEpisodes(
-            id: result['_id'],
-            advertising: result['advertising'],
-            content: result['content'],
-            episodeName: result['episodeName'],
-            likes: result['likes'],
-            totalTime: result['totalTime'],
-            views: result['views'],
-            adLink: result['adLink'],
-            comments: result['comments']);
+            id: result[0]['_id'],
+            advertising: result[0]['advertisementContent'][0]['adVideoUrl'],
+            content: result[0]['content'],
+            episodeName: result[0]['episodeName'],
+            likes: result[0]['likes'],
+            totalTime: result[0]['totalTime'],
+            views: result[0]['views'],
+            adLink: result[0]['advertisementContent'][0]['forwardLink'],
+            comments: result[0]['comments']);
 
         return episodeDetail;
       } else {
@@ -348,13 +349,15 @@ class AnimesApi {
               coverImage: element['coverImage'],
               episodeName: element['episodeName'],
               totalTime: element['totalTime'],
-              views: element['views']));
+              views: element['views'],
+              movieOwnerId: element['movieOwner'][0]['_id']));
         });
         return animeEpisode;
       } else {
         return [];
       }
     } catch (e) {
+      print(e.toString());
       print(Provider.of<NavigatorProvider>(context, listen: false)
           .isShowNetworkError);
       if (Provider.of<NavigatorProvider>(context, listen: false)
@@ -512,7 +515,8 @@ class AnimesApi {
               episodeName: element['episodeName'],
               totalTime: element['totalTime'],
               position: result[0]['histories']['watchingMovie'][index]
-                  ['position']));
+                  ['position'],
+              movieOwnerId: element['movieOwner'][0]['_id']));
           index++;
         });
         return histories;

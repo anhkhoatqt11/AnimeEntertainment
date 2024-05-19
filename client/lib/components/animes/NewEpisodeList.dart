@@ -27,7 +27,8 @@ class _NewEpisodeListState extends State<NewEpisodeList> {
                 id: element.id,
                 coverImage: element.coverImage,
                 movieOwner: element.movieOwner,
-                episodeName: element.episodeName));
+                episodeName: element.episodeName,
+                movieOwnerId: element.movieOwnerId));
           });
         }));
   }
@@ -90,6 +91,8 @@ class _NewEpisodeListState extends State<NewEpisodeList> {
                 urlImage: listEpisode[index].coverImage,
                 nameItem: listEpisode[index].movieOwner,
                 episodeName: listEpisode[index].episodeName,
+                animeId: listEpisode[index].movieOwnerId,
+                episodeId: listEpisode[index].id,
               );
             });
   }

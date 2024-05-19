@@ -11,19 +11,20 @@ class AnimeEpisodes {
   final String? advertising;
   final String? adLink;
   final String? movieOwner;
+  final String? movieOwnerId;
 
-  AnimeEpisodes({
-    this.id,
-    this.coverImage,
-    this.episodeName,
-    this.totalTime,
-    this.publicTime,
-    this.content,
-    this.comments,
-    this.likes,
-    this.views,
-    this.advertising,
-    this.adLink,
-    this.movieOwner,
-  });
+  AnimeEpisodes(
+      {this.id,
+      this.coverImage,
+      this.episodeName,
+      this.totalTime,
+      this.publicTime,
+      this.content,
+      this.comments,
+      this.likes,
+      this.views,
+      this.advertising,
+      this.adLink,
+      this.movieOwner,
+      this.movieOwnerId});
 }

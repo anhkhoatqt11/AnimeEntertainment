@@ -1,11 +1,13 @@
-import 'package:anime_and_comic_entertainment/components/CurrentReadingUser.dart';
 import 'package:anime_and_comic_entertainment/components/animes/AnimeBanner.dart';
 import 'package:anime_and_comic_entertainment/components/animes/NewEpisodeList.dart';
 import 'package:anime_and_comic_entertainment/components/animes/WatchingHistoriesList.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ComicAlbum.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ComicBanner.dart';
 import 'package:anime_and_comic_entertainment/components/comic/NewChapterList.dart';
+import 'package:anime_and_comic_entertainment/components/comic/ReadingHistoresList.dart';
 import 'package:anime_and_comic_entertainment/components/home/HomeAlbum.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
@@ -30,11 +32,13 @@ class HomePage extends StatelessWidget {
           ),
           actions: <Widget>[
             GFIconButton(
-              icon: const Icon(
-                Icons.favorite,
-                color: Colors.white,
-              ),
-              onPressed: () {},
+              icon: const Icon(Icons.search, color: Colors.white, size: 24),
+              onPressed: () {
+                Provider.of<NavigatorProvider>(context, listen: false)
+                    .setShow(false);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SearchPage()));
+              },
               type: GFButtonType.transparent,
             ),
           ],
@@ -102,23 +106,32 @@ class HomePage extends StatelessWidget {
               child: SizedBox(height: 256, child: NewChapterList()),
             ),
             const ComicBanner(),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(10, 8, 0, 0),
-              child: Text(
-                "Đọc tiếp",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-              child: SizedBox(
-                height: 228,
-                child: CurrentReadingUser(),
-              ),
-            ),
+            Consumer(builder: (context, watch, _) {
+              final user = Provider.of<UserProvider>(context).user;
+              return user.authentication['sessionToken'] != ""
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                          child: Text(
+                            "Đọc tiếp",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 168,
+                          child: ReadingHistoriesList(
+                            userId: user.id,
+                          ),
+                        ),
+                      ],
+                    )
+                  : const SizedBox.shrink();
+            }),
             const SizedBox(
               height: 10,
             ),
@@ -130,21 +143,3 @@ class HomePage extends StatelessWidget {
         ));
   }
 }
-
-
-// GestureDetector(
-//             onTap: () {
-//               Provider.of<VideoProvider>(context, listen: false).setAnime(
-//                   Animes(
-//                     id: "65fbe3717e4914bdd8125052",
-//                   ),
-//                   AnimeEpisodes(id: "65ffea9c65ac19bed872183c"));
-//               Provider.of<MiniPlayerControllerProvider>(context, listen: false)
-//                   .setMiniController(PanelState.MAX);
-//             },
-//             child: Container(
-//               height: 100,
-//               width: 200,
-//               color: Colors.green,
-//               child: const Text("Home"),
-//             ),

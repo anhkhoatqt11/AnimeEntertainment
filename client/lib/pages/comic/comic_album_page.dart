@@ -106,6 +106,7 @@ class _ComicAlbumPageState extends State<ComicAlbumPage> {
                   if (index < listComicItem.length) {
                     final item = listComicItem[index];
                     return ComicLandspaceItem(
+                      comicId: item.id,
                       urlImage: item.coverImage,
                       nameItem: item.comicName,
                       genres: item.genres,

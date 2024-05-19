@@ -26,12 +26,16 @@ class _SplashState extends State<Splash> {
 
   route() {
     // Navigator.pushReplacementNamed(context, '/home');
-    Navigator.of(context).pushReplacement(_createRoute());
+    // Navigator.of(context).pushReplacement(_createRoute());
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const MyHomePage(title: '')));
   }
 
   Route _createRoute() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => TestPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => MyHomePage(
+        title: '',
+      ),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 2.0);
         const end = Offset.zero;

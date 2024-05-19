@@ -9,20 +9,23 @@ class ReceivedCoinDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color.fromARGB(255, 38, 19, 54),
+      backgroundColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      shadowColor: Colors.transparent,
       contentTextStyle: const TextStyle(color: Colors.white),
       contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
       actionsPadding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       content: SizedBox(
-        height: 180,
+        height: 294,
         child: Column(
           children: [
             Image.asset(
               "assets/images/receivedcoin.gif",
-              height: 100,
-              width: 100,
+              height: 200,
+              width: 200,
             ),
+            const SizedBox(height: 20),
             Text(content),
             const SizedBox(height: 10),
             GFButton(

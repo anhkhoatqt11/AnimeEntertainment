@@ -1,10 +1,13 @@
 import 'package:anime_and_comic_entertainment/model/animes.dart';
+import 'package:anime_and_comic_entertainment/pages/anime/detail_anime_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TopRankingAnime extends StatefulWidget {
@@ -96,7 +99,15 @@ class _TopRankingAnimeState extends State<TopRankingAnime> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              //forward detail anime page
+                              Provider.of<NavigatorProvider>(context,
+                                      listen: false)
+                                  .setShow(false);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailAnimePage(
+                                        animeId: listRanking[0].id)),
+                              );
                             },
                             child: Stack(children: [
                               Container(
@@ -216,7 +227,16 @@ class _TopRankingAnimeState extends State<TopRankingAnime> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              //forward detail anime page
+                              Provider.of<NavigatorProvider>(context,
+                                      listen: false)
+                                  .setShow(false);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailAnimePage(
+                                        animeId:
+                                            listRanking[index * 2 - 1].id)),
+                              );
                             },
                             child: Stack(children: [
                               Container(
@@ -338,7 +358,15 @@ class _TopRankingAnimeState extends State<TopRankingAnime> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              //forward detail anime page
+                              Provider.of<NavigatorProvider>(context,
+                                      listen: false)
+                                  .setShow(false);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailAnimePage(
+                                        animeId: listRanking[index * 2].id)),
+                              );
                             },
                             child: Stack(children: [
                               Container(

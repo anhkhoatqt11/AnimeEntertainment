@@ -4,8 +4,10 @@ import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_comment.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -45,7 +47,7 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
     checkUserHasLikeOrSaveAndWatchChapter();
   }
 
-  void _scrollListener() {
+  Future<void> _scrollListener() async {
     double maxScrollExtent = _scrollController.position.maxScrollExtent;
     double currentScrollPosition = _scrollController.position.pixels;
     double scrollPercentage = (currentScrollPosition / maxScrollExtent) * 100;
@@ -60,6 +62,13 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
       viewDone = true;
       ComicsApi.updateChapterView(
           context, widget.comic.chapterList![widget.index]['_id']);
+      if (Provider.of<UserProvider>(context, listen: false)
+              .user
+              .authentication['sessionToken'] !=
+          "") {
+        Provider.of<UserProvider>(context, listen: false).setReadingTime(1);
+        await DailyQuestsApi.updateQuestLog(context, "");
+      }
     }
   }
 
@@ -74,12 +83,21 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
+            Provider.of<NavigatorProvider>(context, listen: false)
+                .setShow(true);
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.white,
+            size: 24,
+          ),
         ),
         centerTitle: true,
-        title: Text(comic.chapterList![chapterIndex]['chapterName']),
+        title: Text(
+          comic.chapterList![chapterIndex]['chapterName'],
+          style: TextStyle(fontSize: 16),
+        ),
         foregroundColor: Colors.white,
         backgroundColor: const Color(0xFF141414),
         actions: <Widget>[
@@ -118,7 +136,8 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
                     },
                     icon: FaIcon(
                       FontAwesomeIcons.thumbsUp,
-                      color: hadLiked ? Utils.primaryColor : Colors.grey,
+                      color: hadLiked ? Utils.primaryColor : Colors.white,
+                      size: 18,
                     )),
                 IconButton(
                     onPressed: () {
@@ -146,8 +165,11 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
                                 builder: (context) => const Login()));
                       }
                     },
-                    icon: FaIcon(FontAwesomeIcons.squarePlus,
-                        color: hadSaved ? Utils.primaryColor : Colors.grey))
+                    icon: FaIcon(
+                      FontAwesomeIcons.squarePlus,
+                      color: hadSaved ? Utils.primaryColor : Colors.white,
+                      size: 18,
+                    ))
               ],
             );
           })
@@ -160,7 +182,7 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
             valueColor: AlwaysStoppedAnimation<Color>(Utils.primaryColor),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height - 112,
+            height: MediaQuery.of(context).size.height - 92,
             child: ListView.builder(
               controller: _scrollController,
               itemCount: contentLength,
@@ -192,13 +214,14 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
                                         padding:
                                             EdgeInsets.fromLTRB(0, 0, 10, 0),
                                         child: FaIcon(
-                                          FontAwesomeIcons.arrowLeft,
+                                          FontAwesomeIcons.backwardStep,
                                           color: Colors.white,
+                                          size: 16,
                                         )),
                                     Text(
                                       "Trước",
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 16),
+                                          color: Colors.white, fontSize: 14),
                                     )
                                   ],
                                 ))),
@@ -217,8 +240,9 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent),
                             child: FaIcon(
-                              FontAwesomeIcons.comment,
+                              FontAwesomeIcons.solidMessage,
                               color: Colors.white,
+                              size: 18,
                             )),
                         ElevatedButton(
                             onPressed: () {},
@@ -244,26 +268,37 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
                                     Text(
                                       "Sau",
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 16),
+                                          color: Colors.white, fontSize: 14),
                                     ),
                                     Padding(
                                         padding:
                                             EdgeInsets.fromLTRB(10, 0, 0, 0),
                                         child: FaIcon(
-                                          FontAwesomeIcons.arrowRight,
+                                          FontAwesomeIcons.forwardStep,
                                           color: Colors.white,
+                                          size: 16,
                                         ))
                                   ],
                                 )))
                       ],
                     )
-                  : Image.network(
-                      comic.chapterList![chapterIndex]['content'][index],
+                  : FadeInImage.assetNetwork(
+                      placeholder: 'assets/images/loadingcomicimage.png',
+                      image: comic.chapterList![chapterIndex]['content'][index],
                     ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() async {
+    super.dispose();
+    if (isLogedIn) {
+      await ComicsApi.updateUserHistoryHadSeenChapter(
+          context, widget.comic.chapterList![widget.index]['_id'], userId);
+    }
   }
 }

@@ -1,5 +1,11 @@
+import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
+import 'package:anime_and_comic_entertainment/model/animes.dart';
+import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:miniplayer/miniplayer.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
@@ -9,17 +15,27 @@ class CurrentView extends StatelessWidget {
   final String urlImage;
   final String nameItem;
   final double percentage;
+  final String animeId;
+  final String episodeId;
   const CurrentView(
       {super.key,
       required this.urlImage,
       required this.nameItem,
-      required this.percentage});
+      required this.percentage,
+      required this.animeId,
+      required this.episodeId});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        //forward episode page
+        Provider.of<VideoProvider>(context, listen: false).setAnime(
+            Animes(
+              id: animeId,
+            ),
+            AnimeEpisodes(id: episodeId));
+        Provider.of<MiniPlayerControllerProvider>(context, listen: false)
+            .setMiniController(PanelState.MAX);
       },
       child: Padding(
         padding: const EdgeInsets.all(6.0),

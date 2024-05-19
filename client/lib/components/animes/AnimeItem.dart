@@ -1,4 +1,7 @@
+import 'package:anime_and_comic_entertainment/pages/anime/detail_anime_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'package:flutter/material.dart';
@@ -6,34 +9,44 @@ import 'package:flutter/material.dart';
 class AnimeItem extends StatelessWidget {
   final String? urlImage;
   final String? nameItem;
-  const AnimeItem({super.key, required this.urlImage, required this.nameItem});
+  final String? animeId;
+  const AnimeItem(
+      {super.key,
+      required this.urlImage,
+      required this.nameItem,
+      required this.animeId});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        //forward detail anime page
+        Provider.of<NavigatorProvider>(context, listen: false).setShow(false);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetailAnimePage(animeId: animeId)),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.all(6.0),
         child: SizedBox(
-          width: 125,
+          width: 118,
           child: Column(children: [
             CachedNetworkImage(
               imageUrl: urlImage!,
-              width: 125,
-              height: 187,
+              width: 118,
+              height: 180,
               placeholder: (context, url) => Container(
-                height: 187,
-                width: 125,
+                height: 180,
+                width: 118,
                 decoration: BoxDecoration(
                     color: Colors.blue, borderRadius: BorderRadius.circular(4)),
                 child: Shimmer.fromColors(
                   baseColor: Colors.grey.shade300,
                   highlightColor: Colors.grey.shade100,
                   child: Container(
-                    width: 125,
-                    height: 187,
+                    width: 118,
+                    height: 180,
                     decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(4)),
@@ -61,7 +74,7 @@ class AnimeItem extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.white,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
