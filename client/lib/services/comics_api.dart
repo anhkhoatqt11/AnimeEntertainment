@@ -538,4 +538,55 @@ class ComicsApi {
       }
     }
   }
+
+  static updateUserLikeParentComment(
+      BuildContext context, chapterId, userId, commentId) async {
+    var url = Uri.parse("${baseUrl}updateUserLikeParentComment");
+    print(commentId);
+
+    try {
+      var body = {
+        "chapterId": chapterId,
+        "commentId": commentId,
+        "userId": userId
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static updateUserLikeChildComment(BuildContext context, chapterId, userId,
+      commentId, commentChildId) async {
+    var url = Uri.parse("${baseUrl}updateUserLikeChildComment");
+    try {
+      var body = {
+        "chapterId": chapterId,
+        "commentId": commentId,
+        "userId": userId,
+        "commentChildId": commentChildId
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
 }

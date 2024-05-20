@@ -78,6 +78,7 @@ flutter:
     - assets/images/user.png
     - assets/images/loadingcomicimage.png
     - assets/images/empty-box.png
+    - assets/images/commentempty.png
     - assets/
   #   - images/a_dot_ham.jpeg
 

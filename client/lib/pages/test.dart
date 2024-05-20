@@ -6,6 +6,7 @@ import 'package:anime_and_comic_entertainment/components/donate/DonatePackageLis
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_comment.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_result_page.dart';
 import 'package:anime_and_comic_entertainment/pages/payment.dart';
@@ -63,12 +64,12 @@ class _TestPageState extends State<TestPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const DetailComicPage(
-                      comicId: "65ec601305c5cb2ad67cfb37"),
+                  builder: (context) => const ComicChapterComment(
+                      chapterId: "65ec659f05c5cb2ad67cfb3d"),
                 ),
               );
             },
-            child: const Text("Detail comic"),
+            child: const Text("Comment"),
           ),
           ElevatedButton(
             onPressed: () async {
