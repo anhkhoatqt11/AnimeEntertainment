@@ -44,6 +44,8 @@ router.get(
   ComicsController.checkUserHistoryHadSeenChapter
 );
 
+router.get("/getComicChapter", ComicsController.getComicChapter);
+
 router.get(
   "/getComicChapterComments",
   ComicsController.getComicChapterComments
@@ -71,7 +73,7 @@ router.post(
   "/updateUserLikeChildComment",
   ComicsController.updateUserLikeChildComment
 );
-router.post("/sendPushNoti", ComicsController.sendPushNoti);
+router.put("/updateNotiComment", ComicsController.updateNotiComment);
 
 router.get("/getReadingHistories", ComicsController.getReadingHistories);
 

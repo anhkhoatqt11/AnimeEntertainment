@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/model/banner.dart';
+import 'package:anime_and_comic_entertainment/model/comicchapters.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/model/comment.dart';
 import 'package:anime_and_comic_entertainment/model/readingHistories.dart';
@@ -246,6 +247,42 @@ class ComicsApi {
           totalView: result[0]['totalViews'],
           totalLike: result[0]['totalLikes'],
         );
+        return comicDetail;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static getComicChaperById(BuildContext context, String chapterId) async {
+    var url = Uri.parse(
+      "${baseUrl}getComicChapter?chapterId=$chapterId",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        ComicChapter comicDetail = ComicChapter(
+            id: result['_id'],
+            chapterName: result['chapterName'],
+            coverImage: result['coverImage'],
+            content: result['content'],
+            comments: result['comments'],
+            likes: result['likes'],
+            views: result['views'],
+            unlockPrice: result['unlockPrice'],
+            userUnlocked: result['userUnlocked']);
         return comicDetail;
       } else {
         return [];

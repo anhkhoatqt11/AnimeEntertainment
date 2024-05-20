@@ -3,6 +3,7 @@ import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -37,6 +38,7 @@ class _DetailComicPageState extends State<DetailComicPage> {
   @override
   void initState() {
     super.initState();
+    FirebaseApi().listenEvent(context);
     getComicDetailById().then((value) => setState(() {
           comic = value;
           isLoading = false;

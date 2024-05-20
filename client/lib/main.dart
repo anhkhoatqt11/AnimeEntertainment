@@ -1,5 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:anime_and_comic_entertainment/components/notifications/OverlayNotification.dart';
+import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_result_page.dart';
@@ -17,9 +19,12 @@ import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart'
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/tab_navigator.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -33,6 +38,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = StripeApiKey.publishableKey;
   await Stripe.instance.applySettings();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: 'AIzaSyDtoKADEsE3QxNeflKMKcyRIOqzG3eScsA',
+          appId: '1:198652970229:android:4e38bd8f3a5553e7f0f1bc',
+          messagingSenderId: '198652970229',
+          projectId: 'pushnotiflutter-95328'));
+  await FirebaseApi().initNotification();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => UserProvider()),
     ChangeNotifierProvider(create: (context) => VideoProvider()),
@@ -43,10 +55,22 @@ void main() async {
   ], child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+  @override
+  void initState() {
+    FirebaseApi().listenEvent(context);
+    FirebaseApi().storeDeviceToken(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -54,6 +78,34 @@ class MyApp extends StatelessWidget {
       title: 'skylark',
       color: Color(0xFF141414),
       home: TestPage(),
+    );
+  }
+}
+
+// set up navigation here --------------------------------------------------------------- //
+
+class NavigationScreen extends StatefulWidget {
+  final int navIndex;
+
+  NavigationScreen(this.navIndex) : super();
+
+  @override
+  _NavigationScreenState createState() => _NavigationScreenState();
+}
+
+class _NavigationScreenState extends State<NavigationScreen>
+    with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+  }
+  // right here ...
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Color(0xFF141414),
+      //home: TestPage(),
     );
   }
 }

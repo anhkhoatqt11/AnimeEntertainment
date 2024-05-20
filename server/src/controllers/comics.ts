@@ -336,6 +336,27 @@ export const getDetailComicById: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const getComicChapter: RequestHandler = async (req, res, next) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const chapterId: string =
+    typeof parsedParams.chapterId === "string" ? parsedParams.chapterId : "0";
+  try {
+    if (!mongoose.isValidObjectId(chapterId)) {
+      throw createHttpError(400, "Invalid comic id");
+    }
+    // Mỗi một comic có một field gọi là chapterList chứa id của các chapter
+    const chapter = await ComicChapterModel.findById(chapterId);
+    if (!chapter) {
+      throw createHttpError(404, "comic not found");
+    }
+    res.status(200).json(chapter);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateUserSaveChapter: RequestHandler = async (req, res, next) => {
   try {
     const { chapterId, userId } = req.body;
@@ -923,6 +944,28 @@ export const updateUserLikeChildComment: RequestHandler = async (
         });
       }
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateNotiComment: RequestHandler = async (req, res, next) => {
+  try {
+    const { userId, chapterId } = req.body;
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    user.notifications.push({
+      sourceId: new mongoose.Types.ObjectId(chapterId),
+      type: "comment",
+      content: "Ai đó đã trả lời bình luận của bạn",
+    });
+
+    await user?.save();
+    return res.status(200).json(user.accessCommentDate).end();
   } catch (error) {
     next(error);
   }

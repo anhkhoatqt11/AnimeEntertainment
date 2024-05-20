@@ -5,6 +5,7 @@ import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_comment_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/services/reports_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/foundation.dart';
@@ -56,6 +57,7 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
   @override
   void initState() {
     super.initState();
+    FirebaseApi().listenEvent(context);
     getComicChapterComments().then((value) => setState(() {
           comments = value;
           loadComments();

@@ -8,6 +8,7 @@ import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart'
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -43,6 +44,7 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
   @override
   void initState() {
     super.initState();
+    FirebaseApi().listenEvent(context);
     _scrollController.addListener(_scrollListener);
     checkUserHasLikeOrSaveAndWatchChapter();
   }

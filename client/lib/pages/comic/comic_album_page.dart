@@ -1,6 +1,7 @@
 import 'package:anime_and_comic_entertainment/components/comic/ComicLandspaceItem.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
@@ -28,6 +29,7 @@ class _ComicAlbumPageState extends State<ComicAlbumPage> {
 
   @override
   void initState() {
+    FirebaseApi().listenEvent(context);
     fetch();
     controller.addListener(() {
       if (controller.position.maxScrollExtent == controller.offset) {
