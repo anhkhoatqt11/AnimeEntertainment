@@ -38,6 +38,7 @@ dependencies:
   comment_tree: ^0.3.0
   firebase_core: ^2.31.0
   firebase_messaging: ^14.9.2
+  overlay_support: ^2.1.0
 
 flutter_icons:
   android: true
@@ -78,6 +79,7 @@ flutter:
     - assets/images/user.png
     - assets/images/loadingcomicimage.png
     - assets/images/empty-box.png
+    - assets/images/commentempty.png
     - assets/
   #   - images/a_dot_ham.jpeg
 

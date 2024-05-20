@@ -6,14 +6,26 @@ import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dar
 import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:provider/provider.dart';
 
-class ComicPage extends StatelessWidget {
+class ComicPage extends StatefulWidget {
   const ComicPage({super.key});
+
+  @override
+  State<ComicPage> createState() => _ComicPageState();
+}
+
+class _ComicPageState extends State<ComicPage> {
+  @override
+  void initState() {
+    FirebaseApi().listenEvent(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
