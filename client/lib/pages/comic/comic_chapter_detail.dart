@@ -233,8 +233,9 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ComicChapterComment(
-                                    chapterId: widget.comic
+                                    sourceId: widget.comic
                                         .chapterList![widget.index]['_id'],
+                                    type: 'chapter',
                                   ),
                                 ),
                               );

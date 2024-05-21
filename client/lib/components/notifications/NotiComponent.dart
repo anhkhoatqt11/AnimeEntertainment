@@ -191,8 +191,8 @@ class _ComicChapterState extends State<NotiComponent> {
             context,
             MaterialPageRoute(
               builder: (context) => ComicChapterComment(
-                chapterId: noti.sourceId!,
-              ),
+                  sourceId: noti.sourceId!,
+                  type: noti.type == "commentChapter" ? "chapter" : "episode"),
             ));
       },
     );

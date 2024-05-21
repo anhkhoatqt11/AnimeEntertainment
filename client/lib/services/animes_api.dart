@@ -6,6 +6,7 @@ import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/model/banner.dart';
+import 'package:anime_and_comic_entertainment/model/comment.dart';
 import 'package:anime_and_comic_entertainment/model/watchingHistories.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
@@ -611,6 +612,140 @@ class AnimesApi {
       } else {
         return [];
       }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static getAnimeEpisodeComments(BuildContext context, episodeId) async {
+    var url =
+        Uri.parse("${baseUrl}getAnimeEpisodeComments?episodeId=$episodeId");
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<Comments> comments = [];
+
+        result.forEach((element) {
+          comments.add(Comments(
+              id: element["_id"],
+              userId: element['userId'],
+              likes: element['likes'],
+              replies: element['replies'],
+              content: element['content'],
+              userName: element['userName'],
+              avatar: element['avatar']));
+        });
+
+        return comments;
+      } else {
+        return {};
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static addRootEpisodeComment(
+      BuildContext context, episodeId, userId, content) async {
+    var url = Uri.parse("${baseUrl}addRootEpisodeComments");
+    try {
+      var body = {"episodeId": episodeId, "userId": userId, "content": content};
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static addChildEpisodeComment(
+      BuildContext context, episodeId, commentId, userId, content) async {
+    var url = Uri.parse("${baseUrl}addChildEpisodeComments");
+    try {
+      var body = {
+        "episodeId": episodeId,
+        "commentId": commentId,
+        "userId": userId,
+        "content": content
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static updateUserLikeParentComment(
+      BuildContext context, episodeId, userId, commentId) async {
+    var url = Uri.parse("${baseUrl}updateUserLikeParentComment");
+    print(commentId);
+
+    try {
+      var body = {
+        "episodeId": episodeId,
+        "commentId": commentId,
+        "userId": userId
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static updateUserLikeChildComment(BuildContext context, episodeId, userId,
+      commentId, commentChildId) async {
+    var url = Uri.parse("${baseUrl}updateUserLikeChildComment");
+    try {
+      var body = {
+        "episodeId": episodeId,
+        "commentId": commentId,
+        "userId": userId,
+        "commentChildId": commentChildId
+      };
+      await http.post(url, body: body);
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)
           .isShowNetworkError);

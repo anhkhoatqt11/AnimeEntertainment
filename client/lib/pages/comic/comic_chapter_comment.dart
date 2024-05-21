@@ -4,9 +4,11 @@ import 'package:anime_and_comic_entertainment/model/comment.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_comment_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/services/reports_api.dart';
+import 'package:anime_and_comic_entertainment/services/user_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,9 +28,11 @@ import 'package:provider/provider.dart';
 // ignore_for_file: prefer_const_constructors
 
 class ComicChapterComment extends StatefulWidget {
-  final String chapterId;
+  final String sourceId;
+  final String type;
 
-  const ComicChapterComment({super.key, required this.chapterId});
+  const ComicChapterComment(
+      {super.key, required this.sourceId, required this.type});
 
   @override
   State<ComicChapterComment> createState() => _ComicChapterCommentState();
@@ -38,6 +42,7 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
   final commentController = TextEditingController();
   String commentReplied = '';
   String commentIdReplied = '';
+  String userIdIsReplied = '';
   late bool isLoading = false;
   late List<Comments> comments = [];
   late List<CommentTreeWidget> cmtTreeWidge = [];
@@ -48,17 +53,18 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
     "Nội dung công kích",
     "Khác"
   ];
-  Future<List<Comments>> getComicChapterComments() async {
-    var result =
-        await ComicsApi.getComicChapterComments(context, widget.chapterId);
-    return result;
+  Future<List<Comments>> getComicComments() async {
+    if (widget.type == "chapter") {
+      return await ComicsApi.getComicChapterComments(context, widget.sourceId);
+    }
+    return await AnimesApi.getAnimeEpisodeComments(context, widget.sourceId);
   }
 
   @override
   void initState() {
     super.initState();
     FirebaseApi().listenEvent(context);
-    getComicChapterComments().then((value) => setState(() {
+    getComicComments().then((value) => setState(() {
           comments = value;
           loadComments();
         }));
@@ -76,20 +82,16 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
         comment.replies!.forEach((element) {
           replies.add(Comment(
               id: element["_id"],
-              userId: element["userId"],
               avatar: element['avatar'],
               userName: element['userName'],
-              content: element['content'],
-              likes: element['likes']));
+              content: element['content']));
         });
         cmtTreeWidge.add(CommentTreeWidget(
           Comment(
               id: comment.id,
-              userId: comment.userId,
               avatar: comment.avatar,
               userName: comment.userName,
-              content: comment.content,
-              likes: comment.likes),
+              content: comment.content),
           replies,
           treeThemeData:
               TreeThemeData(lineColor: Color(0xFF141414), lineWidth: 3),
@@ -194,14 +196,26 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                               listen: false)
                                           .user
                                           .id;
-                                      await ComicsApi
-                                          .updateUserLikeChildComment(
-                                              context,
-                                              widget.chapterId,
-                                              userId,
-                                              comment.id,
-                                              data.id);
-                                      await getComicChapterComments()
+
+                                      if (widget.type == "chapter") {
+                                        await ComicsApi
+                                            .updateUserLikeChildComment(
+                                                context,
+                                                widget.sourceId,
+                                                userId,
+                                                comment.id,
+                                                data.id);
+                                      } else {
+                                        await AnimesApi
+                                            .updateUserLikeChildComment(
+                                                context,
+                                                widget.sourceId,
+                                                userId,
+                                                comment.id,
+                                                data.id);
+                                      }
+
+                                      await getComicComments()
                                           .then((value) => setState(() {
                                                 comments = value;
                                                 loadComments();
@@ -262,9 +276,12 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                                                                 false)
                                                                         .user
                                                                         .id,
-                                                                    "comic",
+                                                                    widget.type ==
+                                                                            "chapter"
+                                                                        ? "comic"
+                                                                        : "anime",
                                                                     widget
-                                                                        .chapterId,
+                                                                        .sourceId,
                                                                     commentReportId);
                                                                 GFToast.showToast(
                                                                     'Đã gửi báo cáo cho quản trị viên.',
@@ -441,12 +458,16 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                             listen: false)
                                         .user
                                         .id;
-                                    await ComicsApi.updateUserLikeParentComment(
-                                        context,
-                                        widget.chapterId,
-                                        userId,
-                                        data.id);
-                                    await getComicChapterComments()
+                                    if (widget.type == "chapter") {
+                                      await ComicsApi
+                                          .updateUserLikeParentComment(context,
+                                              widget.sourceId, userId, data.id);
+                                    } else {
+                                      await AnimesApi
+                                          .updateUserLikeParentComment(context,
+                                              widget.sourceId, userId, data.id);
+                                    }
+                                    await getComicComments()
                                         .then((value) => setState(() {
                                               comments = value;
                                               loadComments();
@@ -474,6 +495,7 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                   } else {
                                     setState(() {
                                       commentIdReplied = data.id;
+                                      userIdIsReplied = data.userId;
                                       commentReplied = ' ${data.userName}';
                                     });
                                   }
@@ -532,9 +554,12 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                                                               false)
                                                                       .user
                                                                       .id,
-                                                                  "comic",
+                                                                  widget.type ==
+                                                                          "chapter"
+                                                                      ? "comic"
+                                                                      : "anime",
                                                                   widget
-                                                                      .chapterId,
+                                                                      .sourceId,
                                                                   commentReportId);
                                                               GFToast.showToast(
                                                                   'Đã gửi báo cáo cho quản trị viên.',
@@ -750,30 +775,30 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                             listen: false)
                                         .user
                                         .id;
-                                    // await Provider.of<ComicCommentProvider>(
-                                    //         context,
-                                    //         listen: false)
-                                    //     .checkUserBanned(context, userId);
-                                    // if (Provider.of<ComicCommentProvider>(
-                                    //         context,
-                                    //         listen: false)
-                                    //     .commentAccessDate
-                                    //     .isAfter(DateTime.now())) {
-                                    //   var formattedDate =
-                                    //       Provider.of<ComicCommentProvider>(
-                                    //               context,
-                                    //               listen: false)
-                                    //           .formattedDate;
-                                    //   showDialog(
-                                    //       context: context,
-                                    //       builder: (_) => CustomAlertDialog(
-                                    //           content:
-                                    //               'Bạn đang bị cấm bình luận vì vi phạm quy tắc cộng đồng. Thời gian bạn có thể bình luận tiếp là $formattedDate',
-                                    //           title: 'Thông báo',
-                                    //           action: () {}));
-                                    //   commentController.text = '';
-                                    //   return;
-                                    // }
+                                    await Provider.of<ComicCommentProvider>(
+                                            context,
+                                            listen: false)
+                                        .checkUserBanned(context, userId);
+                                    if (Provider.of<ComicCommentProvider>(
+                                            context,
+                                            listen: false)
+                                        .commentAccessDate
+                                        .isAfter(DateTime.now())) {
+                                      var formattedDate =
+                                          Provider.of<ComicCommentProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .formattedDate;
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) => CustomAlertDialog(
+                                              content:
+                                                  'Bạn đang bị cấm bình luận vì vi phạm quy tắc cộng đồng. Thời gian bạn có thể bình luận tiếp là $formattedDate',
+                                              title: 'Thông báo',
+                                              action: () {}));
+                                      commentController.text = '';
+                                      return;
+                                    }
                                     await Provider.of<ComicCommentProvider>(
                                             context,
                                             listen: false)
@@ -802,30 +827,54 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                     }
 
                                     if (commentReplied.isEmpty) {
-                                      await Provider.of<ComicCommentProvider>(
-                                              context,
-                                              listen: false)
-                                          .addRootComment(
-                                              context,
-                                              widget.chapterId,
-                                              userId,
-                                              commentController.text);
+                                      if (widget.type == "chapter") {
+                                        await Provider.of<ComicCommentProvider>(
+                                                context,
+                                                listen: false)
+                                            .addRootComment(
+                                                context,
+                                                widget.sourceId,
+                                                userId,
+                                                commentController.text);
+                                      } else {
+                                        await AnimesApi.addRootEpisodeComment(
+                                            context,
+                                            widget.sourceId,
+                                            userId,
+                                            commentController.text);
+                                      }
                                     } else {
-                                      await Provider.of<ComicCommentProvider>(
-                                              context,
-                                              listen: false)
-                                          .addChildComment(
-                                              context,
-                                              widget.chapterId,
-                                              commentIdReplied,
-                                              userId,
-                                              commentController.text);
+                                      if (widget.type == "chapter") {
+                                        await Provider.of<ComicCommentProvider>(
+                                                context,
+                                                listen: false)
+                                            .addChildComment(
+                                                context,
+                                                widget.sourceId,
+                                                commentIdReplied,
+                                                userId,
+                                                commentController.text);
+                                      } else {
+                                        await AnimesApi.addChildEpisodeComment(
+                                            context,
+                                            widget.sourceId,
+                                            commentIdReplied,
+                                            userId,
+                                            commentController.text);
+                                      }
+                                      UsersApi.sendPushNoti(userIdIsReplied);
+                                      UsersApi.addCommentNotiToUser(
+                                          userIdIsReplied,
+                                          widget.sourceId,
+                                          widget.type == "chapter"
+                                              ? "commentChapter"
+                                              : "commentEpisode");
                                     }
 
                                     commentController.text = '';
                                     commentReplied = '';
 
-                                    await getComicChapterComments()
+                                    await getComicComments()
                                         .then((value) => setState(() {
                                               comments = value;
                                               loadComments();

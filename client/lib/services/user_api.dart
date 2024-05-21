@@ -95,6 +95,40 @@ class UsersApi {
     }
   }
 
+  static sendPushNoti(String userId) async {
+    var url = Uri.parse(
+      "${baseUrl}sendPushNoti",
+    );
+    try {
+      var body = {
+        "title": "Ai đó đã trả lời bình luận của bạn",
+        "body": "Hãy kiểm tra ngay",
+        "userId": userId
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      return;
+    }
+  }
+
+  static addCommentNotiToUser(
+      String userId, String sourceId, String type) async {
+    var url = Uri.parse(
+      "${baseUrl}addCommentNotification",
+    );
+    try {
+      var body = {
+        "userId": userId,
+        "sourceId": sourceId,
+        "type": type,
+        "content": "Ai đó đã trả lời bình luận của bạn",
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      return;
+    }
+  }
+
   static getBookmartList(BuildContext context, userId) async {
     var url = Uri.parse(
       "${baseUrl}getBookmarkList?userId=$userId",

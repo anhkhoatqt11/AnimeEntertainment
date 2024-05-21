@@ -527,7 +527,7 @@ export const sendPushNoti: RequestHandler = async (req, res, next) => {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
       });
-    } catch {}
+    } catch { }
 
     const token =
       "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";
@@ -744,6 +744,7 @@ export const addRootChapterComments: RequestHandler = async (
     next(error);
   }
 };
+
 export const addChildChapterComments: RequestHandler = async (
   req,
   res,
@@ -944,28 +945,6 @@ export const updateUserLikeChildComment: RequestHandler = async (
         });
       }
     });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const updateNotiComment: RequestHandler = async (req, res, next) => {
-  try {
-    const { userId, chapterId } = req.body;
-
-    var user = await UserModel.findById(userId);
-    if (!user) {
-      return res.sendStatus(400);
-    }
-
-    user.notifications.push({
-      sourceId: new mongoose.Types.ObjectId(chapterId),
-      type: "comment",
-      content: "Ai đó đã trả lời bình luận của bạn",
-    });
-
-    await user?.save();
-    return res.status(200).json(user.accessCommentDate).end();
   } catch (error) {
     next(error);
   }
