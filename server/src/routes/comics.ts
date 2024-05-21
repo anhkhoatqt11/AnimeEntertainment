@@ -78,4 +78,5 @@ router.put("/updateNotiComment", ComicsController.updateNotiComment);
 router.get("/getReadingHistories", ComicsController.getReadingHistories);
 
 router.post("/testComment", ComicsController.testComment);
+
 export default router;

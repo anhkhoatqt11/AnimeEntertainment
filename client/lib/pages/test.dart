@@ -23,10 +23,14 @@ import 'package:anime_and_comic_entertainment/services/auth_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
 import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
+import 'package:anime_and_comic_entertainment/services/reports_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/colors/gf_color.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
+import 'package:getwidget/components/toast/gf_toast.dart';
+import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:getwidget/size/gf_size.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -59,12 +63,9 @@ class _TestPageState extends State<TestPage> {
               onPressed: () async {
                 var result = await AnimesApi.checkUserHistoryHadSeenEpisode(
                     context,
-                    "65ffea9c65ac19bed872183c",
+                    "65ffd16d1bee1791e51d5195",
                     "65f709463fafb1d0bdce1bb0");
                 print(result);
-                if (result['position'] != null) {
-                  print(result['position']);
-                }
               },
               child: const Text("test")),
           ElevatedButton(
@@ -89,6 +90,32 @@ class _TestPageState extends State<TestPage> {
               );
             },
             child: const Text("Notifications"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await ReportsApi.sendUserReport(
+                  context,
+                  'lalala',
+                  '664b0912d9d500ecd8b4a5ff',
+                  '664b0912d9d500ecd8b4a5ff',
+                  "comic",
+                  '664b0912d9d500ecd8b4a5ff',
+                  '664b0912d9d500ecd8b4a5ff');
+              // GFToast.showToast('Đã gửi báo cáo cho quản trị viên.', context,
+              //     toastPosition: GFToastPosition.BOTTOM,
+              //     textStyle: TextStyle(
+              //       fontSize: 14,
+              //       color: GFColors.LIGHT,
+              //       fontWeight: FontWeight.w500,
+              //     ),
+              //     backgroundColor: GFColors.DARK,
+              //     trailing: Icon(
+              //       Icons.notifications,
+              //       color: GFColors.SUCCESS,
+              //       size: 16,
+              //     ));
+            },
+            child: const Text("send report"),
           ),
         ]),
       );
