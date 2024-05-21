@@ -17,7 +17,6 @@ class ReportsApi {
     try {
       var body = {
         "reportContent": reportContent,
-        "reportTime": DateTime.now(),
         "userBeReportedId": userBeReportedId,
         "userReportedId": userReportedId,
         "type": type,

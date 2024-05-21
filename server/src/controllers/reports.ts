@@ -6,7 +6,6 @@ export const sendUserReport: RequestHandler = async (req, res, next) => {
   try {
     const {
       reportContent,
-      reportTime,
       userBeReportedId,
       userReportedId,
       type,
@@ -15,7 +14,7 @@ export const sendUserReport: RequestHandler = async (req, res, next) => {
     } = req.body;
     await UserReportsModel.create({
       reportContent: reportContent,
-      reportTime: reportTime,
+      reportTime: Date.now(),
       userBeReportedId: new mongoose.Types.ObjectId(userBeReportedId),
       userReportedId: new mongoose.Types.ObjectId(userReportedId),
       type: type,
