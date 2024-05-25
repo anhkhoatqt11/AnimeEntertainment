@@ -53,4 +53,8 @@ router.get(
 router.get("/searchAnimeAndEpisodes", AnimeController.searchAnimeAndEpisodes);
 
 router.get("/getWatchingHistories", AnimeController.getWatchingHistories);
+
+router.get("/searchAnimeByGenres", AnimeController.searchAnimeByGenres);
+
+router.get("/getGenres", AnimeController.getGenres);
 export default router;

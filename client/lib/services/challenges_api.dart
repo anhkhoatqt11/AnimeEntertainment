@@ -43,7 +43,7 @@ class ChallengesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -83,8 +83,7 @@ class ChallengesApi {
     }
   }
 
-  static Future<List<UserChallenge>> getUsersChallengesPoints(
-      ) async {
+  static Future<List<UserChallenge>> getUsersChallengesPoints() async {
     var url = Uri.parse("${baseUrl}getUsersChallengesPoint");
     try {
       final res = await http.get(url);
@@ -96,11 +95,11 @@ class ChallengesApi {
         }
         print(data);
         return userChallenges;
-        } else {
-          return []; // Return an empty list if there's no data
-        }
-      } catch (e) {
-        print('Error fetching leaderboard: $e');
+      } else {
+        return []; // Return an empty list if there's no data
+      }
+    } catch (e) {
+      print('Error fetching leaderboard: $e');
       throw Exception('Error: $e');
     }
   }

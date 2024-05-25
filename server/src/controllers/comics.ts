@@ -970,3 +970,22 @@ export const updateNotiComment: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const searchComicByGenres: RequestHandler = async (req, res, next) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const genreId =
+    typeof parsedParams.genreId === "string" ? parsedParams.genreId : "";
+  try {
+    if (!mongoose.isValidObjectId(genreId)) {
+      throw createHttpError(400, "Invalid user id");
+    }
+    const animes = await ComicsModel.find({
+      genres: new mongoose.Types.ObjectId(genreId),
+    });
+    res.status(200).json(animes);
+  } catch (error) {
+    next(error);
+  }
+};
