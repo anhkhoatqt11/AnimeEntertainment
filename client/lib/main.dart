@@ -77,9 +77,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'skylark',
       color: Color(0xFF141414),
-      home: MyHomePage(
-        title: '',
-      ),
+      home: TestPage(),
     );
   }
 }
