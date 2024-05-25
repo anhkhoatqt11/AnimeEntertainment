@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/model/banner.dart';
+import 'package:anime_and_comic_entertainment/model/comicchapters.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/model/comment.dart';
 import 'package:anime_and_comic_entertainment/model/readingHistories.dart';
@@ -264,6 +265,42 @@ class ComicsApi {
     }
   }
 
+  static getComicChaperById(BuildContext context, String chapterId) async {
+    var url = Uri.parse(
+      "${baseUrl}getComicChapter?chapterId=$chapterId",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        ComicChapter comicDetail = ComicChapter(
+            id: result['_id'],
+            chapterName: result['chapterName'],
+            coverImage: result['coverImage'],
+            content: result['content'],
+            comments: result['comments'],
+            likes: result['likes'],
+            views: result['views'],
+            unlockPrice: result['unlockPrice'],
+            userUnlocked: result['userUnlocked']);
+        return comicDetail;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
   static updateUserSaveChapter(BuildContext context, chapterId, userId) async {
     var url = Uri.parse(
       "${baseUrl}updateUserSaveChapter",
@@ -389,6 +426,7 @@ class ComicsApi {
 
         result.forEach((element) {
           comments.add(Comments(
+              id: element["_id"],
               userId: element['userId'],
               likes: element['likes'],
               replies: element['replies'],
@@ -401,6 +439,94 @@ class ComicsApi {
       } else {
         return {};
       }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static checkValidCommentContent(content) async {
+    var url = Uri.parse("${baseUrl}checkValidCommentContent?content=$content");
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      }
+    } catch (e) {
+      return 'true';
+    }
+  }
+
+  static checkUserBan(BuildContext context, userId) async {
+    var url = Uri.parse("${baseUrl}checkUserBanned?userId=$userId");
+    try {
+      var res = await http.get(url);
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body);
+      }
+    } catch (e) {
+      return {};
+    }
+  }
+
+  static banUser(BuildContext context, userId) async {
+    var url = Uri.parse("${baseUrl}banUser");
+    try {
+      var body = {"userId": userId};
+      await http.put(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static addRootChapterComment(
+      BuildContext context, chapterId, userId, content) async {
+    var url = Uri.parse("${baseUrl}addRootChapterComments");
+    try {
+      var body = {"chapterId": chapterId, "userId": userId, "content": content};
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static addChildChapterComment(
+      BuildContext context, chapterId, commentId, userId, content) async {
+    var url = Uri.parse("${baseUrl}addChildChapterComments");
+    try {
+      var body = {
+        "chapterId": chapterId,
+        "commentId": commentId,
+        "userId": userId,
+        "content": content
+      };
+      await http.post(url, body: body);
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)
           .isShowNetworkError);
@@ -436,6 +562,57 @@ class ComicsApi {
       } else {
         return {};
       }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static updateUserLikeParentComment(
+      BuildContext context, chapterId, userId, commentId) async {
+    var url = Uri.parse("${baseUrl}updateUserLikeParentComment");
+    print(commentId);
+
+    try {
+      var body = {
+        "chapterId": chapterId,
+        "commentId": commentId,
+        "userId": userId
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static updateUserLikeChildComment(BuildContext context, chapterId, userId,
+      commentId, commentChildId) async {
+    var url = Uri.parse("${baseUrl}updateUserLikeChildComment");
+    try {
+      var body = {
+        "chapterId": chapterId,
+        "commentId": commentId,
+        "userId": userId,
+        "commentChildId": commentChildId
+      };
+      await http.post(url, body: body);
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)
           .isShowNetworkError);

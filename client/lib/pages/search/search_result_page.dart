@@ -1,15 +1,21 @@
+import 'package:anime_and_comic_entertainment/components/animes/AnimeAlbumItem.dart';
 import 'package:anime_and_comic_entertainment/components/animes/AnimeItem.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ComicItem.dart';
+import 'package:anime_and_comic_entertainment/components/comic/ComicLandspaceItem.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/detail_anime_page.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
+import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/size/gf_size.dart';
+import 'package:getwidget/types/gf_button_type.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
 
 class SearchResultPage extends StatefulWidget {
@@ -80,42 +86,72 @@ class _SearchResultPageState extends State<SearchResultPage> {
         appBar: GFAppBar(
           backgroundColor: const Color(0xFF141414),
           elevation: 0,
-          title: TextField(
-            controller: textController,
-            decoration: InputDecoration(
-              // hintText: "Tìm kiếm phim, anime, comic, diễn viên, ...",
-              hintStyle: TextStyle(color: Colors.white),
-            ),
-            style: TextStyle(color: Colors.white),
-            readOnly: true,
-            onTap: () {
-              Navigator.pop((context));
-            },
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              GFIconButton(
+                size: GFSize.SMALL,
+                splashColor: Colors.transparent,
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                  size: 18,
+                ),
+                onPressed: () {
+                  Navigator.pop((context));
+                },
+                type: GFButtonType.transparent,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: TextField(
+                  controller: textController,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(
+                      Icons.search_rounded,
+                      size: 20,
+                    ),
+                    hintText: "Tìm kiếm phim, anime, comic, diễn viên, ...",
+                    hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+                  ),
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  readOnly: true,
+                  onTap: () {
+                    Navigator.pop((context));
+                  },
+                ),
+              ),
+            ],
           ),
-          bottom: const TabBar(
-            tabs: [
+          bottom: TabBar(
+            indicatorColor: Utils.primaryColor,
+            dividerColor: Colors.transparent,
+            labelColor: Utils.primaryColor,
+            tabs: const [
               Tab(
-                text: "Anime",
+                text: "      Anime      ",
               ),
               Tab(
-                text: "Truyện",
+                text: "      Truyện      ",
               ),
             ],
           ),
         ),
         body: Padding(
-          padding: EdgeInsets.all(0.0),
+          padding: const EdgeInsets.all(10.0),
           child: TabBarView(children: [
             Column(
               children: [
                 Row(
                   children: [
                     Text(
-                      "ANIME (${listAnimeItem.length} KẾT QUẢ)",
+                      "Anime (${listAnimeItem.length} kết quả)",
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
@@ -142,6 +178,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                                               listAnimeItem[index].coverImage,
                                           nameItem:
                                               listAnimeItem[index].movieName,
+                                          animeId: listAnimeItem[index].id,
                                         ),
                                       );
                                     } else {
@@ -165,15 +202,15 @@ class _SearchResultPageState extends State<SearchResultPage> {
                 Row(
                   children: [
                     Text(
-                      "TRUYỆN (${listComicItem.length} KẾT QUẢ)",
-                      style: TextStyle(
+                      "Truyện (${listComicItem.length} kết quả)",
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Flexible(
@@ -183,8 +220,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
                         scrollDirection: Axis.vertical,
                         children: [
                           Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
+                              padding: const EdgeInsets.only(left: 0, right: 0),
                               child: Wrap(
                                   alignment: WrapAlignment.spaceBetween,
                                   children: List.generate(listComicItem.length,

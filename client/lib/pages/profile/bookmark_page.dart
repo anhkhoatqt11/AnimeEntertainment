@@ -1,12 +1,16 @@
 import 'package:anime_and_comic_entertainment/components/AnimeBookmarkItem.dart';
 import 'package:anime_and_comic_entertainment/components/ComicBookmarkItem.dart';
 import 'package:anime_and_comic_entertainment/components/ui/AlertChoiceDialog.dart';
+import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/services/user_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
+import 'package:getwidget/components/button/gf_icon_button.dart';
+import 'package:getwidget/types/gf_button_type.dart';
 import 'package:provider/provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 
@@ -38,20 +42,24 @@ class _BookMarkPageState extends State<BookMarkPage> {
       if (userId == "") return;
       final result = await UsersApi.getBookmartList(context, userId);
       setState(() {
-        listAnimeItem = (result['animes'] as List)
+        listAnimeItem = (result[0]['animes'] as List)
             .map((item) => Animes(
-                  id: item['_id'],
-                  landspaceImage: item['landspaceImage'],
-                  movieName: item['movieName'],
-                ))
+                id: item['_id'],
+                coverImage: item['coverImage'],
+                movieName: item['movieName'],
+                description: item['description'],
+                episodes: item['episodes'],
+                genreNames: item['genreNames']))
             .toList();
-        listComicItem = (result['comics'] as List)
+        listComicItem = (result[0]['comics'] as List)
             .map((item) => Comics(
-                  id: item['_id'],
-                  landspaceImage: item['landspaceImage'],
-                  genres: item['genres'],
-                  comicName: item['comicName'],
-                ))
+                id: item['_id'],
+                coverImage: item['coverImage'],
+                genres: item['genres'],
+                comicName: item['comicName'],
+                description: item['description'],
+                chapterList: item['chapterList'],
+                genreNames: item['genreNames']))
             .toList();
       });
     } catch (e) {
@@ -72,7 +80,24 @@ class _BookMarkPageState extends State<BookMarkPage> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Yêu thích"),
+              GFIconButton(
+                splashColor: Colors.transparent,
+                icon: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                onPressed: () {
+                  Provider.of<NavigatorProvider>(context, listen: false)
+                      .setShow(true);
+                  Navigator.of(context).pop();
+                },
+                type: GFButtonType.transparent,
+              ),
+              const Text(
+                "Yêu thích",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+              ),
               GestureDetector(
                 onTap: () {
                   setState(() {
@@ -81,19 +106,23 @@ class _BookMarkPageState extends State<BookMarkPage> {
                 },
                 child: Text(
                   isEditing ? "Thoát" : "Sửa",
-                  style: TextStyle(fontSize: 18, color: Utils.primaryColor),
+                  style: TextStyle(fontSize: 16, color: Utils.primaryColor),
                 ),
               ),
             ],
           ),
-          bottom: const TabBar(tabs: [
-            Tab(
-              text: "Anime",
-            ),
-            Tab(
-              text: "Truyện",
-            ),
-          ]),
+          bottom: TabBar(
+              dividerColor: Colors.transparent,
+              labelColor: Utils.primaryColor,
+              indicatorColor: Utils.primaryColor,
+              tabs: const [
+                Tab(
+                  text: "      Anime      ",
+                ),
+                Tab(
+                  text: "      Truyện      ",
+                ),
+              ]),
         ),
         body: TabBarView(
           children: [
@@ -110,12 +139,15 @@ class _BookMarkPageState extends State<BookMarkPage> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
-                        child: ElevatedButton(
-                          onPressed: () {
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: GradientButton(
+                          action: () {
                             _deleteSelectedItems();
                           },
-                          child: Text('Xoá khỏi danh sách'),
+                          content: 'Xoá khỏi danh sách',
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          height: 50,
+                          disabled: false,
                         ),
                       ),
                     ),
@@ -132,16 +164,16 @@ class _BookMarkPageState extends State<BookMarkPage> {
       return Center(
         child: Column(
           children: [
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Image.asset('assets/images/empty-box.png'),
-            Text(
+            const Text(
               'Chưa có bộ anime nào',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
-            Text(
+            const Text(
               'Hãy thêm anime vào danh sách yêu thích của bạn',
               style: TextStyle(color: Colors.white),
             ),
@@ -149,31 +181,42 @@ class _BookMarkPageState extends State<BookMarkPage> {
         ),
       );
     }
-    return ListView.builder(
-      itemCount: listAnimeItem.length,
-      itemBuilder: (context, index) {
-        return isEditing
-            ? AnimeBookmarkItem(
-                landspaceImage: listAnimeItem[index].landspaceImage!,
-                movieName: listAnimeItem[index].movieName!,
-                isBookmarked: true,
-                isChecked: selectedAnimeIndexes.contains(index),
-                onChanged: (bool? value) {
-                  setState(() {
-                    if (value!) {
-                      selectedAnimeIndexes.add(index);
-                    } else {
-                      selectedAnimeIndexes.remove(index);
-                    }
-                  });
-                },
-              )
-            : AnimeBookmarkItem(
-                landspaceImage: listAnimeItem[index].landspaceImage!,
-                movieName: listAnimeItem[index].movieName!,
-                isBookmarked: true,
-              );
-      },
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListView.builder(
+        itemCount: listAnimeItem.length,
+        itemBuilder: (context, index) {
+          return isEditing
+              ? AnimeBookmarkItem(
+                  animeId: listAnimeItem[index].id!,
+                  coverImage: listAnimeItem[index].coverImage!,
+                  movieName: listAnimeItem[index].movieName!,
+                  isBookmarked: true,
+                  description: listAnimeItem[index].description!,
+                  episodeListNumber: listAnimeItem[index].episodes!.length,
+                  genreNames: listAnimeItem[index].genreNames!,
+                  isChecked: selectedAnimeIndexes.contains(index),
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value!) {
+                        selectedAnimeIndexes.add(index);
+                      } else {
+                        selectedAnimeIndexes.remove(index);
+                      }
+                    });
+                  },
+                )
+              : AnimeBookmarkItem(
+                  animeId: listAnimeItem[index].id!,
+                  coverImage: listAnimeItem[index].coverImage!,
+                  movieName: listAnimeItem[index].movieName!,
+                  isBookmarked: true,
+                  description: listAnimeItem[index].description!,
+                  episodeListNumber: listAnimeItem[index].episodes!.length,
+                  genreNames: listAnimeItem[index].genreNames!,
+                );
+        },
+      ),
     );
   }
 
@@ -182,16 +225,16 @@ class _BookMarkPageState extends State<BookMarkPage> {
       return Center(
         child: Column(
           children: [
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Image.asset('assets/images/empty-box.png'),
-            Text(
+            const Text(
               'Chưa có bộ truyện nào',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
             ),
-            Text(
+            const Text(
               'Hãy thêm truyện vào danh sách yêu thích của bạn',
               style: TextStyle(color: Colors.white),
             ),
@@ -199,31 +242,42 @@ class _BookMarkPageState extends State<BookMarkPage> {
         ),
       );
     }
-    return ListView.builder(
-      itemCount: listComicItem.length,
-      itemBuilder: (context, index) {
-        return isEditing
-            ? ComicBookmarkItem(
-                landspaceImage: listComicItem[index].landspaceImage!,
-                comicName: listComicItem[index].comicName!,
-                isBookmarked: true,
-                isChecked: selectedComicIndexes.contains(index),
-                onChanged: (bool? value) {
-                  setState(() {
-                    if (value!) {
-                      selectedComicIndexes.add(index);
-                    } else {
-                      selectedComicIndexes.remove(index);
-                    }
-                  });
-                },
-              )
-            : ComicBookmarkItem(
-                landspaceImage: listComicItem[index].landspaceImage!,
-                comicName: listComicItem[index].comicName!,
-                isBookmarked: true,
-              );
-      },
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListView.builder(
+        itemCount: listComicItem.length,
+        itemBuilder: (context, index) {
+          return isEditing
+              ? ComicBookmarkItem(
+                  comicId: listComicItem[index].id!,
+                  coverImage: listComicItem[index].coverImage!,
+                  comicName: listComicItem[index].comicName!,
+                  isBookmarked: true,
+                  description: listComicItem[index].description!,
+                  chapterListNumber: listComicItem[index].chapterList!.length,
+                  genreNames: listComicItem[index].genreNames!,
+                  isChecked: selectedComicIndexes.contains(index),
+                  onChanged: (bool? value) {
+                    setState(() {
+                      if (value!) {
+                        selectedComicIndexes.add(index);
+                      } else {
+                        selectedComicIndexes.remove(index);
+                      }
+                    });
+                  },
+                )
+              : ComicBookmarkItem(
+                  comicId: listComicItem[index].id!,
+                  coverImage: listComicItem[index].coverImage!,
+                  comicName: listComicItem[index].comicName!,
+                  isBookmarked: true,
+                  description: listComicItem[index].description!,
+                  chapterListNumber: listComicItem[index].chapterList!.length,
+                  genreNames: listComicItem[index].genreNames!,
+                );
+        },
+      ),
     );
   }
 

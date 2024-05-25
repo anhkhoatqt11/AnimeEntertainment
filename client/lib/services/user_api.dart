@@ -71,6 +71,30 @@ class UsersApi {
     }
   }
 
+  static storeDeviceToken(BuildContext context, token) async {
+    var url = Uri.parse(
+      "${baseUrl}storeDeviceToken",
+    );
+    try {
+      var body = {
+        "userId": Provider.of<UserProvider>(context, listen: false).user.id,
+        "token": token
+      };
+      await http.put(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true);
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
   static getBookmartList(BuildContext context, userId) async {
     var url = Uri.parse(
       "${baseUrl}getBookmarkList?userId=$userId",
@@ -79,6 +103,7 @@ class UsersApi {
       final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
+        print(result);
         return result;
       } else {
         return [];

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier {
   User _user = User(
-      id: '65ec67ad05c5cb2ad67cfb3f',
+      id: '',
       paymentHistories: [],
       authentication: {"password": "", "salt": "", "sessionToken": ""},
       bookmarkList: {},
@@ -15,7 +15,8 @@ class UserProvider extends ChangeNotifier {
         "readingTime": 0,
         "watchingTime": 0,
         "received": [],
-        "finalTime": DateTime.now()
+        "finalTime": DateTime.now(),
+        "hasReceivedDailyGift": false,
       });
 
   User get user => _user;
@@ -49,7 +50,8 @@ class UserProvider extends ChangeNotifier {
       "readingTime": _user.questLog["readingTime"] + time,
       "watchingTime": _user.questLog["watchingTime"],
       "received": _user.questLog["received"],
-      "finalTime": DateTime.now()
+      "finalTime": DateTime.now(),
+      "hasReceivedDailyGift": _user.questLog["hasReceivedDailyGift"]
     };
     notifyListeners();
   }
@@ -59,7 +61,8 @@ class UserProvider extends ChangeNotifier {
       "readingTime": _user.questLog["readingTime"],
       "watchingTime": _user.questLog["watchingTime"] + time,
       "received": _user.questLog["received"],
-      "finalTime": DateTime.now()
+      "finalTime": DateTime.now(),
+      "hasReceivedDailyGift": _user.questLog["hasReceivedDailyGift"]
     };
     notifyListeners();
   }
@@ -69,12 +72,19 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setQuestLog(int read, int watching, List received, String date) {
+  void setReceivedDailyGift(item) {
+    _user.questLog["hasReceivedDailyGift"] = item;
+    notifyListeners();
+  }
+
+  void setQuestLog(int read, int watching, List received, String date,
+      bool hasReceivedDailyGift) {
     _user.questLog = {
       "readingTime": read,
       "watchingTime": watching,
       "received": received,
-      "finalTime": DateTime.parse(date)
+      "finalTime": DateTime.parse(date),
+      "hasReceivedDailyGift": hasReceivedDailyGift
     };
     notifyListeners();
   }

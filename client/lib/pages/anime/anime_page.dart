@@ -5,6 +5,7 @@ import 'package:anime_and_comic_entertainment/components/animes/WatchingHistorie
 import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
@@ -20,6 +21,12 @@ class AnimePage extends StatefulWidget {
 
 class _AnimePageState extends State<AnimePage> {
   @override
+  void initState() {
+    FirebaseApi().listenEvent(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         extendBodyBehindAppBar: true,
@@ -33,18 +40,7 @@ class _AnimePageState extends State<AnimePage> {
           ),
           actions: <Widget>[
             GFIconButton(
-              icon: const Icon(
-                Icons.favorite,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-              type: GFButtonType.transparent,
-            ),
-            GFIconButton(
-              icon: const Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
+              icon: const Icon(Icons.search, color: Colors.white, size: 24),
               onPressed: () {
                 Provider.of<NavigatorProvider>(context, listen: false)
                     .setShow(false);
