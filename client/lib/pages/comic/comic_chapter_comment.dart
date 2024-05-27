@@ -74,16 +74,16 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
         a = a + 1;
         replies = [];
         comment.replies!.forEach((element) {
-          replies.add(Comment(
+          replies.add(Comments(
               id: element["_id"],
               userId: element["userId"],
               avatar: element['avatar'],
               userName: element['userName'],
               content: element['content'],
-              likes: element['likes']));
+              likes: element['likes']) as Comment);
         });
         cmtTreeWidge.add(CommentTreeWidget(
-          Comment(
+          Comments(
               id: comment.id,
               userId: comment.userId,
               avatar: comment.avatar,

@@ -1,7 +1,7 @@
 import 'package:anime_and_comic_entertainment/components/payment/PaymentHistoryItem.dart';
 import 'package:anime_and_comic_entertainment/model/paymenthistories.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
-import 'package:anime_and_comic_entertainment/services/payment_api..dart';
+import 'package:anime_and_comic_entertainment/services/payment_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';

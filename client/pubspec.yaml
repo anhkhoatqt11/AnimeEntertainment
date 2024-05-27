@@ -35,6 +35,9 @@ dependencies:
   intl: ^0.18.1
   url_launcher: ^6.2.5
   comment_tree: ^0.3.0
+  firebase_core: ^2.31.0
+  firebase_messaging: ^14.9.2
+  overlay_support: ^2.1.0
 
 
 flutter_icons:

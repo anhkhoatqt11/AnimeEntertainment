@@ -2,10 +2,15 @@
 
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_result_page.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_detail_page.dart';
 import 'package:anime_and_comic_entertainment/pages/donate/donate_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/splash.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/about_us_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/about_us_privacy.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/about_us_tou.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/edit_profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/payment_history_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
@@ -14,9 +19,11 @@ import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart'
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/tab_navigator.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -28,8 +35,15 @@ import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_pag
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = KhoaStripeApiKey.stripePublicKey;
+  Stripe.publishableKey = StripeApiKey.publishableKey;
   await Stripe.instance.applySettings();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: 'AIzaSyDtoKADEsE3QxNeflKMKcyRIOqzG3eScsA',
+          appId: '1:198652970229:android:4e38bd8f3a5553e7f0f1bc',
+          messagingSenderId: '198652970229',
+          projectId: 'pushnotiflutter-95328'));
+  await FirebaseApi().initNotification();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => UserProvider()),
     ChangeNotifierProvider(create: (context) => VideoProvider()),
@@ -49,7 +63,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'skylark',
       color: Color(0xFF141414),
-      home: Splash(),
+      home: DonatePage(),
     );
   }
 }
@@ -99,6 +113,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    FirebaseApi().listenEvent(context);
+    FirebaseApi().storeDeviceToken(context);
     super.initState();
   }
 

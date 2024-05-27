@@ -46,12 +46,14 @@ router.get(
 
 router.get("/getComicChapter", ComicsController.getComicChapter);
 
+
 router.get(
   "/getComicChapterComments",
   ComicsController.getComicChapterComments
 );
 
 router.post("/addRootChapterComments", ComicsController.addRootChapterComments);
+
 router.post(
   "/addChildChapterComments",
   ComicsController.addChildChapterComments
@@ -62,9 +64,11 @@ router.get(
   ComicsController.checkValidCommentContent
 );
 router.get("/checkUserBanned", ComicsController.checkUserBanned);
+
 router.put("/banUser", ComicsController.banUser);
 
 router.get("/searchComic", ComicsController.searchComics);
+
 router.post(
   "/updateUserLikeParentComment",
   ComicsController.updateUserLikeParentComment

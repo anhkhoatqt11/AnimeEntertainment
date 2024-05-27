@@ -527,7 +527,7 @@ export const sendPushNoti: RequestHandler = async (req, res, next) => {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
       });
-    } catch {}
+    } catch { }
 
     const token =
       "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";

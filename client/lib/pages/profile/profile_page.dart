@@ -1,6 +1,7 @@
 import 'package:anime_and_comic_entertainment/components/ui/CoinButton.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/about_us_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/payment_history_page.dart';
@@ -357,7 +358,8 @@ class ProfilePage extends StatelessWidget {
                                                         Text(
                                                           'Lịch sử giao dịch',
                                                           style: TextStyle(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600),
@@ -416,32 +418,46 @@ class ProfilePage extends StatelessWidget {
                                                   color: Colors.grey,
                                                   thickness: .5,
                                                 ),
-                                                const Padding(
+                                                Padding(
                                                   padding: EdgeInsets.only(
                                                       top: 4.0, bottom: 4.0),
-                                                  child: Row(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 20,
-                                                        child: FaIcon(
-                                                          FontAwesomeIcons
-                                                              .building,
-                                                          color: Colors.white,
-                                                          size: 18,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        'Về chúng tôi',
-                                                        style: TextStyle(
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Provider.of<NavigatorProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .setShow(false);
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const AboutUsPage()));
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 20,
+                                                          child: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .building,
                                                             color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w600),
-                                                      )
-                                                    ],
+                                                            size: 18,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          'Về chúng tôi',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                                 const Divider(
