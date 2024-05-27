@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:provider/provider.dart';
+import 'package:getwidget/components/appbar/gf_appbar.dart';
 
 class AboutUsPage extends StatefulWidget {
   const AboutUsPage({super.key});
@@ -19,7 +20,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFF141414),
-        appBar: AppBar(
+        appBar: GFAppBar(
           backgroundColor: const Color(0xFF141414),
           elevation: 0,
           leading: GFIconButton(
@@ -36,10 +37,11 @@ class _AboutUsPageState extends State<AboutUsPage> {
             },
             type: GFButtonType.transparent,
           ),
-          title: Center(
+          centerTitle: true,
+          title: const Center(
             child: Text(
               "Về chúng tôi",
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
@@ -53,29 +55,30 @@ class _AboutUsPageState extends State<AboutUsPage> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Về ứng dụng",
+                      const Text("Về ứng dụng",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w600)),
                       SizedBox(height: 24),
-                      Text('Phiên bản 0.1b',
+                      const Text('Phiên bản 0.1b',
                           style: TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.w600)),
-                      Text('Copyright ©️ 2024 Skylark. Ltd. Bảo lưu mọi quyền.',
+                      const Text(
+                          'Copyright ©️ 2024 Skylark. Ltd. Bảo lưu mọi quyền.',
                           style: TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.w600)),
                       SizedBox(height: 24),
-                      Text("Về công ty",
+                      const Text("Về công ty",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w600)),
                       SizedBox(height: 24),
-                      Text('Skylark. Ltd.',
+                      const Text('Skylark. Ltd.',
                           style: TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.w600)),
-                      Text(
+                      const Text(
                           'Địa chỉ: Đường Hàn Thuyên, Khu phố 6, P.Thủ Đức, Thành phố Hồ Chí Minh.',
                           style: TextStyle(
                               color: Colors.grey, fontWeight: FontWeight.w600)),
