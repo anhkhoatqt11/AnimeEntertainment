@@ -730,6 +730,7 @@ export const searchAnimeAndEpisodes: RequestHandler = async (
   }
 };
 
+<<<<<<< HEAD
 export const searchAnimeByGenres: RequestHandler = async (req, res, next) => {
   const url = req.url;
   const [, params] = url.split("?");
@@ -758,6 +759,8 @@ export const getGenres: RequestHandler = async (req, res, next) => {
   }
 };
 
+=======
+>>>>>>> 97d257c33bc884ea32cdbbea60d43335f4234515
 export const getAnimeEpisodeComments: RequestHandler = async (
   req,
   res,
@@ -932,4 +935,8 @@ export const updateUserLikeChildComment: RequestHandler = async (
   } catch (error) {
     next(error);
   }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 97d257c33bc884ea32cdbbea60d43335f4234515
