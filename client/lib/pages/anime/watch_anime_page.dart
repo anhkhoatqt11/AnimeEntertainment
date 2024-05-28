@@ -4,6 +4,7 @@ import 'package:anime_and_comic_entertainment/components/ui/AdTiming.dart';
 import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_comment.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
@@ -131,6 +132,15 @@ class _WatchAnimePageState extends State<WatchAnimePage>
   _handleTabSelection() {
     setState(() {
       _tabIndex = _tabController.index;
+
+      if (_tabIndex == 2) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ComicChapterComment(
+                  sourceId: widget.animeId!, type: "episode"),
+            ));
+      }
     });
   }
 
@@ -815,6 +825,9 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                               ),
                               Tab(
                                 text: "Xem thêm",
+                              ),
+                              Tab(
+                                text: "Bình luận",
                               ),
                             ],
                           ),

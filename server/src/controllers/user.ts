@@ -72,6 +72,25 @@ export const storeDeviceToken: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const addCommentNotification: RequestHandler = async (req, res, next) => {
+  try {
+    const { userId, sourceId, type, content } = req.body;
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+    user.notifications.push({
+      sourceId: sourceId,
+      type: type,
+      content: content
+    });
+    await user?.save();
+    return res.status(200).json(user).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const sendPushNoti: RequestHandler = async (
   req,
   res,
@@ -90,12 +109,18 @@ export const sendPushNoti: RequestHandler = async (
 
     //const token = "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";
 
+    var user = await UserModel.findById(req.body.userId);
+
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
     const message = {
       notification: {
         title: req.body.title,
         body: req.body.body,
       },
-      token: req.body.token, // This is the device token
+      token: user.deviceToken!, // This is the device token
     };
 
     // Send a message to the device corresponding to the provided

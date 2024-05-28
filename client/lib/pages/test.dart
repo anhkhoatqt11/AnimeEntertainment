@@ -75,7 +75,9 @@ class _TestPageState extends State<TestPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const ComicChapterComment(
-                      chapterId: "65ec659f05c5cb2ad67cfb3d"),
+                    sourceId: "65ec659f05c5cb2ad67cfb3d",
+                    type: "chapter",
+                  ),
                 ),
               );
             },

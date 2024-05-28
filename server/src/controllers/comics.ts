@@ -547,7 +547,7 @@ export const sendPushNoti: RequestHandler = async (req, res, next) => {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
       });
-    } catch {}
+    } catch { }
 
     const token =
       "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";
@@ -764,6 +764,7 @@ export const addRootChapterComments: RequestHandler = async (
     next(error);
   }
 };
+
 export const addChildChapterComments: RequestHandler = async (
   req,
   res,
@@ -968,6 +969,7 @@ export const updateUserLikeChildComment: RequestHandler = async (
     next(error);
   }
 };
+<<<<<<< HEAD
 
 export const updateNotiComment: RequestHandler = async (req, res, next) => {
   try {
@@ -1009,3 +1011,5 @@ export const searchComicByGenres: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+=======
+>>>>>>> 97d257c33bc884ea32cdbbea60d43335f4234515

@@ -18,4 +18,6 @@ router.get("/getNotification", UserController.getNotification);
 
 router.post("/sendPushNoti", UserController.sendPushNoti);
 
+router.post("/addCommentNotification", UserController.addCommentNotification);
+
 export default router;
