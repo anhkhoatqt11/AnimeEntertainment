@@ -73,7 +73,6 @@ router.post(
   "/updateUserLikeChildComment",
   ComicsController.updateUserLikeChildComment
 );
-router.put("/updateNotiComment", ComicsController.updateNotiComment);
 
 router.get("/getReadingHistories", ComicsController.getReadingHistories);
 

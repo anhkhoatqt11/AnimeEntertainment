@@ -764,6 +764,7 @@ export const addRootChapterComments: RequestHandler = async (
     next(error);
   }
 };
+
 export const addChildChapterComments: RequestHandler = async (
   req,
   res,

@@ -80,8 +80,11 @@ class _NotificationPageState extends State<NotificationPage> {
             body: SizedBox(
               height: notifications.length * 85,
               child: Column(
-                  children: List.generate(notifications.length,
-                      (index) => NotiComponent(noti: notifications[index]))),
+                  children: List.generate(
+                      notifications.length,
+                      (index) => NotiComponent(
+                          noti: notifications[
+                              notifications.length - index - 1]))),
             ),
           );
   }
