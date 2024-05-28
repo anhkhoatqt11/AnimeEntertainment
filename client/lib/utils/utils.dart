@@ -54,4 +54,29 @@ class Utils {
     }
     return _errorMessage;
   }
+
+  static int getISOWeekNumber(DateTime date) {
+    // Find the Thursday in this week
+    DateTime thursday = date.subtract(Duration(days: date.weekday - 4));
+
+    // Calculate the week number based on Thursday
+    int weekNumber = thursday.year * 100 + thursday.weekday ~/ 7;
+
+    // Adjust week number for the first week of the year
+    if (weekNumber < 100) {
+      weekNumber += 52;
+      if (thursday.year != date.year) {
+        weekNumber++;
+      }
+    }
+
+    return weekNumber;
+  }
+
+  static String getCurrentYearWeek() {
+    DateTime now = DateTime.now();
+    int weekNumber = getISOWeekNumber(now);
+    String yearWeek = "${now.year}-$weekNumber";
+    return yearWeek;
+  }
 }

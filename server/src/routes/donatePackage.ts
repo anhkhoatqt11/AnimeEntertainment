@@ -7,4 +7,8 @@ router.get(
   DonatePackagesController.getDonatePackageList
 );
 
+router.post("/uploadDonateRecord", DonatePackagesController.uploadDonateRecord);
+
+router.get("/getDonatorList", DonatePackagesController.getDonatorList);
+
 export default router;
