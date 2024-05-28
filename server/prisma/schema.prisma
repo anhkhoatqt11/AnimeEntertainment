@@ -30,30 +30,20 @@ type BannersList {
 }
 
 type ComicchaptersComments {
-  id       String                         @map("_id") @db.ObjectId
-  avatar   String
-  content  String
+  content String
   /// Could not determine type: the field only had null or empty values in the sample set.
-  likes    Json?
-  replies  ComicchaptersCommentsReplies[]
-  userId   String                         @db.ObjectId
-  userName String
+  likes   Json?
+  replies ComicchaptersCommentsReplies[]
+  userId  String                         @db.ObjectId
 }
 
 type ComicchaptersCommentsReplies {
-  id       String @map("_id") @db.ObjectId
-  avatar   String
-  content  String
-  /// Could not determine type: the field only had null or empty values in the sample set.
-  likes    Json?
-  /// Could not determine type: the field only had null or empty values in the sample set.
-  replies  Json?
-  userId   String @db.ObjectId
-  userName String
-}
-
-type QuestionsAnswers {
   content String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  likes   Json?
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  replies Json?
+  userId  String @db.ObjectId
 }
 
 type UsersAuthentication {
@@ -63,74 +53,37 @@ type UsersAuthentication {
 }
 
 type UsersBookmarkList {
-  /// Multiple data types found: Array(String): 33.3%, Array(String (ObjectId)): 66.7% out of 4 sampled entries
+  /// Could not determine type: the field only had null or empty values in the sample set.
   comic  Json?
-  movies String[]
-}
-
-type UsersChallenges {
-  /// Multiple data types found: String: 66.7%, DateTime (Date): 33.3% out of 9 sampled entries
-  date  Json
-  point Int
-  time  Int
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  movies Json?
 }
 
 type UsersHistories {
-  readingComic  UsersHistoriesReadingComic[]
-  watchingMovie UsersHistoriesWatchingMovie[]
-}
-
-type UsersHistoriesReadingComic {
-  chapterId String @db.ObjectId
-}
-
-type UsersHistoriesWatchingMovie {
-  episodeId String @db.ObjectId
-  position  Int
-}
-
-type UsersQuestLog {
-  finalTime    DateTime @db.Date
-  readingTime  Int
   /// Could not determine type: the field only had null or empty values in the sample set.
-  received     Json?
-  watchingTime Int
-}
-
-model advertisements {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  v              Int    @map("__v")
-  adVideoUrl     String
-  amount         Int
-  forwardLink    String
-  pricePerAd     Int
-  representative String
-}
-
-model animealbums {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  albumName String
-  animeList String[]
+  readingComic  Json?
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  watchingMovie Json?
 }
 
 model animeepisodes {
-  id            String                  @id @default(auto()) @map("_id") @db.ObjectId
-  v             Int?                    @map("__v")
-  advertisement String                  @db.ObjectId
-  comments      AnimeepisodesComments[]
-  content       String
-  coverImage    String
-  episodeName   String
-  likes         String[]
-  publicTime    DateTime                @db.Date
-  totalTime     Int
-  views         Int
+  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
+  adLink      String
+  advertising String
+  comments    AnimeepisodesComments[]
+  content     String
+  coverImage  String
+  episodeName String
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  likes       Json?
+  publicTime  DateTime                @db.Date
+  totalTime   Int
+  views       Int
 }
 
 model animes {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  v              Int?     @map("__v")
-  ageFor         String?
+  ageFor         String
   coverImage     String
   description    String
   episodes       String[]
@@ -139,12 +92,6 @@ model animes {
   movieName      String
   publishTime    String
   publisher      String
-}
-
-model avatars {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  avatarList     String[]
-  collectionName String
 }
 
 model banners {
@@ -161,12 +108,12 @@ model comicalbums {
 
 model comicchapters {
   id           String                  @id @default(auto()) @map("_id") @db.ObjectId
-  v            Int?                    @map("__v")
   chapterName  String
   comments     ComicchaptersComments[]
   content      String[]
   coverImage   String
-  likes        String[]
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  likes        Json?
   publicTime   DateTime                @db.Date
   unlockPrice  Int
   /// Could not determine type: the field only had null or empty values in the sample set.
@@ -189,56 +136,21 @@ model comics {
   publisher      String
 }
 
-model dailyquests {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
-  prize        Int
-  questName    String
-  questType    String
-  requiredTime Int
-}
-
-model donatepackages {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId
-  coin          Int
-  coverImage    String
-  /// Could not determine type: the field only had null or empty values in the sample set.
-  donateRecords Json?
-  subTitle      String
-  title         String
-}
-
 model genres {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   genreName String
 }
 
-model questions {
-  id              String             @id @default(auto()) @map("_id") @db.ObjectId
-  v               Int?               @map("__v")
-  answers         QuestionsAnswers[]
-  correctAnswerID Int
-  mediaUrl        String
-  questionName    String
-}
-
-model skycoinpackages {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  packageName String
-  price       BigInt
-  quantity    Int
-}
-
 model users {
-  id                String                  @id @default(auto()) @map("_id") @db.ObjectId
-  v                 Int?                    @map("__v")
-  accessCommentDate DateTime?               @db.Date
-  authentication    UsersAuthentication?
-  avatar            String
-  bookmarkList      UsersBookmarkList
-  challenges        UsersChallenges[]
-  coinPoint         Int
-  histories         UsersHistories
-  phone             String?
-  questLog          UsersQuestLog
-  username          String
+  id               String               @id @default(auto()) @map("_id") @db.ObjectId
+  v                Int?                 @map("__v")
+  authentication   UsersAuthentication?
+  avatar           String?
+  bookmarkList     UsersBookmarkList
+  coinPoint        Int?
+  histories        UsersHistories
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  paymentHistories Json?
+  phone            String?
+  userName         String?
 }

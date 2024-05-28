@@ -1,19 +1,19 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:anime_and_comic_entertainment/components/notifications/OverlayNotification.dart';
-import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/watch_anime_page.dart';
-import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_test_result_page.dart';
-import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_detail_page.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/pages/home/splash.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/about_us_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/about_us_privacy.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/about_us_tou.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
-import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/edit_profile_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/payment_history_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
-import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
-import 'package:anime_and_comic_entertainment/providers/comic_comment_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -24,7 +24,6 @@ import 'package:anime_and_comic_entertainment/tab_navigator.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -51,26 +50,13 @@ void main() async {
     ChangeNotifierProvider(create: (context) => MiniPlayerControllerProvider()),
     ChangeNotifierProvider(create: (context) => NavigatorProvider()),
     ChangeNotifierProvider(create: (context) => ComicChapterProvider()),
-    ChangeNotifierProvider(create: (context) => ComicCommentProvider()),
   ], child: const MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
-  @override
-  void initState() {
-    FirebaseApi().listenEvent(context);
-    FirebaseApi().storeDeviceToken(context);
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -127,6 +113,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    FirebaseApi().listenEvent(context);
+    FirebaseApi().storeDeviceToken(context);
     super.initState();
   }
 

@@ -19,6 +19,7 @@ import animeRoutes from "./routes/animes";
 import donateRoutes from "./routes/donatePackage";
 import challengeRoutes from "./routes/challenge";
 import dailyRequestRoutes from "./routes/quest";
+import paymentRoutes from "./routes/payment";
 import userReportRoutes from "./routes/userReport";
 import { isAuthenticated } from "./middlewares";
 //----------------------------------------------------------------------
@@ -84,6 +85,7 @@ app.use("/api/donates", donateRoutes);
 app.use("/api/challenges", challengeRoutes);
 app.use("/api/quest", dailyRequestRoutes);
 app.use("/api/reports", userReportRoutes);
+app.use("/api/payment", paymentRoutes);
 
 //------------------------------------------------------------
 
