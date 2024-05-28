@@ -15,45 +15,68 @@ class CustomAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: const Color(0xFF141414),
+      backgroundColor: const Color(0xFF2A2A2A),
+      surfaceTintColor: Colors.transparent,
       contentTextStyle: const TextStyle(color: Colors.white),
-      contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-      actionsPadding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
+      contentPadding: const EdgeInsets.fromLTRB(20, 5, 20, 15),
+      actionsPadding: const EdgeInsets.all(0),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      title: Row(
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
             "assets/images/logoImage.png",
-            height: 24,
-            width: 24,
+            height: 32,
+            width: 32,
           ),
           const SizedBox(
-            width: 10,
+            height: 10,
           ),
           Text(
             title,
-            style: TextStyle(
-                color: Utils.primaryColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w500),
+            style: const TextStyle(
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
           ),
         ],
       ),
-      content: Text(content),
+      content: Text(
+        content,
+        style: const TextStyle(
+            color: Color(0xFFD2D2D2), height: 1.3, fontSize: 14),
+        textAlign: TextAlign.center,
+      ),
       actions: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            GFButton(
-              text: "OK",
-              type: GFButtonType.outline,
-              color: Utils.primaryColor,
-              onPressed: () {
-                Navigator.of(context).pop();
-                action();
-              },
-            ),
-          ],
+        SizedBox(
+          height: 50,
+          child: Column(
+            children: [
+              const Divider(
+                thickness: .5,
+                color: Color(0xFFFFFFFF),
+                indent: 0,
+                endIndent: 0,
+                height: .5,
+              ),
+              SizedBox(
+                height: 48,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GFButton(
+                        text: "OK",
+                        type: GFButtonType.transparent,
+                        color: Colors.white,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          action();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         )
       ],
       elevation: 12,

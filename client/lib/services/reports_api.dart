@@ -31,7 +31,7 @@ class ReportsApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }

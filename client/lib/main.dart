@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'skylark',
       color: Color(0xFF141414),
-      home: Splash(),
+      home: TestPage(),
     );
   }
 }

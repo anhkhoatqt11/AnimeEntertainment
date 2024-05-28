@@ -13,8 +13,28 @@ import qs from "qs";
 // api get
 export const getComicBanner: RequestHandler = async (req, res, next) => {
   try {
-    const banners = await BannerModel.findOne({ type: "Comic" });
-    res.status(200).json(banners);
+    const banners = await BannerModel.aggregate([
+      {
+        $match: { type: "Comic" },
+      },
+      {
+        $lookup: {
+          from: "comics",
+          localField: "list",
+          foreignField: "_id",
+          as: "comicList",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          type: 1,
+          "comicList._id": 1,
+          "comicList.landspaceImage": 1,
+        },
+      },
+    ]);
+    res.status(200).json(banners[0]);
   } catch (error) {
     next(error);
   }
@@ -527,7 +547,7 @@ export const sendPushNoti: RequestHandler = async (req, res, next) => {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
       });
-    } catch { }
+    } catch {}
 
     const token =
       "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";
@@ -966,6 +986,25 @@ export const updateNotiComment: RequestHandler = async (req, res, next) => {
 
     await user?.save();
     return res.status(200).json(user.accessCommentDate).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const searchComicByGenres: RequestHandler = async (req, res, next) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const genreId =
+    typeof parsedParams.genreId === "string" ? parsedParams.genreId : "";
+  try {
+    if (!mongoose.isValidObjectId(genreId)) {
+      throw createHttpError(400, "Invalid user id");
+    }
+    const animes = await ComicsModel.find({
+      genres: new mongoose.Types.ObjectId(genreId),
+    });
+    res.status(200).json(animes);
   } catch (error) {
     next(error);
   }

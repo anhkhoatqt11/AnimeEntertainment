@@ -81,6 +81,6 @@ router.put("/updateNotiComment", ComicsController.updateNotiComment);
 
 router.get("/getReadingHistories", ComicsController.getReadingHistories);
 
-router.post("/testComment", ComicsController.testComment);
+router.get("/searchComicByGenres", ComicsController.searchComicByGenres);
 
 export default router;
