@@ -13,8 +13,28 @@ import qs from "qs";
 // api get
 export const getComicBanner: RequestHandler = async (req, res, next) => {
   try {
-    const banners = await BannerModel.findOne({ type: "Comic" });
-    res.status(200).json(banners);
+    const banners = await BannerModel.aggregate([
+      {
+        $match: { type: "Comic" },
+      },
+      {
+        $lookup: {
+          from: "comics",
+          localField: "list",
+          foreignField: "_id",
+          as: "comicList",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          type: 1,
+          "comicList._id": 1,
+          "comicList.landspaceImage": 1,
+        },
+      },
+    ]);
+    res.status(200).json(banners[0]);
   } catch (error) {
     next(error);
   }

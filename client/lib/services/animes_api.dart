@@ -27,9 +27,9 @@ class AnimesApi {
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         List<BannerItem> bannerArray = [];
-        result['list'].forEach((element) {
+        result['animeList'].forEach((element) {
           bannerArray.add(BannerItem(
-              bannerImage: element['bannerImage'], urlId: element['urlId']));
+              bannerImage: element['landspaceImage'], urlId: element['_id']));
         });
         return bannerArray;
       } else {

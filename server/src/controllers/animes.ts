@@ -11,8 +11,28 @@ import qs from "qs";
 
 export const getAnimeBanner: RequestHandler = async (req, res, next) => {
   try {
-    const banners = await BannerModel.findOne({ type: "Anime" });
-    res.status(200).json(banners);
+    const banners = await BannerModel.aggregate([
+      {
+        $match: { type: "Anime" },
+      },
+      {
+        $lookup: {
+          from: "animes",
+          localField: "list",
+          foreignField: "_id",
+          as: "animeList",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          type: 1,
+          "animeList._id": 1,
+          "animeList.landspaceImage": 1,
+        },
+      },
+    ]);
+    res.status(200).json(banners[0]);
   } catch (error) {
     next(error);
   }
