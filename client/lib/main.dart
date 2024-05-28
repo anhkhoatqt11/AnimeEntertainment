@@ -82,34 +82,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-// set up navigation here --------------------------------------------------------------- //
-
-class NavigationScreen extends StatefulWidget {
-  final int navIndex;
-
-  NavigationScreen(this.navIndex) : super();
-
-  @override
-  _NavigationScreenState createState() => _NavigationScreenState();
-}
-
-class _NavigationScreenState extends State<NavigationScreen>
-    with TickerProviderStateMixin {
-  @override
-  void initState() {
-    super.initState();
-  }
-  // right here ...
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Color(0xFF141414),
-      //home: TestPage(),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 

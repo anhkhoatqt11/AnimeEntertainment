@@ -26,8 +26,11 @@ class NavigatorProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setShowNetworkError(bool value) {
+  void setShowNetworkError(
+      bool value, int navigationIndex, String currentPage) {
     _isShowNetworkError = value;
+    _bottomIndexNavigator = navigationIndex;
+    _currentPage = currentPage;
     notifyListeners();
   }
 }

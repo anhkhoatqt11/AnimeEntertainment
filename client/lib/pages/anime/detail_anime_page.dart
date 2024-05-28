@@ -1,5 +1,6 @@
 import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_genre_result_page.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
@@ -29,7 +30,7 @@ class DetailAnimePage extends StatefulWidget {
 
 class _DetailAnimePageState extends State<DetailAnimePage> {
   late ScrollController _scrollController;
-  late bool isLoading = false;
+  late bool isLoading = true;
   double _scrollControllerOffset = 0.0;
   bool isExpanded = false;
   String textExpander = "Xem thêm";
@@ -350,20 +351,38 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                                           spacing: 8.0,
                                           children: List.generate(
                                             detailAnime.genres!.length,
-                                            (index) => Chip(
-                                              label: Text(
-                                                detailAnime.genres![index]
-                                                    ['genreName'],
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12),
+                                            (index) => GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SearchGenreResultPage(
+                                                      genreId: detailAnime
+                                                              .genres![index]
+                                                          ['_id'],
+                                                      genreName: detailAnime
+                                                              .genres![index]
+                                                          ['genreName'],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Chip(
+                                                label: Text(
+                                                  detailAnime.genres![index]
+                                                      ['genreName'],
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12),
+                                                ),
+                                                backgroundColor:
+                                                    const Color(0xFF282727),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            32)),
                                               ),
-                                              backgroundColor:
-                                                  const Color(0xFF282727),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          32)),
                                             ),
                                           )),
                                       const SizedBox(
