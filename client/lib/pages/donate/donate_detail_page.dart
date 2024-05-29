@@ -1,9 +1,13 @@
+import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/donate_packages_api.dart';
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:anime_and_comic_entertainment/model/donatepackages.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
+import 'package:getwidget/components/button/gf_icon_button.dart';
+import 'package:getwidget/types/gf_button_type.dart';
 import 'package:provider/provider.dart';
 
 class DonateDetailPage extends StatefulWidget {
@@ -32,50 +36,62 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
     var donatePackageCoin = donatePackage.coin ?? 0;
     return Scaffold(
       backgroundColor: const Color(0xFF141414),
-      appBar: GFAppBar(
-        backgroundColor: const Color(0xFF141414),
-        title: const Text(
-          "Donate Ủng Hộ Skylark",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
+      body: Column(
+        children: [
+          Stack(children: [
+            Column(
+              children: [
+                FadeInImage.assetNetwork(
+                    placeholder: 'assets/images/loadingcomicimage.png',
+                    image: donatePackage.coverImage ?? '',
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    fit: BoxFit.cover),
+              ],
+            ),
+            Positioned(
+              left: 0,
+              top: 0,
+              child: Container(
+                alignment: AlignmentDirectional.centerStart,
+                width: MediaQuery.of(context).size.width,
+                color: Color.fromARGB(102, 56, 56, 56),
+                child: GFIconButton(
+                    splashColor: Colors.transparent,
+                    icon: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    type: GFButtonType.transparent),
+              ),
+            ),
+          ]),
+          const SizedBox(height: 10),
+          Text(
+            donatePackage.subTitle ?? '',
+            style: TextStyle(
+              color: Utils.primaryColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: 200,
-              child: Image.network(
-                donatePackage.coverImage ?? '',
-                fit: BoxFit.cover,
-              ),
+          const SizedBox(height: 4),
+          Text(
+            donatePackage.title ?? '',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
             ),
-            const SizedBox(height: 16),
-            Text(
-              donatePackage.subTitle ?? '',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              donatePackage.title ?? '',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: () {
+          ),
+          const Spacer(),
+          GradientSquareButton(
+              content: 'DONATE NGAY ${donatePackage.coin ?? 0} Coins',
+              action: () {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
@@ -129,8 +145,7 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
                               if (userSkyCoinsValue < donatePackageCoin) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(
-                                        'Bạn không có đủ SkyCoins.'),
+                                    content: Text('Bạn không có đủ SkyCoins.'),
                                   ),
                                 );
                                 Navigator.pop(context);
@@ -166,17 +181,10 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
                   },
                 );
               },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Donate Now'),
-                  const SizedBox(width: 8),
-                  Text('${donatePackage.coin ?? 0} Coins'),
-                ],
-              ),
-            ),
-          ],
-        ),
+              height: 40,
+              width: MediaQuery.of(context).size.width * 0.9,
+              cornerRadius: 8)
+        ],
       ),
     );
   }

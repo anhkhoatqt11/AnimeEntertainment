@@ -39,7 +39,6 @@ dependencies:
   firebase_messaging: ^14.9.2
   overlay_support: ^2.1.0
 
-
 flutter_icons:
   android: true
   ios: true
@@ -77,6 +76,7 @@ flutter:
     - assets/images/goldtrophy.png
     - assets/images/receivedcoin.gif
     - assets/images/user.png
+    - assets/images/loadingcomicimage.png
     - assets/images/empty-box.png
     - assets/images/VNPayLogo.png
     - assets/images/ZaloPayLogo.png

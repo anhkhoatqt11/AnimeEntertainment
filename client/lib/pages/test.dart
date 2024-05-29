@@ -6,6 +6,7 @@ import 'package:anime_and_comic_entertainment/components/donate/DonatePackageLis
 import 'package:anime_and_comic_entertainment/components/ui/AlertChoiceDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
+import 'package:anime_and_comic_entertainment/components/ui/ReceivedCoinDialog.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_comment.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
@@ -21,6 +22,7 @@ import 'package:anime_and_comic_entertainment/pages/notification/notification.da
 import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/auth_api.dart';
+import 'package:anime_and_comic_entertainment/services/challenges_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/services/daily_quests_api.dart';
 import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
@@ -111,10 +113,9 @@ class _TestPageState extends State<TestPage> {
             onPressed: () async {
               showDialog(
                   context: context,
-                  builder: (_) => CustomAlertDialog(
-                        content: "Số điện thoại này chưa được đăng ký",
-                        title: "Thông báo",
-                        action: () {},
+                  builder: (_) => ReceivedCoinDialog(
+                        content:
+                            "Chúc mừng bạn đã vượt thử thách với ${10} điểm. Phần thưởng ${(10 / 10).ceil()} skycoins sẽ được gửi vào túi của bạn.",
                       ));
             },
             child: const Text("alert dialog"),
@@ -132,6 +133,30 @@ class _TestPageState extends State<TestPage> {
             },
             child: const Text("alert choice dialog"),
           ),
+          ElevatedButton(
+              onPressed: () async {
+                var result = await AuthApi.login(
+                    context, "+84979683590", "Dangthaison@123");
+              },
+              child: const Text("auto login")),
+          ElevatedButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ChallengePage(),
+                  ),
+                );
+              },
+              child: const Text("challenge page")),
+          ElevatedButton(
+              onPressed: () async {
+                var result = await ChallengesApi.getChallengesQuestion(
+                  context,
+                );
+                print(result);
+              },
+              child: const Text("fetch question")),
         ]),
       );
     }));

@@ -23,11 +23,9 @@ class ChallengesApi {
         List<ChallengeQuestion> questionArray = [];
         result.forEach((element) {
           questionArray.add(ChallengeQuestion(
-            id: element['_id'],
+            id: element['questionId'],
             questionName: element['questionName'],
-            answers: (element['answers'] as List)
-                .map((answerJson) => Answer.fromJson(answerJson))
-                .toList(),
+            answers: element['answers'],
             correctAnswerID: element['correctAnswerID'],
             mediaUrl: element['mediaUrl'],
           ));
@@ -49,6 +47,36 @@ class ChallengesApi {
       }
       // Return an empty list in case of an error
       return [];
+    }
+  }
+
+  static getChallegenInformation(BuildContext context) async {
+    var url = Uri.parse(
+      "${baseUrl}getChallengeInformation",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        var information = {
+          "challengeName": result['challengeName'],
+          "endTime": result['endTime']
+        };
+        return information;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true, 0, "Page1");
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
     }
   }
 
@@ -93,7 +121,6 @@ class ChallengesApi {
         for (var item in data) {
           userChallenges.add(UserChallenge.fromJson(item));
         }
-        print(data);
         return userChallenges;
       } else {
         return []; // Return an empty list if there's no data

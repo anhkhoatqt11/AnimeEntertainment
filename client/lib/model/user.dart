@@ -10,6 +10,7 @@ class User {
   final Map<String, dynamic> histories;
   final List paymentHistories;
   Map<String, dynamic> questLog;
+  List challenges;
   User(
       {required this.id,
       required this.username,
@@ -19,5 +20,6 @@ class User {
       required this.bookmarkList,
       required this.histories,
       required this.paymentHistories,
-      required this.questLog});
+      required this.questLog,
+      required this.challenges});
 }

@@ -6,8 +6,19 @@ const router = express.Router();
 
 router.get("/getChallengeQuestions", ChallengeController.getChallegenQuestions);
 
-router.get("/getUsersChallengesPoint", ChallengeController.getUsersChallengesPoint);
+router.get(
+  "/getChallengeInformation",
+  ChallengeController.getChallengeInformation
+);
 
-router.post("/uploadUsersChallengesPoint", ChallengeController.uploadUsersChallengesPoint);
+router.get(
+  "/getUsersChallengesPoint",
+  ChallengeController.getUsersChallengesPoint
+);
+
+router.post(
+  "/uploadUsersChallengesPoint",
+  ChallengeController.uploadUsersChallengesPoint
+);
 
 export default router;

@@ -1,5 +1,7 @@
+import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/donate/donate_detail_page.dart';
 import 'package:anime_and_comic_entertainment/services/donate_packages_api.dart';
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:anime_and_comic_entertainment/model/donatepackages.dart';
@@ -89,79 +91,76 @@ class DonatePackageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(8.0),
-      color: const Color(0xFF1E1E1E),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            if (donatePackage.coverImage != null)
-              CachedNetworkImage(
-                imageUrl: donatePackage.coverImage!,
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 80,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                placeholder: (context, url) => Shimmer.fromColors(
-                  baseColor: Colors.grey[700]!,
-                  highlightColor: Colors.grey[500]!,
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    color: Colors.grey,
-                  ),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    donatePackage.title ?? 'No Title',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    donatePackage.subTitle ?? 'No Subtitle',
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Coins: ${donatePackage.coin ?? 0}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
+      margin: const EdgeInsets.fromLTRB(20.0, 4, 20, 4),
+      color: Color(0xFF141414),
+      surfaceTintColor: Colors.transparent,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              if (donatePackage.coverImage != null)
+                CachedNetworkImage(
+                  imageUrl: donatePackage.coverImage!,
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: 80,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
                       ),
-                      ElevatedButton(
-                        onPressed: onPressed,
-                        child: const Text('Donate Now'),
-                      ),
-                    ],
+                    ),
                   ),
-                ],
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Colors.grey[700]!,
+                    highlightColor: Colors.grey[500]!,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      donatePackage.title ?? 'No Title',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      donatePackage.subTitle ?? 'No Subtitle',
+                      style: TextStyle(
+                        color: Utils.primaryColor,
+                        fontSize: 13,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    GradientSquareButton(
+                        content: 'Donate ngay',
+                        action: onPressed,
+                        height: 36,
+                        width: 136,
+                        cornerRadius: 8)
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+          Divider(
+            thickness: .5,
+            color: Colors.grey[400],
+          )
+        ],
       ),
     );
   }

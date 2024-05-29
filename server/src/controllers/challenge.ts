@@ -1,29 +1,54 @@
 import { RequestHandler } from "express";
-import QuestionModel from "../models/questions";
+import ChallengesModel from "../models/challenges";
 import UserModel from "../models/user";
-
-
 
 export const getChallegenQuestions: RequestHandler = async (req, res, next) => {
   try {
-    const questions = await QuestionModel.find().exec();
-    res.status(200).json(questions);
+    const questions = await ChallengesModel.find().select("questionCollection");
+    res.status(200).json(questions[0]?.questionCollection);
   } catch (error) {
     next(error);
   }
-}
+};
 
-export const getUsersChallengesPoint: RequestHandler = async (req, res, next) => {
+export const getChallengeInformation: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  try {
+    const questions = await ChallengesModel.find();
+    res.status(200).json(questions[0]);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUsersChallengesPoint: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
     const user = await UserModel.find().exec();
-    res.status(200).json(user.map((u) => ({ userId: u._id, name: u.username, avatar: u.avatar ,point: u.challenges })));
+    res.status(200).json(
+      user.map((u) => ({
+        userId: u._id,
+        name: u.username,
+        avatar: u.avatar,
+        point: u.challenges,
+      }))
+    );
   } catch (error) {
     next(error);
   }
-}
-  
+};
 
-export const uploadUsersChallengesPoint: RequestHandler = async (req, res, next) => {
+export const uploadUsersChallengesPoint: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
     const { userId, point, date, remainingTime } = req.body;
     var user = await UserModel.findById(userId);
@@ -41,6 +66,10 @@ export const uploadUsersChallengesPoint: RequestHandler = async (req, res, next)
     // Push the new challenge to the challenges array
     user.challenges.push(newChallenge);
 
+    // Give price to user
+    if (user.coinPoint)
+      user.coinPoint = user.coinPoint + Math.round(point / 10);
+
     // Save the user document
     await user.save();
 
@@ -49,5 +78,4 @@ export const uploadUsersChallengesPoint: RequestHandler = async (req, res, next)
   } catch (error) {
     next(error);
   }
-}
-
+};
