@@ -29,6 +29,7 @@ import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/services/reports_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/colors/gf_color.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
@@ -157,6 +158,190 @@ class _TestPageState extends State<TestPage> {
                 print(result);
               },
               child: const Text("fetch question")),
+          ElevatedButton(
+              onPressed: () async {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                      height: 270,
+                      color: const Color(0xFF2A2A2A),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16.0, 16, 16, 0),
+                            child: Text("Mở khóa truyện để tiếp tục đọc nhé !",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16)),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16.0, 8, 16, 8),
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: FadeInImage.assetNetwork(
+                                      placeholder:
+                                          'assets/images/loadingcomicimage.png',
+                                      image:
+                                          "https://i1.wp.com/omnigeekempire.com/wp-content/uploads/2021/07/4ff8304c8113335ee40a9448239dc11d1626614065_main.jpg?fit=1024%2C728&ssl=1",
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.cover),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                    child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Konosuba",
+                                          style: TextStyle(
+                                              color: Utils.primaryColor,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 18),
+                                        ),
+                                        Text(
+                                          "Chương 24",
+                                          style: TextStyle(
+                                              color: Color(0xFFE9E9E9),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "30",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Image.asset(
+                                          "assets/images/skycoin.png",
+                                          width: 16,
+                                          height: 16,
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ))
+                              ],
+                            ),
+                          ),
+                          Divider(
+                            color: Color(0xFF686868),
+                            thickness: .5,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 8.0, 16, 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    // FaIcon(
+                                    //                       FontAwesomeIcons
+                                    //                           .,
+                                    //                       color: Colors.white,
+                                    //                       size: 18,
+                                    //                     ),
+                                    Icon(
+                                      Icons.account_balance_wallet_outlined,
+                                      color: Utils.primaryColor,
+                                      size: 18,
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "Bạn hiện đang có:",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "0",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Image.asset(
+                                      "assets/images/skycoin.png",
+                                      width: 16,
+                                      height: 16,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 8.0, 16, 8),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: GFButton(
+                                    onPressed: () {},
+                                    color: Utils.primaryColor,
+                                    text: "Nạp thêm",
+                                    size: GFSize.LARGE,
+                                    textStyle: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: Utils.primaryColor),
+                                    type: GFButtonType.outline2x,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 30,
+                                ),
+                                Expanded(
+                                  child: GFButton(
+                                    onPressed: () {},
+                                    color: Utils.primaryColor,
+                                    text: "Mua ngay",
+                                    size: GFSize.LARGE,
+                                    type: GFButtonType.solid,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              child: const Text("test modal pay comic chapter")),
         ]),
       );
     }));
