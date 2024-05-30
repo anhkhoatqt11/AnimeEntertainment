@@ -6,6 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:anime_and_comic_entertainment/model/donatepackages.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:getwidget/components/button/gf_icon_button.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/types/gf_button_type.dart';
+import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DonatePage extends StatefulWidget {
@@ -34,21 +38,33 @@ class _DonatePageState extends State<DonatePage> {
     return Scaffold(
       backgroundColor: const Color(0xFF141414),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF141414),
-        title: const Text(
-          "Donate Ủng Hộ Skylark",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: GFIconButton(
+            splashColor: Colors.transparent,
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white,
+              size: 24,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            type: GFButtonType.transparent,
           ),
-        ),
-      ),
+          centerTitle: true,
+          title: const Text(
+            'Gây quỹ Skylark',
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),
+          )),
       body: FutureBuilder<List<DonatePackages>>(
         future: futureDonatePackages,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: GFLoader(type: GFLoaderType.circle),
+            );
           } else if (snapshot.hasError) {
             return const Center(child: Text('Error loading donate packages'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -92,7 +108,7 @@ class DonatePackageItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.fromLTRB(20.0, 4, 20, 4),
-      color: Color(0xFF141414),
+      color: const Color(0xFF141414),
       surfaceTintColor: Colors.transparent,
       child: Column(
         children: [
@@ -155,6 +171,9 @@ class DonatePackageItem extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(
+            height: 5,
           ),
           Divider(
             thickness: .5,
