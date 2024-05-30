@@ -80,6 +80,8 @@ flutter:
     - assets/images/empty-box.png
     - assets/images/VNPayLogo.png
     - assets/images/ZaloPayLogo.png
+    - assets/images/zalopay.png
+    - assets/images/vnpay.jpg
     - assets/
   #   - images/a_dot_ham.jpeg
 

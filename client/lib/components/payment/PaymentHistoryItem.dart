@@ -1,5 +1,6 @@
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class PaymentHistoryItem extends StatefulWidget {
@@ -23,107 +24,109 @@ class PaymentHistoryItem extends StatefulWidget {
 }
 
 class _PaymentHistoryItemState extends State<PaymentHistoryItem> {
-  bool _expanded = false;
-
-
   @override
   Widget build(BuildContext context) {
     DateTime date = DateFormat('yyyy-MM-dd hh:mm:ss').parse(widget.orderDate!);
     DateFormat dateFormat = DateFormat('dd-MM-yyyy hh:mm:ss');
     String orderDate = dateFormat.format(date);
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _expanded = !_expanded;
-        });
-      },
-      child: Container(
-        margin: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          color: const Color(0xFF2A2A2A),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Image.asset(
-                    "assets/images/skycoin.png",
-                    width: 28,
-                    height: 28,
-                  ),
-                  const SizedBox(width: 10),
-                  Text("Giao dịch nạp SkyCoin",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ],
-              ),
-              const SizedBox(height: 8),
-              ListTile(
-                leading: _buildPaymentMethodIcon(widget.paymentMethod),
-                title: Text(
-                  widget.paymentMethod!,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-                trailing: Text(
-                  _buildPaymentStatus(widget.status!),
-                  style: TextStyle(
-                    color: _getStatusColor(widget.status),
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              if (_expanded) ...[
-                const SizedBox(height: 8),
+    return Container(
+      color: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      'Tổng tiền: ${formatCurrency(widget.price)}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Icon(
+                      Icons.payment_rounded,
+                      color: Utils.primaryColor,
+                      size: 16,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'ID:${widget.packageId!}',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        Text(
-                          'Ngày thực hiện: ${orderDate}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
+                    const SizedBox(width: 10),
+                    const Text("Giao dịch nạp SkyCoin",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        )),
+                  ],
+                ),
+                Row(
+                  children: [
+                    FaIcon(
+                      widget.status == "completed"
+                          ? FontAwesomeIcons.circleCheck
+                          : widget.status == "pending"
+                              ? FontAwesomeIcons.hourglassHalf
+                              : FontAwesomeIcons.circleXmark,
+                      color: _getStatusColor(widget.status),
+                      size: 14,
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      _buildPaymentStatus(widget.status!),
+                      style: TextStyle(
+                        color: _getStatusColor(widget.status),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
               ],
-            ],
-          ),
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.all(0),
+              leading: _buildPaymentMethodIcon(widget.paymentMethod),
+              title: Text(
+                widget.paymentMethod!,
+                style: TextStyle(
+                  color: Utils.accentColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              subtitle: Text(
+                'Thanh toán: ${formatCurrency(widget.price)}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                FaIcon(
+                  FontAwesomeIcons.clock,
+                  color: Colors.grey[500],
+                  size: 12,
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  orderDate,
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+            Divider(
+              color: Colors.grey[600],
+              thickness: .5,
+            )
+          ],
         ),
       ),
     );
@@ -134,16 +137,22 @@ class _PaymentHistoryItemState extends State<PaymentHistoryItem> {
     IconData iconData;
     switch (paymentMethod) {
       case 'VNPay':
-        return Image.asset(
-          "assets/images/VNPayLogo.png",
-          width: 28,
-          height: 28,
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            "assets/images/vnpay.jpg",
+            width: 50,
+            height: 50,
+          ),
         );
       case 'ZaloPay':
-        return Image.asset(
-          "assets/images/ZaloPayLogo.png",
-          width: 28,
-          height: 28,
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            "assets/images/zalopay.png",
+            width: 50,
+            height: 50,
+          ),
         );
       default:
         iconData = Icons.payment;
@@ -161,7 +170,7 @@ class _PaymentHistoryItemState extends State<PaymentHistoryItem> {
       case 'Failed':
         return Colors.red;
       default:
-        return Colors.white!;
+        return Colors.white;
     }
   }
 

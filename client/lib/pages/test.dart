@@ -9,6 +9,7 @@ import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dar
 import 'package:anime_and_comic_entertainment/components/ui/ReceivedCoinDialog.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_comment.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_result_page.dart';
 import 'package:anime_and_comic_entertainment/pages/payment.dart';
@@ -137,7 +138,7 @@ class _TestPageState extends State<TestPage> {
           ElevatedButton(
               onPressed: () async {
                 var result = await AuthApi.login(
-                    context, "+84979683590", "Dangthaison@123");
+                    context, "+84868103589", "Truong@nhkhoa123");
               },
               child: const Text("auto login")),
           ElevatedButton(
@@ -342,6 +343,16 @@ class _TestPageState extends State<TestPage> {
                 );
               },
               child: const Text("test modal pay comic chapter")),
+          ElevatedButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(),
+                  ),
+                );
+              },
+              child: const Text("profile page")),
         ]),
       );
     }));

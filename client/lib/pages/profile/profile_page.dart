@@ -272,7 +272,7 @@ class ProfilePage extends StatelessWidget {
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.grey,
-                                                              fontSize: 13),
+                                                              fontSize: 12),
                                                         ),
                                                         const SizedBox(
                                                           height: 5,
