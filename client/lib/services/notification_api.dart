@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:anime_and_comic_entertainment/model/notification.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
@@ -19,14 +20,16 @@ class NotificationApi {
       var response = await http.get(url);
       if (response.statusCode == 200) {
         var result = (jsonDecode(response.body));
-
+        print(result);
         List<Notifications> notis = [];
 
         result.forEach((element) {
           Notifications notifications = Notifications(
               sourceId: element['sourceId'],
               type: element['type'],
-              content: element['content']);
+              content: element['content'],
+              status: element['status'],
+              sentTime: element['sentTime']);
           notis.add(notifications);
         });
 

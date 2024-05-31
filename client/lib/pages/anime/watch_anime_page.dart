@@ -132,15 +132,6 @@ class _WatchAnimePageState extends State<WatchAnimePage>
   _handleTabSelection() {
     setState(() {
       _tabIndex = _tabController.index;
-
-      if (_tabIndex == 2) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ComicChapterComment(
-                  sourceId: widget.animeId!, type: "episode"),
-            ));
-      }
     });
   }
 
@@ -676,7 +667,16 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                           ),
                                           GestureDetector(
                                             onTap: () {
-                                              // forward comment page
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ComicChapterComment(
+                                                            sourceId:
+                                                                detailAnimeEpisode
+                                                                    .id!,
+                                                            type: "episode"),
+                                                  ));
                                             },
                                             child: const Column(children: [
                                               FaIcon(
@@ -825,9 +825,6 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                               ),
                               Tab(
                                 text: "Xem thêm",
-                              ),
-                              Tab(
-                                text: "Bình luận",
                               ),
                             ],
                           ),
@@ -1019,6 +1016,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                   })),
                                 ),
                                 SuggestionByView(),
+                                Container(child: Text("Bình luận")),
                               ],
                             ),
                           ),

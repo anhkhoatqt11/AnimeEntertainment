@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_buy_chapter.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_comment.dart';
 import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
@@ -184,7 +185,7 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
             valueColor: AlwaysStoppedAnimation<Color>(Utils.primaryColor),
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height - 92,
+            height: MediaQuery.of(context).size.height - 123,
             child: ListView.builder(
               controller: _scrollController,
               itemCount: contentLength,
@@ -255,6 +256,23 @@ class _ComicChapterDetailState extends State<ComicChapterDetail> {
                                 onPressed: () {
                                   if (chapterIndex ==
                                       comic.chapterList!.length - 1) return;
+                                  if (comic.chapterList![chapterIndex + 1]
+                                          ['unlockPrice'] >
+                                      0) {
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        opaque: false,
+                                        pageBuilder:
+                                            (BuildContext context, _, __) {
+                                          return ComicBuyChapter(
+                                            comic: comic,
+                                            index: chapterIndex + 1,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                    return;
+                                  }
                                   Navigator.of(context).pop(true);
                                   Navigator.push(
                                       context,

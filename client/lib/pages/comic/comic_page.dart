@@ -3,6 +3,7 @@ import 'package:anime_and_comic_entertainment/components/comic/ComicBanner.dart'
 import 'package:anime_and_comic_entertainment/components/comic/NewChapterList.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ReadingHistoresList.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
+import 'package:anime_and_comic_entertainment/pages/notification/notification.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -40,6 +41,19 @@ class _ComicPageState extends State<ComicPage> {
                 color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600),
           ),
           actions: <Widget>[
+            GFIconButton(
+              icon: const Icon(Icons.notifications_none_outlined,
+                  color: Colors.white, size: 24),
+              onPressed: () {
+                Provider.of<NavigatorProvider>(context, listen: false)
+                    .setShow(false);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificationPage()));
+              },
+              type: GFButtonType.transparent,
+            ),
             GFIconButton(
               icon: const Icon(Icons.search, color: Colors.white, size: 24),
               onPressed: () {

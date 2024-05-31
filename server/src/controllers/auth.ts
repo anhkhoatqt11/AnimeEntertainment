@@ -72,6 +72,7 @@ export const getLogin: RequestHandler = async (req, res) => {
                 }
               : result["questLog"],
           challenges: result["challenges"],
+        notifications: result["notifications"]
         })
         .end();
     } else {
@@ -90,7 +91,7 @@ export const postLogin: RequestHandler = async (req, res) => {
       return res.sendStatus(400);
     }
     var user = await getUserByPhone(phone).select(
-      "+authentication.salt + authentication.password + username + avatar + coinPoint + questLog + challenges"
+      "+authentication.salt + authentication.password + username + avatar + coinPoint + questLog + challenges + notifications"
     );
     if (!user) {
       return res.sendStatus(400);

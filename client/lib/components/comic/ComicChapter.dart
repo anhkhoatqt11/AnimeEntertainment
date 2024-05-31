@@ -1,9 +1,18 @@
+import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
+import 'package:anime_and_comic_entertainment/components/ui/AlertYesNoDialog.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_buy_chapter.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
+import 'package:anime_and_comic_entertainment/services/user_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:getwidget/colors/gf_color.dart';
+import 'package:getwidget/components/toast/gf_toast.dart';
+import 'package:getwidget/position/gf_toast_position.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -19,6 +28,16 @@ class ComicChapter extends StatefulWidget {
 }
 
 class _ComicChapterState extends State<ComicChapter> {
+  Future<List<dynamic>> getPayHis() async {
+    var result = await UsersApi.getPaymentHistories(context);
+    return result;
+  }
+
+  @override
+  initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Comics comic = widget.comic;
@@ -28,17 +47,31 @@ class _ComicChapterState extends State<ComicChapter> {
     String publishTime = dateFormat.format(date);
 
     return GestureDetector(
-      onTap: () {
-        Provider.of<NavigatorProvider>(context, listen: false).setShow(false);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ComicChapterDetail(
-              comic: comic,
-              index: widget.index,
+      onTap: () async {
+        if (comic.chapterList![widget.index]['unlockPrice'] > 0) {
+          Navigator.of(context).push(
+            PageRouteBuilder(
+              opaque: false,
+              pageBuilder: (BuildContext context, _, __) {
+                return ComicBuyChapter(
+                  comic: comic,
+                  index: widget.index,
+                );
+              },
             ),
-          ),
-        );
+          );
+        } else {
+          Provider.of<NavigatorProvider>(context, listen: false).setShow(false);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ComicChapterDetail(
+                comic: comic,
+                index: widget.index,
+              ),
+            ),
+          );
+        }
       },
       child: SizedBox(
         height: 80,

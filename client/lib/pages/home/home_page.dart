@@ -6,6 +6,7 @@ import 'package:anime_and_comic_entertainment/components/comic/ComicBanner.dart'
 import 'package:anime_and_comic_entertainment/components/comic/NewChapterList.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ReadingHistoresList.dart';
 import 'package:anime_and_comic_entertainment/components/home/HomeAlbum.dart';
+import 'package:anime_and_comic_entertainment/pages/notification/notification.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -31,6 +32,43 @@ class HomePage extends StatelessWidget {
                 color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600),
           ),
           actions: <Widget>[
+            Stack(
+              children: [
+                GFIconButton(
+                  icon: const Icon(Icons.notifications, color: Colors.white),
+                  onPressed: () {
+                    Provider.of<NavigatorProvider>(context, listen: false)
+                        .setShow(false);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NotificationPage()));
+                  },
+                  type: GFButtonType.transparent,
+                ),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Consumer(builder: (context, watch, _) {
+                    final user = Provider.of<UserProvider>(context).user;
+                    return user.authentication['sessionToken'] != ""
+                        ? user.notificationSentCount != 0
+                            ? Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: const BoxDecoration(
+                                    color: Colors.red, shape: BoxShape.circle),
+                                child: Text(
+                                  user.notificationSentCount.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                ),
+                              )
+                            : const SizedBox.shrink()
+                        : const SizedBox.shrink();
+                  }),
+                ),
+              ],
+            ),
             GFIconButton(
               icon: const Icon(Icons.search, color: Colors.white, size: 24),
               onPressed: () {
