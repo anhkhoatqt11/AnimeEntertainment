@@ -4,6 +4,7 @@ import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/about_us_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
+import 'package:anime_and_comic_entertainment/pages/profile/edit_profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/payment_history_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -165,7 +166,8 @@ class ProfilePage extends StatelessWidget {
                                                       color: Utils.primaryColor,
                                                       width: 2),
                                                   shape: BoxShape.circle,
-                                                  color: Colors.white,
+                                                  color:
+                                                      const Color(0xFF141414),
                                                   colorFilter:
                                                       const ColorFilter.mode(
                                                           Colors.transparent,
@@ -217,11 +219,20 @@ class ProfilePage extends StatelessWidget {
                                               const SizedBox(
                                                 width: 10,
                                               ),
-                                              const FaIcon(
-                                                FontAwesomeIcons
-                                                    .solidPenToSquare,
-                                                color: Colors.white,
-                                                size: 12,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const EditProfilePage()));
+                                                },
+                                                child: const FaIcon(
+                                                  FontAwesomeIcons
+                                                      .solidPenToSquare,
+                                                  color: Colors.white,
+                                                  size: 12,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -272,7 +283,7 @@ class ProfilePage extends StatelessWidget {
                                                           style: TextStyle(
                                                               color:
                                                                   Colors.grey,
-                                                              fontSize: 13),
+                                                              fontSize: 12),
                                                         ),
                                                         const SizedBox(
                                                           height: 5,

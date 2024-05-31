@@ -1,3 +1,4 @@
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:provider/provider.dart';
@@ -33,9 +34,26 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       backgroundColor: const Color(0xFF141414),
       appBar: GFAppBar(
-        backgroundColor: const Color(0xFF141414),
-        title: Text('Chỉnh sửa thông tin'),
-      ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: GFIconButton(
+            splashColor: Colors.transparent,
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white,
+              size: 24,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            type: GFButtonType.transparent,
+          ),
+          centerTitle: true,
+          title: const Text(
+            'Chỉnh sửa thông tin',
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),
+          )),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -50,23 +68,30 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 backgroundImage: NetworkImage(userProvider.user.avatar),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(
                 labelText: 'Tên người dùng',
                 border: OutlineInputBorder(),
+                labelStyle: TextStyle(color: Colors.white),
+                hintStyle: TextStyle(color: Colors.white),
+                focusColor: Colors.white,
               ),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
+            const SizedBox(height: 20),
+            GFButton(
               onPressed: () {
                 // Implement username update functionality
                 final newUsername = _usernameController.text;
                 // Update the username using userProvider.updateUsername(newUsername);
               },
-              child: Text('Save Changes'),
+              text: "Cập nhật",
+              type: GFButtonType.solid,
+              size: GFSize.LARGE,
+              fullWidthButton: true,
+              color: Utils.primaryColor,
             ),
           ],
         ),

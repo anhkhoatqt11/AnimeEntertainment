@@ -11,6 +11,7 @@ class User {
   final List paymentHistories;
   int notificationSentCount = 0;
   Map<String, dynamic> questLog;
+  List challenges;
   User(
       {required this.id,
       required this.username,
@@ -21,5 +22,6 @@ class User {
       required this.bookmarkList,
       required this.histories,
       required this.paymentHistories,
-      required this.questLog});
+      required this.questLog,
+      required this.challenges});
 }

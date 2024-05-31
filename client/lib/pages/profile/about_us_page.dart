@@ -21,37 +21,33 @@ class _AboutUsPageState extends State<AboutUsPage> {
     return Scaffold(
         backgroundColor: const Color(0xFF141414),
         appBar: GFAppBar(
-          backgroundColor: const Color(0xFF141414),
-          elevation: 0,
-          leading: GFIconButton(
-            splashColor: Colors.transparent,
-            icon: const Icon(
-              Icons.arrow_back_ios_new_rounded,
-              color: Colors.white,
-              size: 24,
+            backgroundColor: const Color(0xFF141414),
+            elevation: 0,
+            leading: GFIconButton(
+              splashColor: Colors.transparent,
+              icon: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: Colors.white,
+                size: 24,
+              ),
+              onPressed: () {
+                Provider.of<NavigatorProvider>(context, listen: false)
+                    .setShow(true);
+                Navigator.of(context).pop();
+              },
+              type: GFButtonType.transparent,
             ),
-            onPressed: () {
-              Provider.of<NavigatorProvider>(context, listen: false)
-                  .setShow(true);
-              Navigator.of(context).pop();
-            },
-            type: GFButtonType.transparent,
-          ),
-          centerTitle: true,
-          title: const Center(
-            child: Text(
+            centerTitle: true,
+            title: const Text(
               "Về chúng tôi",
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20),
+            )),
         body: SingleChildScrollView(
             child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.all(20.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -60,15 +56,19 @@ class _AboutUsPageState extends State<AboutUsPage> {
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w600)),
-                      SizedBox(height: 24),
+                      SizedBox(height: 10),
                       const Text('Phiên bản 0.1b',
                           style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.w600)),
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13)),
                       const Text(
                           'Copyright ©️ 2024 Skylark. Ltd. Bảo lưu mọi quyền.',
                           style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 24),
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13)),
+                      SizedBox(height: 10),
                       const Text("Về công ty",
                           style: TextStyle(
                               color: Colors.white,
@@ -77,12 +77,16 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       SizedBox(height: 24),
                       const Text('Skylark. Ltd.',
                           style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.w600)),
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13)),
                       const Text(
                           'Địa chỉ: Đường Hàn Thuyên, Khu phố 6, P.Thủ Đức, Thành phố Hồ Chí Minh.',
                           style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.w600)),
-                      SizedBox(height: 48),
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13)),
+                      const SizedBox(height: 48),
                       InkWell(
                         onTap: () => {
                           Navigator.push(
@@ -93,8 +97,11 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         child: Text('Điều khoản sử dụng',
                             style: TextStyle(
                                 color: Utils.primaryColor,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                                 decoration: TextDecoration.underline)),
+                      ),
+                      const SizedBox(
+                        height: 2,
                       ),
                       InkWell(
                         onTap: () => {
@@ -106,7 +113,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         child: Text('Chính sách quyền riêng tư',
                             style: TextStyle(
                                 color: Utils.primaryColor,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
                                 decoration: TextDecoration.underline)),
                       ),
                     ]))));

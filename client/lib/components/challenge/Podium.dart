@@ -2,6 +2,8 @@ import 'package:anime_and_comic_entertainment/model/challenges.dart';
 import 'package:anime_and_comic_entertainment/services/challenges_api.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/image/gf_image_overlay.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/types/gf_loader_type.dart';
 
 class Podium extends StatefulWidget {
   const Podium({Key? key}) : super(key: key);
@@ -26,7 +28,7 @@ class _PodiumState extends State<Podium> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: GFLoader(type: GFLoaderType.circle),
           );
         } else if (snapshot.hasError) {
           return Center(
@@ -46,7 +48,7 @@ class _PodiumState extends State<Podium> {
                   buildPodiumUser(
                     context,
                     userChallenges[1],
-                    2,
+                    userChallenges[1].getMaxWeeklyPoints() == 0 ? 0 : 2,
                     'assets/images/flowerring2.png',
                     'assets/images/silvertrophy.png',
                     const Color(0XFFFF9417),
@@ -55,7 +57,7 @@ class _PodiumState extends State<Podium> {
                   buildPodiumUser(
                     context,
                     userChallenges[0],
-                    1,
+                    userChallenges[0].getMaxWeeklyPoints() == 0 ? 0 : 1,
                     'assets/images/flowerring1.png',
                     'assets/images/goldtrophy.png',
                     const Color(0XFFEF476F),
@@ -64,7 +66,7 @@ class _PodiumState extends State<Podium> {
                   buildPodiumUser(
                     context,
                     userChallenges[2],
-                    3,
+                    userChallenges[2].getMaxWeeklyPoints() == 0 ? 0 : 3,
                     'assets/images/flowerring3.png',
                     'assets/images/trophy.png',
                     const Color(0XFF06D6A0),
@@ -114,7 +116,10 @@ class _PodiumState extends State<Podium> {
                   color: Colors.white,
                   colorFilter: const ColorFilter.mode(
                       Colors.transparent, BlendMode.color),
-                  image: NetworkImage(userChallenge.avatar),
+                  image: position != 0
+                      ? NetworkImage(userChallenge.avatar)
+                      : const NetworkImage(
+                          "https://img.freepik.com/free-vector/dark-black-background-design-with-stripes_1017-38064.jpg"),
                   boxFit: BoxFit.cover,
                 ),
               ],
@@ -152,7 +157,7 @@ class _PodiumState extends State<Podium> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
                       child: Text(
-                        userChallenge.name,
+                        position != 0 ? userChallenge.name : "Chưa có",
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
@@ -164,7 +169,9 @@ class _PodiumState extends State<Podium> {
                       ),
                     ),
                     Text(
-                      '${userChallenge.getMaxWeeklyPoints()}',
+                      position != 0
+                          ? '${userChallenge.getMaxWeeklyPoints()}'
+                          : "",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.red,

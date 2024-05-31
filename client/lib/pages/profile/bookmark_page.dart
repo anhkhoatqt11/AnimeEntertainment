@@ -75,6 +75,7 @@ class _BookMarkPageState extends State<BookMarkPage> {
       child: Scaffold(
         backgroundColor: const Color(0xFF141414),
         appBar: GFAppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: const Color(0xFF141414),
           elevation: 0,
           title: Row(

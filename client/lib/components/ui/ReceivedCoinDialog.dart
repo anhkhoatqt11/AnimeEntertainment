@@ -17,7 +17,7 @@ class ReceivedCoinDialog extends StatelessWidget {
       actionsPadding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       content: SizedBox(
-        height: 294,
+        height: 340,
         child: Column(
           children: [
             Image.asset(
@@ -26,11 +26,30 @@ class ReceivedCoinDialog extends StatelessWidget {
               width: 200,
             ),
             const SizedBox(height: 20),
-            Text(content),
+            Stack(
+              children: [
+                Text(
+                  content,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 3
+                        ..color = Colors.red[400]!),
+                ),
+                Text(
+                  content,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, color: Colors.white),
+                ),
+              ],
+            ),
             const SizedBox(height: 10),
             GFButton(
               text: "OK",
-              type: GFButtonType.outline,
+              type: GFButtonType.solid,
               color: Utils.primaryColor,
               onPressed: () {
                 Navigator.of(context).pop();

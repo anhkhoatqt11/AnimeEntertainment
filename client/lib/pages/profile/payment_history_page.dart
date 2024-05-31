@@ -5,6 +5,10 @@ import 'package:anime_and_comic_entertainment/services/payment_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
+import 'package:getwidget/components/button/gf_icon_button.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/types/gf_button_type.dart';
+import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:provider/provider.dart';
 
 class PaymentHistory extends StatefulWidget {
@@ -27,7 +31,8 @@ class _PaymentHistoryState extends State<PaymentHistory> {
 
   Future<void> fetchPaymentHistory() async {
     try {
-      final result = await PaymentApi.getUserPaymentHistories(context, "662777d1ba7dff5ac56f1729");
+      final result = await PaymentApi.getUserPaymentHistories(
+          context, "662777d1ba7dff5ac56f1729");
       setState(() {
         listPaymentHistory = (result as List)
             .map((item) => PaymentHistories(
@@ -52,22 +57,31 @@ class _PaymentHistoryState extends State<PaymentHistory> {
     return Scaffold(
       backgroundColor: const Color(0xFF141414),
       appBar: GFAppBar(
-        backgroundColor: const Color(0xFF141414),
-        elevation: 0,
-        title: Center(
-          child: Text(
-            "Lịch sử giao dịch",
-            style: const TextStyle(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: GFIconButton(
+            splashColor: Colors.transparent,
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
               color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
+              size: 24,
             ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            type: GFButtonType.transparent,
           ),
-        ),
-      ),
+          centerTitle: true,
+          title: const Text(
+            "Lịch sử giao dịch",
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w500, fontSize: 20),
+          )),
       body: Center(
         child: listPaymentHistory.isEmpty
-            ? CircularProgressIndicator() // Show a loading indicator while fetching data
+            ? const Center(
+                child: GFLoader(type: GFLoaderType.circle),
+              )
             : ListView.builder(
                 itemCount: listPaymentHistory.length,
                 itemBuilder: (BuildContext context, int index) {

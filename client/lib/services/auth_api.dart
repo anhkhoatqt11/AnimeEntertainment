@@ -35,7 +35,7 @@ class AuthApi {
         userProvider.setUsername(data['username']);
         userProvider.setUserAvatar(data['avatar']);
         userProvider.setCoinPoint(data['coinPoint']);
-
+        userProvider.setChallenges(data['challenges']);
         userProvider.setQuestLog(
             data["questLog"]["readingTime"],
             data["questLog"]["watchingTime"],
@@ -50,7 +50,6 @@ class AuthApi {
           }
         }
         userProvider.setNotificationSentCount(count);
-
         await prefs.setString(
             'auth-session-token', data['authentication']['sessionToken']);
         await Provider.of<VideoProvider>(context, listen: false)
@@ -102,6 +101,7 @@ class AuthApi {
         userProvider.setUsername(jsonDecode(res.body)['username']);
         userProvider.setUserAvatar(jsonDecode(res.body)['avatar']);
         userProvider.setCoinPoint(jsonDecode(res.body)['coinPoint']);
+        userProvider.setChallenges(jsonDecode(res.body)['challenges']);
         userProvider.setQuestLog(
             jsonDecode(res.body)["questLog"]["readingTime"],
             jsonDecode(res.body)["questLog"]["watchingTime"],
