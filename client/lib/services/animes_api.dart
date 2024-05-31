@@ -6,6 +6,7 @@ import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/model/banner.dart';
+import 'package:anime_and_comic_entertainment/model/genre.dart';
 import 'package:anime_and_comic_entertainment/model/comment.dart';
 import 'package:anime_and_comic_entertainment/model/watchingHistories.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
@@ -27,9 +28,9 @@ class AnimesApi {
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
         List<BannerItem> bannerArray = [];
-        result['list'].forEach((element) {
+        result['animeList'].forEach((element) {
           bannerArray.add(BannerItem(
-              bannerImage: element['bannerImage'], urlId: element['urlId']));
+              bannerImage: element['landspaceImage'], urlId: element['_id']));
         });
         return bannerArray;
       } else {
@@ -42,7 +43,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -75,7 +76,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -112,7 +113,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -147,7 +148,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -181,7 +182,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -214,7 +215,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -251,7 +252,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -291,7 +292,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -328,7 +329,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -365,7 +366,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -400,7 +401,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -423,7 +424,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -444,7 +445,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -465,7 +466,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -492,7 +493,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -531,7 +532,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -561,7 +562,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -587,7 +588,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -619,7 +620,69 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static searchAnimeByGenres(BuildContext context, genreId) async {
+    var url = Uri.parse("${baseUrl}searchAnimeByGenres?genreId=$genreId");
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<Animes> animeArray = [];
+        result.forEach((element) {
+          animeArray.add(Animes(
+              id: element['_id'],
+              coverImage: element['coverImage'],
+              movieName: element['movieName']));
+        });
+        return animeArray;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true, 0, "Page1");
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
+  static getGenres(BuildContext context) async {
+    var url = Uri.parse(
+      "${baseUrl}getGenres",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        List<Genre> genreArray = [];
+        result.forEach((element) {
+          genreArray
+              .add(Genre(id: element['_id'], genreName: element['genreName']));
+        });
+        return genreArray;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -657,7 +720,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -677,7 +740,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -702,7 +765,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -728,7 +791,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -753,7 +816,7 @@ class AnimesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }

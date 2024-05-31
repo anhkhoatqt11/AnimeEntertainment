@@ -3,6 +3,7 @@
 import 'package:anime_and_comic_entertainment/components/animes/WatchingHistoriesList.dart';
 import 'package:anime_and_comic_entertainment/components/comic/TopRankingComic.dart';
 import 'package:anime_and_comic_entertainment/components/donate/DonatePackageListHome.dart';
+import 'package:anime_and_comic_entertainment/components/ui/AlertChoiceDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
@@ -94,21 +95,33 @@ class _TestPageState extends State<TestPage> {
                   "comic",
                   '664b0912d9d500ecd8b4a5ff',
                   '664b0912d9d500ecd8b4a5ff');
-              // GFToast.showToast('Đã gửi báo cáo cho quản trị viên.', context,
-              //     toastPosition: GFToastPosition.BOTTOM,
-              //     textStyle: TextStyle(
-              //       fontSize: 14,
-              //       color: GFColors.LIGHT,
-              //       fontWeight: FontWeight.w500,
-              //     ),
-              //     backgroundColor: GFColors.DARK,
-              //     trailing: Icon(
-              //       Icons.notifications,
-              //       color: GFColors.SUCCESS,
-              //       size: 16,
-              //     ));
             },
             child: const Text("send report"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              showDialog(
+                  context: context,
+                  builder: (_) => CustomAlertDialog(
+                        content: "Số điện thoại này chưa được đăng ký",
+                        title: "Thông báo",
+                        action: () {},
+                      ));
+            },
+            child: const Text("alert dialog"),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              showDialog(
+                  context: context,
+                  builder: (_) => CustomAlertChoiceDialog(
+                        content:
+                            "Việc đăng xuất sẽ hạn chế một số tính năng của ứng dụng",
+                        title: "Đăng xuất",
+                        action: () {},
+                      ));
+            },
+            child: const Text("alert choice dialog"),
           ),
         ]),
       );

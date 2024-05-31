@@ -40,7 +40,7 @@ class UsersApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -64,7 +64,7 @@ class UsersApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -115,7 +115,7 @@ class UsersApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -204,7 +204,7 @@ class UsersApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
@@ -233,7 +233,7 @@ class UsersApi {
     if (!Provider.of<NavigatorProvider>(context, listen: false)
         .isShowNetworkError) {
       Provider.of<NavigatorProvider>(context, listen: false)
-          .setShowNetworkError(true);
+          .setShowNetworkError(true, 0, "Page1");
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const NoInternetPage()));
     }

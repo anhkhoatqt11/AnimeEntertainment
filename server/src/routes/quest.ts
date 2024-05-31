@@ -8,4 +8,5 @@ router.post("/updateQuestLog", DailyQuestController.updateQuestLog);
 
 router.post("/updateLoginLog", DailyQuestController.updateLoginLog);
 
+
 export default router;

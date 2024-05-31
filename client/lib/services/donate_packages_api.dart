@@ -43,10 +43,42 @@ class DonatePackagesApi {
               .isShowNetworkError ==
           false) {
         Provider.of<NavigatorProvider>(context, listen: false)
-            .setShowNetworkError(true);
+            .setShowNetworkError(true, 0, "Page1");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NoInternetPage()));
       }
+    }
+  }
+
+  static Future<bool> uploadDonateRecord(
+      BuildContext context, String packageId, String userId) async {
+    var url = Uri.parse("${baseUrl}uploadDonateRecord");
+    try {
+      final res = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "packageId": packageId,
+          "userId": userId,
+          "datetime": DateTime.now().toIso8601String(),
+        }),
+      );
+      if (res.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      if (!Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true, 0, "Page1");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const NoInternetPage()),
+        );
+      }
+      return false;
     }
   }
 }

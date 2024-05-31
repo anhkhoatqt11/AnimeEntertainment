@@ -13,8 +13,28 @@ import qs from "qs";
 // api get
 export const getComicBanner: RequestHandler = async (req, res, next) => {
   try {
-    const banners = await BannerModel.findOne({ type: "Comic" });
-    res.status(200).json(banners);
+    const banners = await BannerModel.aggregate([
+      {
+        $match: { type: "Comic" },
+      },
+      {
+        $lookup: {
+          from: "comics",
+          localField: "list",
+          foreignField: "_id",
+          as: "comicList",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          type: 1,
+          "comicList._id": 1,
+          "comicList.landspaceImage": 1,
+        },
+      },
+    ]);
+    res.status(200).json(banners[0]);
   } catch (error) {
     next(error);
   }
@@ -949,3 +969,47 @@ export const updateUserLikeChildComment: RequestHandler = async (
     next(error);
   }
 };
+<<<<<<< HEAD
+
+export const updateNotiComment: RequestHandler = async (req, res, next) => {
+  try {
+    const { userId, chapterId } = req.body;
+
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    user.notifications.push({
+      sourceId: new mongoose.Types.ObjectId(chapterId),
+      type: "comment",
+      content: "Ai đó đã trả lời bình luận của bạn",
+    });
+
+    await user?.save();
+    return res.status(200).json(user.accessCommentDate).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const searchComicByGenres: RequestHandler = async (req, res, next) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const genreId =
+    typeof parsedParams.genreId === "string" ? parsedParams.genreId : "";
+  try {
+    if (!mongoose.isValidObjectId(genreId)) {
+      throw createHttpError(400, "Invalid user id");
+    }
+    const animes = await ComicsModel.find({
+      genres: new mongoose.Types.ObjectId(genreId),
+    });
+    res.status(200).json(animes);
+  } catch (error) {
+    next(error);
+  }
+};
+=======
+>>>>>>> 97d257c33bc884ea32cdbbea60d43335f4234515

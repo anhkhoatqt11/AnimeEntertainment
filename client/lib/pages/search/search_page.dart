@@ -1,5 +1,8 @@
+import 'package:anime_and_comic_entertainment/model/genre.dart';
+import 'package:anime_and_comic_entertainment/pages/search/search_genre_result_page.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_result_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
+import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +24,22 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
   final List<String> _searchHistory = [];
+  late bool isLoading = true;
+  List<dynamic> listGenre = [];
+  Future<List<Genre>> getGenres() async {
+    var result = await AnimesApi.getGenres(context);
+    return result;
+  }
 
   @override
   void initState() {
     super.initState();
     _loadSearchHistory();
+    getGenres().then((value) => setState(() {
+          print(value);
+          listGenre = value;
+          isLoading = false;
+        }));
   }
 
   Future<void> _loadSearchHistory() async {
@@ -73,6 +87,7 @@ class _SearchPageState extends State<SearchPage> {
       backgroundColor: const Color(0xFF141414),
       appBar: GFAppBar(
         backgroundColor: const Color(0xFF141414),
+        automaticallyImplyLeading: false,
         elevation: 0,
         title: Row(
           children: [
@@ -160,20 +175,56 @@ class _SearchPageState extends State<SearchPage> {
                 padding: const EdgeInsets.all(0),
                 itemCount: _searchHistory.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      String query = _searchHistory[index];
-                      _saveSearchHistory(query);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SearchResultPage(
-                            searchWord: query,
-                          ),
-                        ),
-                      );
-                    },
-                    child: _buildHistoryItem(index),
+                  return Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          String query = _searchHistory[index];
+                          _saveSearchHistory(query);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchResultPage(
+                                searchWord: query,
+                              ),
+                            ),
+                          );
+                        },
+                        child: _buildHistoryItem(index),
+                      ),
+                      !isLoading && index == _searchHistory.length - 1
+                          ? Wrap(
+                              spacing: 8.0,
+                              children: List.generate(
+                                listGenre.length,
+                                (index) => GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SearchGenreResultPage(
+                                          genreId: listGenre[index].id,
+                                          genreName: listGenre[index].genreName,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Chip(
+                                    label: Text(
+                                      listGenre[index].genreName,
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
+                                    backgroundColor: const Color(0xFF282727),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(32)),
+                                  ),
+                                ),
+                              ))
+                          : const SizedBox.shrink()
+                    ],
                   );
                 },
               ),

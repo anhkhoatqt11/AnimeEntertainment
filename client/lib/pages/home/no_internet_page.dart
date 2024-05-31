@@ -76,7 +76,7 @@ class NoInternetPage extends StatelessWidget {
                   ),
                   onPressed: () {
                     Provider.of<NavigatorProvider>(context, listen: false)
-                        .setShowNetworkError(false);
+                        .setShowNetworkError(false, 0, "Page1");
                     RestartWidget.restartApp(context);
                   },
                 )

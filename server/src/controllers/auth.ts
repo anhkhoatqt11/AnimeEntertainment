@@ -49,7 +49,6 @@ export const getLogin: RequestHandler = async (req, res) => {
           watchingTime: 0,
           received: [],
           finalTime: new Date(),
-          hasReceivedDailyGift: false,
         };
         await result.save();
       }
@@ -68,7 +67,6 @@ export const getLogin: RequestHandler = async (req, res) => {
                 watchingTime: 0,
                 received: [],
                 finalTime: new Date(),
-                hasReceivedDailyGift: false,
               }
               : result["questLog"],
         })
@@ -125,7 +123,6 @@ export const postLogin: RequestHandler = async (req, res) => {
           watchingTime: 0,
           received: [],
           finalTime: new Date(),
-          hasReceivedDailyGift: false,
         };
       }
     }
@@ -164,14 +161,6 @@ export const register: RequestHandler = async (req, res) => {
         "https://i.pinimg.com/736x/dc/9c/61/dc9c614e3007080a5aff36aebb949474.jpg",
       username: "user" + randomName,
       coinPoint: 0,
-      challenges: [],
-      questLog: {
-        readingTime: 0,
-        watchingTime: 0,
-        received: [],
-        finalTime: new Date(),
-        hasReceivedDailyGift: false,
-      },
     });
 
     return res.status(200).json(user).end();

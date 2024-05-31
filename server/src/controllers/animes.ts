@@ -6,12 +6,33 @@ import BannerModel from "../models/banner";
 import AnimeEpisodeModel from "../models/animeEpisode";
 import UserModel from "../models/user";
 import AnimeAlbumModel from "../models/animeAlbum";
+import GenresModel from "../models/genres";
 import qs from "qs";
 
 export const getAnimeBanner: RequestHandler = async (req, res, next) => {
   try {
-    const banners = await BannerModel.findOne({ type: "Anime" });
-    res.status(200).json(banners);
+    const banners = await BannerModel.aggregate([
+      {
+        $match: { type: "Anime" },
+      },
+      {
+        $lookup: {
+          from: "animes",
+          localField: "list",
+          foreignField: "_id",
+          as: "animeList",
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          type: 1,
+          "animeList._id": 1,
+          "animeList.landspaceImage": 1,
+        },
+      },
+    ]);
+    res.status(200).json(banners[0]);
   } catch (error) {
     next(error);
   }
@@ -709,6 +730,37 @@ export const searchAnimeAndEpisodes: RequestHandler = async (
   }
 };
 
+<<<<<<< HEAD
+export const searchAnimeByGenres: RequestHandler = async (req, res, next) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const genreId =
+    typeof parsedParams.genreId === "string" ? parsedParams.genreId : "";
+  try {
+    if (!mongoose.isValidObjectId(genreId)) {
+      throw createHttpError(400, "Invalid user id");
+    }
+    const animes = await AnimesModel.find({
+      genres: new mongoose.Types.ObjectId(genreId),
+    });
+    res.status(200).json(animes);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getGenres: RequestHandler = async (req, res, next) => {
+  try {
+    const genres = await GenresModel.find();
+    res.status(200).json(genres);
+  } catch (error) {
+    next(error);
+  }
+};
+
+=======
+>>>>>>> 97d257c33bc884ea32cdbbea60d43335f4234515
 export const getAnimeEpisodeComments: RequestHandler = async (
   req,
   res,
@@ -884,4 +936,8 @@ export const updateUserLikeChildComment: RequestHandler = async (
   } catch (error) {
     next(error);
   }
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 97d257c33bc884ea32cdbbea60d43335f4234515
