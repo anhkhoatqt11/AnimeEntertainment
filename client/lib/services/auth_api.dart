@@ -8,6 +8,7 @@ import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
+import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -34,12 +35,21 @@ class AuthApi {
         userProvider.setUsername(data['username']);
         userProvider.setUserAvatar(data['avatar']);
         userProvider.setCoinPoint(data['coinPoint']);
+
         userProvider.setQuestLog(
             data["questLog"]["readingTime"],
             data["questLog"]["watchingTime"],
             data["questLog"]["received"],
             data["questLog"]["finalTime"],
             data["questLog"]["hasReceivedDailyGift"]);
+        var notis = data['notifications'];
+        var count = 0;
+        for (var noti in notis) {
+          if (noti['status'] == 'sent') {
+            count++;
+          }
+        }
+        userProvider.setNotificationSentCount(count);
 
         await prefs.setString(
             'auth-session-token', data['authentication']['sessionToken']);
@@ -47,6 +57,8 @@ class AuthApi {
             .setLikeSave(data['_id'], context);
         Provider.of<NavigatorProvider>(context, listen: false).setShow(true);
         navigator.popUntil((route) => route.isFirst);
+
+        FirebaseApi().storeDeviceToken(context);
       } else {
         showDialog(
             context: context,

@@ -67,17 +67,17 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     FirebaseApi().listenEvent(context);
-    FirebaseApi().storeDeviceToken(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'skylark',
       color: Color(0xFF141414),
-      home: TestPage(),
+      //home: TestPage()
+      home: MyHomePage(title: "123"),
     );
   }
 }

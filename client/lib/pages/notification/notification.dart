@@ -17,9 +17,12 @@ class _NotificationPageState extends State<NotificationPage> {
   late String userId = '65ec67ad05c5cb2ad67cfb3f';
   late List<Notifications> notifications = [];
   Future<List<Notifications>> getNotification() async {
+    if (userId.isEmpty) return [];
     var result = await NotificationApi.getNotification(context, userId);
     return result;
   }
+
+  String text = "";
 
   @override
   void initState() {
@@ -30,8 +33,11 @@ class _NotificationPageState extends State<NotificationPage> {
             .authentication['sessionToken'] !=
         "") {
       setState(() {
+        text = "Chưa có thông báo nào!";
         userId = Provider.of<UserProvider>(context, listen: false).user.id;
       });
+    } else {
+      text = "Đăng nhập để xem thông báo!";
     }
 
     getNotification().then((value) {
@@ -58,10 +64,10 @@ class _NotificationPageState extends State<NotificationPage> {
               foregroundColor: Colors.white,
               backgroundColor: const Color(0xFF141414),
             ),
-            body: const Center(
+            body: Center(
                 child: Text(
-              'Chưa có thông báo nào!',
-              style: TextStyle(color: Colors.white),
+              text,
+              style: const TextStyle(color: Colors.white),
             )))
         : Scaffold(
             backgroundColor: const Color(0xFF141414),
@@ -77,15 +83,18 @@ class _NotificationPageState extends State<NotificationPage> {
               foregroundColor: Colors.white,
               backgroundColor: const Color(0xFF141414),
             ),
-            body: SizedBox(
-              height: notifications.length * 85,
-              child: Column(
-                  children: List.generate(
-                      notifications.length,
-                      (index) => NotiComponent(
-                          noti: notifications[
-                              notifications.length - index - 1]))),
-            ),
-          );
+            body: ListView(
+              children: [
+                SizedBox(
+                  height: notifications.length * 85,
+                  child: Column(
+                      children: List.generate(
+                          notifications.length,
+                          (index) => NotiComponent(
+                              noti: notifications[
+                                  notifications.length - index - 1]))),
+                ),
+              ],
+            ));
   }
 }

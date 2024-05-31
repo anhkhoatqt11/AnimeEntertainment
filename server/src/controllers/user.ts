@@ -82,7 +82,9 @@ export const addCommentNotification: RequestHandler = async (req, res, next) => 
     user.notifications.push({
       sourceId: sourceId,
       type: type,
-      content: content
+      content: content,
+      status: 'sent',
+      sentTime: new Date()
     });
     await user?.save();
     return res.status(200).json(user).end();
@@ -139,6 +141,51 @@ export const sendPushNoti: RequestHandler = async (
     next(error);
   }
 };
+
+export const getPaymentHistories: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const userId =
+    typeof parsedParams.userId === "string" ? parsedParams.userId : "";
+
+  try {
+    var user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(400);
+    }
+
+    res.status(200).json(user?.paymentHistories).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const paySkycoin: RequestHandler = async (req, res, next) => {
+  try {
+    const { userId, coin, chapterId } = req.body;
+    var user = await UserModel.findById(userId);
+    console.log(user);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+    if (user.coinPoint != undefined) {
+      user.coinPoint -= coin;
+    }
+    console.log(user.paymentHistories);
+    user.paymentHistories.push(new mongoose.Types.ObjectId(chapterId));
+    await user?.save();
+    return res.status(200).json(user.coinPoint).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const uploadUsername: RequestHandler = async (req, res, next) => {
   try {
     const { userId, username } = req.body;

@@ -64,12 +64,12 @@ export const getLogin: RequestHandler = async (req, res) => {
           questLog:
             renewable === true
               ? {
-                  readingTime: 0,
-                  watchingTime: 0,
-                  received: [],
-                  finalTime: new Date(),
-                  hasReceivedDailyGift: false,
-                }
+                readingTime: 0,
+                watchingTime: 0,
+                received: [],
+                finalTime: new Date(),
+                hasReceivedDailyGift: false,
+              }
               : result["questLog"],
         })
         .end();
@@ -89,7 +89,7 @@ export const postLogin: RequestHandler = async (req, res) => {
       return res.sendStatus(400);
     }
     var user = await getUserByPhone(phone).select(
-      "+authentication.salt + authentication.password + username + avatar + coinPoint + questLog"
+      "+authentication.salt + authentication.password + username + avatar + coinPoint + questLog + notifications"
     );
     if (!user) {
       return res.sendStatus(400);
