@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
-import * as admin from 'firebase-admin';
+import * as admin from "firebase-admin";
 import AvatarModel from "../models/avatars";
 import UserModel from "../models/user";
 import qs from "qs";
@@ -33,11 +33,7 @@ export const updateAvatar: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const getNotification: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const getNotification: RequestHandler = async (req, res, next) => {
   const url = req.url;
   const [, params] = url.split("?");
   const parsedParams = qs.parse(params);
@@ -72,7 +68,11 @@ export const storeDeviceToken: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const addCommentNotification: RequestHandler = async (req, res, next) => {
+export const addCommentNotification: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
     const { userId, sourceId, type, content } = req.body;
     var user = await UserModel.findById(userId);
@@ -82,7 +82,7 @@ export const addCommentNotification: RequestHandler = async (req, res, next) => 
     user.notifications.push({
       sourceId: sourceId,
       type: type,
-      content: content
+      content: content,
     });
     await user?.save();
     return res.status(200).json(user).end();
@@ -91,21 +91,14 @@ export const addCommentNotification: RequestHandler = async (req, res, next) => 
   }
 };
 
-export const sendPushNoti: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
+export const sendPushNoti: RequestHandler = async (req, res, next) => {
   try {
     try {
       var serviceAccount = require("../../pushnotiflutter-95328-firebase-adminsdk-rdiar-9008d7c00f.json");
       admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
+        credential: admin.credential.cert(serviceAccount),
       });
-    }
-    catch {
-
-    }
+    } catch {}
 
     //const token = "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";
 
@@ -125,15 +118,17 @@ export const sendPushNoti: RequestHandler = async (
 
     // Send a message to the device corresponding to the provided
     // registration token.
-    admin.messaging().send(message)
+    admin
+      .messaging()
+      .send(message)
       .then((response) => {
         // Response is a message ID string.
-        console.log('Successfully sent message:', response);
-        res.send('Successfully sent message: ' + response);
+        console.log("Successfully sent message:", response);
+        res.send("Successfully sent message: " + response);
       })
       .catch((error) => {
-        console.log('Error sending message:', error);
-        res.send('Error sending message: ' + error);
+        console.log("Error sending message:", error);
+        res.send("Error sending message: " + error);
       });
   } catch (error) {
     next(error);

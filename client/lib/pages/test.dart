@@ -16,6 +16,7 @@ import 'package:anime_and_comic_entertainment/pages/search/search_result_page.da
 import 'package:anime_and_comic_entertainment/pages/payment.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/edit_profile_page.dart';
+import 'package:anime_and_comic_entertainment/pages/notification/notification.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
@@ -152,6 +153,16 @@ class _TestPageState extends State<TestPage> {
                 );
               },
               child: const Text("challenge page")),
+          ElevatedButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationPage(),
+                  ),
+                );
+              },
+              child: const Text("notification page")),
           ElevatedButton(
               onPressed: () async {
                 var result = await ChallengesApi.getChallengesQuestion(

@@ -78,6 +78,7 @@ flutter:
     - assets/images/user.png
     - assets/images/loadingcomicimage.png
     - assets/images/empty-box.png
+    - assets/images/commentempty.png
     - assets/images/VNPayLogo.png
     - assets/images/ZaloPayLogo.png
     - assets/images/zalopay.png
