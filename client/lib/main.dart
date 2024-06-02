@@ -53,17 +53,55 @@ void main() async {
   ], child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
+  void initState() {
+    FirebaseApi().listenEvent(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'skylark',
       color: Color(0xFF141414),
-      home: Splash(),
+      //home: TestPage()
+      home: TestPage(),
+    );
+  }
+}
+// set up navigation here --------------------------------------------------------------- //
+
+class NavigationScreen extends StatefulWidget {
+  final int navIndex;
+
+  NavigationScreen(this.navIndex) : super();
+
+  @override
+  _NavigationScreenState createState() => _NavigationScreenState();
+}
+
+class _NavigationScreenState extends State<NavigationScreen>
+    with TickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+  }
+  // right here ...
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Color(0xFF141414),
+      //home: TestPage(),
     );
   }
 }

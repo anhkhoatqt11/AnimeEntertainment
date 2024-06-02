@@ -20,4 +20,8 @@ router.post("/sendPushNoti", UserController.sendPushNoti);
 
 router.post("/addCommentNotification", UserController.addCommentNotification);
 
+router.put("/paySkycoin", UserController.paySkycoin);
+
+router.get("/getPaymentHistories", UserController.getPaymentHistories);
+
 export default router;

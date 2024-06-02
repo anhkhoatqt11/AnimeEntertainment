@@ -775,6 +775,7 @@ export const getAnimeEpisodeComments: RequestHandler = async (
     if (!episode) {
       return res.sendStatus(400);
     }
+    console.log(episode.comments);
     return res.status(200).json(episode.comments).end();
   } catch (error) {
     next(error);

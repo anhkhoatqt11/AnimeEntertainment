@@ -71,6 +71,33 @@ class UsersApi {
     }
   }
 
+  static paySkycoin(BuildContext context, coin, chapterId) async {
+    var url = Uri.parse(
+      "${baseUrl}paySkycoin",
+    );
+    try {
+      var body = {
+        "userId": Provider.of<UserProvider>(context, listen: false).user.id,
+        "coin": coin.toString(),
+        "chapterId": chapterId
+      };
+      final res = await http.put(url, body: body);
+      Provider.of<UserProvider>(context, listen: false)
+          .setCoinPoint(jsonDecode(res.body)['coinPoint']);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true, 0, "Page1");
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
   static storeDeviceToken(BuildContext context, token) async {
     var url = Uri.parse(
       "${baseUrl}storeDeviceToken",
@@ -129,6 +156,34 @@ class UsersApi {
     }
   }
 
+  static getPaymentHistories(BuildContext context) async {
+    var userId = Provider.of<UserProvider>(context, listen: false).user.id;
+    var url = Uri.parse(
+      "${baseUrl}getPaymentHistories?userId=$userId",
+    );
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = (jsonDecode(res.body));
+        return result;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true, 0, "Page1");
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+    return [];
+  }
+
   static getBookmartList(BuildContext context, userId) async {
     var url = Uri.parse(
       "${baseUrl}getBookmarkList?userId=$userId",
@@ -137,7 +192,6 @@ class UsersApi {
       final res = await http.get(url);
       if (res.statusCode == 200) {
         var result = (jsonDecode(res.body));
-        print(result);
         return result;
       } else {
         return [];

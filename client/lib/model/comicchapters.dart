@@ -11,6 +11,11 @@ class ComicChapter {
   final int? views;
   final int? unlockPrice;
   final List? userUnlocked;
+  final String? comicOwner;
+  final String? comicOwnerId;
+  final List? genreNames;
+  final int? index;
+  final List? comicChapterList;
 
   ComicChapter(
       {this.id,
@@ -22,5 +27,10 @@ class ComicChapter {
       this.likes,
       this.views,
       this.unlockPrice,
-      this.userUnlocked});
+      this.userUnlocked,
+      this.comicOwner,
+      this.comicOwnerId,
+      this.genreNames,
+      this.index,
+      this.comicChapterList});
 }

@@ -1,32 +1,39 @@
 import 'package:anime_and_comic_entertainment/components/ui/GenresBranch.dart';
+import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 
 class ComicBookmarkItem extends StatelessWidget {
-  final String comicId;
+  final String comicChapterId;
+  final String comicChapterName;
   final String coverImage;
   final String comicName;
-  final String description;
-  final int chapterListNumber;
   final bool isBookmarked;
   final bool isChecked;
   final List genreNames;
+  final int index;
+  final Comics comicVar;
   final ValueChanged<bool?>? onChanged;
 
   const ComicBookmarkItem({
     Key? key,
-    required this.comicId,
+    required this.comicChapterId,
+    required this.comicChapterName,
     required this.coverImage,
     required this.comicName,
     required this.isBookmarked,
-    required this.chapterListNumber,
-    required this.description,
     required this.genreNames,
+    required this.index,
+    required this.comicVar,
     this.isChecked = false,
     this.onChanged,
+    required String comicId,
   }) : super(key: key);
 
   @override
@@ -52,11 +59,15 @@ class ComicBookmarkItem extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       if (onChanged == null) {
+                        Provider.of<NavigatorProvider>(context, listen: false)
+                            .setShow(false);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                DetailComicPage(comicId: comicId),
+                            builder: (context) => ComicChapterDetail(
+                              comic: comicVar,
+                              index: index,
+                            ),
                           ),
                         );
                       }
@@ -127,25 +138,12 @@ class ComicBookmarkItem extends StatelessWidget {
                               Text(
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
-                                description,
+                                comicChapterName,
                                 maxLines: 3,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[600],
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.left,
-                                'Đã phát hành $chapterListNumber tập',
-                                maxLines: 3,
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    color: Utils.primaryColor,
-                                    fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),

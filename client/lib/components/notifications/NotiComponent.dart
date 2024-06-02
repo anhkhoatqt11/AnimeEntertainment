@@ -9,8 +9,11 @@ import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.d
 import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 
 class NotiComponent extends StatefulWidget {
   final Notifications noti;
@@ -57,48 +60,98 @@ class _ComicChapterState extends State<NotiComponent> {
   @override
   Widget build(BuildContext context) {
     Notifications noti = widget.noti;
-
-    if (noti.type == "chapter" && comic.landspaceImage != null) {
-      return GestureDetector(
-        child: SizedBox(
-          height: 85,
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-            child: Container(
-                height: 75,
-                width: MediaQuery.of(context).size.width - 10,
-                decoration: const BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(color: Color.fromARGB(255, 66, 71, 66)),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: comic.landspaceImage!,
-                      height: 70,
-                      width: 110,
-                    ),
-                    const SizedBox(
+    DateTime date = DateFormat('yyyy-MM-dd').parse(noti.sentTime!);
+    DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+    String sentTime = dateFormat.format(date);
+    return GestureDetector(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 8),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Container(
+                      height: 10,
                       width: 10,
+                      color: noti.status == 'sent'
+                          ? Utils.primaryColor
+                          : Colors.transparent,
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 130,
-                      child: Center(
-                          child: Text(
-                        noti.content!,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                      imageUrl: comic.landspaceImage != null
+                          ? (noti.type == "chapter"
+                              ? comic.landspaceImage!
+                              : anime.landspaceImage!)
+                          : 'https://cdn-icons-png.flaticon.com/512/4387/4387152.png',
+                      height: 60,
+                      width: 60,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          noti.content!,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
-                      )),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          children: [
+                            FaIcon(
+                              FontAwesomeIcons.clock,
+                              size: 12,
+                              color: Colors.grey[500],
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              sentTime,
+                              style: TextStyle(
+                                color: Colors.grey[500],
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                  ],
-                )),
-          ),
+                  ),
+                ],
+              ),
+            ),
+            Divider(
+              thickness: .5,
+              color: Colors.grey[600],
+            ),
+          ],
         ),
-        onTap: () {
+      ),
+      onTap: () {
+        if (noti.type == "chapter") {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -106,51 +159,7 @@ class _ComicChapterState extends State<NotiComponent> {
                   comicId: comic.id!,
                 ),
               ));
-        },
-      );
-    }
-
-    if (noti.type == "episode" && anime.landspaceImage != null) {
-      return GestureDetector(
-        child: SizedBox(
-          height: 85,
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-            child: Container(
-                height: 75,
-                width: MediaQuery.of(context).size.width - 10,
-                decoration: const BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(color: Color.fromARGB(255, 66, 71, 66)),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: anime.landspaceImage!,
-                      height: 70,
-                      width: 110,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 130,
-                      child: Center(
-                          child: Text(
-                        noti.content!,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      )),
-                    ),
-                  ],
-                )),
-          ),
-        ),
-        onTap: () {
+        } else if (noti.type == "episode") {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -158,42 +167,16 @@ class _ComicChapterState extends State<NotiComponent> {
                   animeId: anime.id!,
                 ),
               ));
-        },
-      );
-    }
-
-    return GestureDetector(
-      child: SizedBox(
-        height: 85,
-        width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(5, 5, 5, 5),
-          child: Container(
-              height: 75,
-              width: MediaQuery.of(context).size.width - 10,
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(color: Color.fromARGB(255, 66, 71, 66)),
-                ],
-              ),
-              child: Center(
-                  child: Text(
-                noti.content!,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ))),
-        ),
-      ),
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ComicChapterComment(
-                  sourceId: noti.sourceId!,
-                  type: noti.type == "commentChapter" ? "chapter" : "episode"),
-            ));
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ComicChapterComment(
+                    sourceId: noti.sourceId!,
+                    type:
+                        noti.type == "commentChapter" ? "chapter" : "episode"),
+              ));
+        }
       },
     );
   }

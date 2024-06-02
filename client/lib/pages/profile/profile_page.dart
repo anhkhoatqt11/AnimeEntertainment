@@ -327,10 +327,7 @@ class ProfilePage extends StatelessWidget {
                                                       ],
                                                     ),
                                                     CoinButton(
-                                                      action: () {
-                                                        _launchUrl;
-                                                      },
-                                                    ),
+                                                        action: _launchUrl),
                                                   ],
                                                 ),
                                                 const Divider(

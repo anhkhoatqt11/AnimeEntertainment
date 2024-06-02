@@ -83,6 +83,8 @@ export const addCommentNotification: RequestHandler = async (
       sourceId: sourceId,
       type: type,
       content: content,
+      status: "sent",
+      sentTime: new Date(),
     });
     await user?.save();
     return res.status(200).json(user).end();
@@ -134,6 +136,47 @@ export const sendPushNoti: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getPaymentHistories: RequestHandler = async (req, res, next) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const userId =
+    typeof parsedParams.userId === "string" ? parsedParams.userId : "";
+
+  try {
+    var user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(400);
+    }
+
+    res.status(200).json(user?.paymentHistories).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const paySkycoin: RequestHandler = async (req, res, next) => {
+  try {
+    const { userId, coin, chapterId } = req.body;
+    var user = await UserModel.findById(userId);
+    console.log(user);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+    if (user.coinPoint != undefined) {
+      user.coinPoint -= coin;
+    }
+    console.log(user.paymentHistories);
+    user.paymentHistories.push(new mongoose.Types.ObjectId(chapterId));
+    await user?.save();
+    return res.status(200).json(user.coinPoint).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const uploadUsername: RequestHandler = async (req, res, next) => {
   try {
     const { userId, username } = req.body;
@@ -180,17 +223,46 @@ export const getBookmarkList: RequestHandler = async (req, res, next) => {
       },
       {
         $lookup: {
-          from: "comics",
+          from: "comicchapters",
           localField: "bookmarkList.comic",
           foreignField: "_id",
           pipeline: [
             {
               $lookup: {
-                from: "genres",
-                localField: "genres",
-                foreignField: "_id",
-                pipeline: [],
-                as: "genreNames",
+                from: "comics",
+                let: { chapterId: "$_id" },
+                localField: "_id",
+                foreignField: "chapterList",
+                pipeline: [
+                  {
+                    $addFields: {
+                      index: {
+                        $indexOfArray: [
+                          "$chapterList",
+                          { $toObjectId: "$$chapterId" },
+                        ],
+                      },
+                    },
+                  },
+                  {
+                    $lookup: {
+                      from: "genres",
+                      localField: "genres",
+                      foreignField: "_id",
+                      pipeline: [],
+                      as: "genreNames",
+                    },
+                  },
+                  {
+                    $lookup: {
+                      from: "comicchapters",
+                      localField: "chapterList",
+                      foreignField: "_id",
+                      as: "chapterListDetail",
+                    },
+                  },
+                ],
+                as: "owner",
               },
             },
           ],
@@ -199,17 +271,27 @@ export const getBookmarkList: RequestHandler = async (req, res, next) => {
       },
       {
         $lookup: {
-          from: "animes",
+          from: "animeepisodes",
           localField: "bookmarkList.movies",
           foreignField: "_id",
           pipeline: [
             {
               $lookup: {
-                from: "genres",
-                localField: "genres",
-                foreignField: "_id",
-                pipeline: [],
-                as: "genreNames",
+                from: "animes",
+                localField: "_id",
+                foreignField: "episodes",
+                pipeline: [
+                  {
+                    $lookup: {
+                      from: "genres",
+                      localField: "genres",
+                      foreignField: "_id",
+                      pipeline: [],
+                      as: "genreNames",
+                    },
+                  },
+                ],
+                as: "owner",
               },
             },
           ],

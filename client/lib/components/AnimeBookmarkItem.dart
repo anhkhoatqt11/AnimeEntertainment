@@ -1,6 +1,11 @@
 import 'package:anime_and_comic_entertainment/components/ui/GenresBranch.dart';
+import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
+import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/detail_anime_page.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
+import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/video_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,27 +13,28 @@ import 'package:getwidget/colors/gf_color.dart';
 import 'package:getwidget/components/checkbox/gf_checkbox.dart';
 import 'package:getwidget/size/gf_size.dart';
 import 'package:getwidget/types/gf_checkbox_type.dart';
+import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AnimeBookmarkItem extends StatelessWidget {
+  final String animeepisodeId;
   final String animeId;
   final String movieName;
   final bool isBookmarked;
   final bool isChecked;
   final String coverImage;
-  final String description;
-  final int episodeListNumber;
+  final String episodeName;
   final List genreNames;
   final ValueChanged<bool?>? onChanged;
 
   const AnimeBookmarkItem({
     Key? key,
+    required this.animeepisodeId,
     required this.animeId,
     required this.coverImage,
     required this.movieName,
-    required this.description,
-    required this.episodeListNumber,
+    required this.episodeName,
     required this.genreNames,
     required this.isBookmarked,
     this.isChecked = false,
@@ -58,14 +64,17 @@ class AnimeBookmarkItem extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       if (onChanged == null) {
-                        Provider.of<NavigatorProvider>(context, listen: false)
-                            .setShow(false);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  DetailAnimePage(animeId: animeId)),
-                        );
+                        Provider.of<VideoProvider>(context, listen: false)
+                            .setAnime(
+                                Animes(
+                                  id: animeId,
+                                ),
+                                AnimeEpisodes(
+                                    id: animeepisodeId,
+                                    episodeName: episodeName));
+                        Provider.of<MiniPlayerControllerProvider>(context,
+                                listen: false)
+                            .setMiniController(PanelState.MAX);
                       }
                     },
                     child: Container(
@@ -134,25 +143,12 @@ class AnimeBookmarkItem extends StatelessWidget {
                               Text(
                                 overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.left,
-                                description,
+                                episodeName,
                                 maxLines: 3,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[600],
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.left,
-                                'Đã phát hành $episodeListNumber tập',
-                                maxLines: 3,
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    color: Utils.primaryColor,
-                                    fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),

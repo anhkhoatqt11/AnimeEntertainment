@@ -83,6 +83,7 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
           replies.add(Comments(
               id: element["_id"],
               avatar: element['avatar'],
+              userId: element['userId'],
               userName: element['userName'],
               content: element['content'],
               likes: element['likes']) as Comment);
@@ -91,8 +92,10 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
           Comments(
               id: comment.id,
               avatar: comment.avatar,
+              userId: comment.userId,
               userName: comment.userName,
-              content: comment.content),
+              content: comment.content,
+              likes: comment.likes),
           replies,
           treeThemeData:
               TreeThemeData(lineColor: Color(0xFF141414), lineWidth: 3),

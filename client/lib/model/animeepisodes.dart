@@ -12,6 +12,7 @@ class AnimeEpisodes {
   final String? adLink;
   final String? movieOwner;
   final String? movieOwnerId;
+  final List? genreNames;
 
   AnimeEpisodes(
       {this.id,
@@ -26,5 +27,6 @@ class AnimeEpisodes {
       this.advertising,
       this.adLink,
       this.movieOwner,
-      this.movieOwnerId});
+      this.movieOwnerId,
+      this.genreNames});
 }
