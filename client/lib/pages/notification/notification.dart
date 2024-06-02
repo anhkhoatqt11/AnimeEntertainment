@@ -25,23 +25,11 @@ class _NotificationPageState extends State<NotificationPage> {
     return result;
   }
 
-  String text = "";
-
   @override
   void initState() {
     super.initState();
     FirebaseApi().listenEvent(context);
-    if (Provider.of<UserProvider>(context, listen: false)
-            .user
-            .authentication['sessionToken'] !=
-        "") {
-      setState(() {
-        text = "Chưa có thông báo nào!";
-        userId = Provider.of<UserProvider>(context, listen: false).user.id;
-      });
-    } else {
-      text = "Đăng nhập để xem thông báo!";
-    }
+    userId = Provider.of<UserProvider>(context, listen: false).user.id;
 
     getNotification().then((value) {
       setState(() {
@@ -80,7 +68,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 )),
             body: Center(
                 child: Text(
-              text,
+              'Chưa có thông báo nào!',
               style: TextStyle(
                   color: Utils.primaryColor, fontWeight: FontWeight.w500),
             )))
@@ -114,11 +102,14 @@ class _NotificationPageState extends State<NotificationPage> {
                 SizedBox(
                   height: notifications.length * 120,
                   child: Column(
-                      children: List.generate(
-                          notifications.length,
-                          (index) => NotiComponent(
-                              noti: notifications[
-                                  notifications.length - index - 1]))),
+                    children: List.generate(
+                      notifications.length,
+                      (index) => NotiComponent(
+                        noti: notifications[notifications.length - index - 1],
+                        index: notifications.length - index - 1,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ));

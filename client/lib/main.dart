@@ -74,7 +74,9 @@ class _MyAppState extends State<MyApp> {
       title: 'skylark',
       color: Color(0xFF141414),
       //home: TestPage()
-      home: TestPage(),
+      home: MyHomePage(
+        title: '',
+      ),
     );
   }
 }

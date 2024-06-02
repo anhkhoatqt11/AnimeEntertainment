@@ -138,6 +138,21 @@ class UsersApi {
     }
   }
 
+  static readNotication(BuildContext context, int index) async {
+    var url = Uri.parse(
+      "${baseUrl}readNotification",
+    );
+    try {
+      var body = {
+        "userId": Provider.of<UserProvider>(context, listen: false).user.id,
+        "index": index.toString()
+      };
+      await http.put(url, body: body);
+    } catch (e) {
+      return;
+    }
+  }
+
   static addCommentNotiToUser(
       String userId, String sourceId, String type) async {
     var url = Uri.parse(
