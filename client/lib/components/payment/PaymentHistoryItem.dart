@@ -48,7 +48,11 @@ class _PaymentHistoryItemState extends State<PaymentHistoryItem> {
                       size: 16,
                     ),
                     const SizedBox(width: 10),
-                    const Text("Giao dịch nạp SkyCoin",
+                    Text(
+                        widget.paymentMethod == "BuyComicChapter" ||
+                                widget.paymentMethod == "Donation"
+                            ? 'Giao dịch sử dụng SkyCoin'
+                            : 'Giao dịch nạp SkyCoin',
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 14,
@@ -86,7 +90,11 @@ class _PaymentHistoryItemState extends State<PaymentHistoryItem> {
               contentPadding: EdgeInsets.all(0),
               leading: _buildPaymentMethodIcon(widget.paymentMethod),
               title: Text(
-                widget.paymentMethod!,
+                widget.paymentMethod! == "BuyComicChapter"
+                    ? "Mua chương truyện"
+                    : widget.paymentMethod == "Donation"
+                        ? "Đóng góp quỹ"
+                        : widget.paymentMethod!,
                 style: TextStyle(
                   color: Utils.accentColor,
                   fontSize: 14,
@@ -94,7 +102,10 @@ class _PaymentHistoryItemState extends State<PaymentHistoryItem> {
                 ),
               ),
               subtitle: Text(
-                'Thanh toán: ${formatCurrency(widget.price)}',
+                widget.paymentMethod == "BuyComicChapter" ||
+                        widget.paymentMethod == "Donation"
+                    ? 'Thanh toán: ${widget.price} SkyCoin'
+                    : 'Thanh toán: ${formatCurrency(widget.price)}',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 13,
@@ -155,9 +166,15 @@ class _PaymentHistoryItemState extends State<PaymentHistoryItem> {
           ),
         );
       default:
-        iconData = Icons.payment;
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.asset(
+            "assets/images/skycoin.png",
+            width: 50,
+            height: 50,
+          ),
+        );
     }
-    return Icon(iconData, color: Colors.white);
   }
 
   // Helper method to determine status color

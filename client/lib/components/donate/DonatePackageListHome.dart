@@ -95,8 +95,6 @@ class _DonatePackageListHomeState extends State<DonatePackageListHome> {
                 title: packageList[index].title,
                 subTitle: packageList[index].subTitle,
                 onPressed: () {
-                  Provider.of<NavigatorProvider>(context, listen: false)
-                      .setShow(false);
                   Navigator.push(
                     context,
                     MaterialPageRoute(

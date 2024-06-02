@@ -148,8 +148,6 @@ class _ComicPageState extends State<ComicPage> {
             // Top unlock...
             GestureDetector(
               onTap: () {
-                Provider.of<NavigatorProvider>(context, listen: false)
-                    .setShow(false);
                 Navigator.push(
                     context,
                     MaterialPageRoute(

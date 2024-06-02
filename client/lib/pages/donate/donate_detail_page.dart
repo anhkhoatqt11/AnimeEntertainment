@@ -1,5 +1,7 @@
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
+import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/donate_packages_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
@@ -57,20 +59,24 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
               left: 0,
               top: 0,
               child: Container(
+                height: 100,
                 alignment: AlignmentDirectional.centerStart,
                 width: MediaQuery.of(context).size.width,
                 color: Color.fromARGB(102, 56, 56, 56),
-                child: GFIconButton(
-                    splashColor: Colors.transparent,
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    type: GFButtonType.transparent),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                  child: GFIconButton(
+                      splashColor: Colors.transparent,
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      type: GFButtonType.transparent),
+                ),
               ),
             ),
           ]),
@@ -100,7 +106,8 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return Container(
-                      height: 320,
+                      height:
+                          user.authentication['sessionToken'] == "" ? 270 : 320,
                       color: const Color(0xFF2A2A2A),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -169,133 +176,180 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
                             color: Color(0xFF686868),
                             thickness: .5,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 8.0, 16, 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.account_balance_wallet_outlined,
-                                      color: Utils.primaryColor,
-                                      size: 18,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    const Text(
-                                      "Bạn hiện đang có:",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14),
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Utils.formatNumberWithDots(
-                                          Provider.of<UserProvider>(context)
-                                              .user
-                                              .coinPoint),
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Image.asset(
-                                      "assets/images/skycoin.png",
-                                      width: 16,
-                                      height: 16,
-                                    ),
-                                  ],
+                          Provider.of<UserProvider>(context)
+                                      .user
+                                      .authentication['sessionToken'] !=
+                                  ""
+                              ? Container(
+                                  child: Stack(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 8.0, 16, 8),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons
+                                                      .account_balance_wallet_outlined,
+                                                  color: Utils.primaryColor,
+                                                  size: 18,
+                                                ),
+                                                const SizedBox(
+                                                  width: 5,
+                                                ),
+                                                const Text(
+                                                  "Bạn hiện đang có:",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 14),
+                                                )
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  Utils.formatNumberWithDots(
+                                                      Provider.of<UserProvider>(
+                                                              context)
+                                                          .user
+                                                          .coinPoint),
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Image.asset(
+                                                  "assets/images/skycoin.png",
+                                                  width: 16,
+                                                  height: 16,
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            16, 36, 16, 8),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: GFButton(
+                                                onPressed: () {
+                                                  _launchUrl();
+                                                },
+                                                color: Utils.primaryColor,
+                                                text: "Nạp thêm",
+                                                size: GFSize.LARGE,
+                                                textStyle: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Utils.primaryColor),
+                                                type: GFButtonType.outline2x,
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 30,
+                                            ),
+                                            Expanded(
+                                              child: GFButton(
+                                                onPressed: () async {
+                                                  if (user.coinPoint <
+                                                      donatePackageCoin) {
+                                                    Navigator.pop(context);
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            CustomAlertDialog(
+                                                              content:
+                                                                  "Bạn không có đủ Skycoin để thực hiện giao dịch này.",
+                                                              title:
+                                                                  "Thông báo",
+                                                              action: () {},
+                                                            ));
+                                                    return;
+                                                  }
+                                                  try {
+                                                    await DonatePackagesApi
+                                                        .uploadDonateRecord(
+                                                            context,
+                                                            donatePackage.id ??
+                                                                '',
+                                                            user.id // Replace with the actual user ID from UserProvider
+                                                            );
+                                                    await DonatePackagesApi
+                                                        .processDonationPayment(
+                                                            context,
+                                                            donatePackage.coin,
+                                                            user.id // Replace with the actual user ID from UserProvider
+                                                            );
+                                                    Navigator.pop(context);
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            CustomAlertDialog(
+                                                              content:
+                                                                  "Giao dịch thành công. Cảm ơn bạn đã ủng hộ Skylark.",
+                                                              title:
+                                                                  "Thông báo",
+                                                              action: () {},
+                                                            ));
+                                                    // Close the modal bottom sheet
+                                                  } catch (e) {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            CustomAlertDialog(
+                                                              content:
+                                                                  "Giao dịch thất bại. Vui lòng thử lại sau.",
+                                                              title:
+                                                                  "Thông báo",
+                                                              action: () {},
+                                                            ));
+                                                  }
+                                                },
+                                                color: Utils.primaryColor,
+                                                text: "Donate ngay",
+                                                size: GFSize.LARGE,
+                                                type: GFButtonType.solid,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 8.0, 16, 8),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: GFButton(
-                                    onPressed: () {
-                                      _launchUrl();
-                                    },
-                                    color: Utils.primaryColor,
-                                    text: "Nạp thêm",
-                                    size: GFSize.LARGE,
-                                    textStyle: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        color: Utils.primaryColor),
-                                    type: GFButtonType.outline2x,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 30,
-                                ),
-                                Expanded(
-                                  child: GFButton(
-                                    onPressed: () async {
-                                      if (user.coinPoint < donatePackageCoin) {
-                                        Navigator.pop(context);
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) => CustomAlertDialog(
-                                                  content:
-                                                      "Bạn không có đủ Skycoin để thực hiện giao dịch này.",
-                                                  title: "Thông báo",
-                                                  action: () {},
-                                                ));
-                                        return;
-                                      }
-                                      try {
-                                        await DonatePackagesApi.uploadDonateRecord(
+                              : Container(
+                                  child: Center(
+                                    child: GradientSquareButton(
+                                      action: () {
+                                        Provider.of<NavigatorProvider>(context,
+                                                listen: false)
+                                            .setShow(false);
+                                        Navigator.push(
                                             context,
-                                            donatePackage.id ?? '',
-                                            user.id // Replace with the actual user ID from UserProvider
-                                            );
-                                        await DonatePackagesApi
-                                            .processDonationPayment(
-                                                context,
-                                                donatePackage.coin,
-                                                user.id // Replace with the actual user ID from UserProvider
-                                                );
-                                        Navigator.pop(context);
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) => CustomAlertDialog(
-                                                  content:
-                                                      "Giao dịch thành công. Cảm ơn bạn đã ủng hộ Skylark.",
-                                                  title: "Thông báo",
-                                                  action: () {},
-                                                ));
-                                        // Close the modal bottom sheet
-                                      } catch (e) {
-                                        showDialog(
-                                            context: context,
-                                            builder: (_) => CustomAlertDialog(
-                                                  content:
-                                                      "Giao dịch thất bại. Vui lòng thử lại sau.",
-                                                  title: "Thông báo",
-                                                  action: () {},
-                                                ));
-                                      }
-                                    },
-                                    color: Utils.primaryColor,
-                                    text: "Donate ngay",
-                                    size: GFSize.LARGE,
-                                    type: GFButtonType.solid,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const Login()));
+                                      },
+                                      content: "Đăng nhập để tiếp tục",
+                                      cornerRadius: 8,
+                                      height: 40,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
+                                )
                         ],
                       ),
                     );
