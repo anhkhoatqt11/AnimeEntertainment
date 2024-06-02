@@ -456,7 +456,7 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                             padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                             child: SizedBox(
                                 height: 250, child: DonatePackageListHome(
-                                  
+
                                 )),
                           ),
                         ],
@@ -465,8 +465,6 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                 index == 1
                     ? GestureDetector(
                         onTap: () {
-                          Provider.of<NavigatorProvider>(context, listen: false)
-                              .setShow(false);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -483,8 +481,6 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                 index == 3
                     ? GestureDetector(
                         onTap: () {
-                          Provider.of<NavigatorProvider>(context, listen: false)
-                              .setShow(false);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

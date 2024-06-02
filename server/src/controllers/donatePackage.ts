@@ -38,11 +38,12 @@ export const uploadDonateRecord: RequestHandler = async (req, res, next) => {
   }
 }
 
+
 export const getDonatorList: RequestHandler = async (req, res, next) => {
   try {
     const donatePackages = await DonatePackagesModel.find();
 
-    const userDonations: { [key: string]: number } = {};
+    const userDonations: { [key: string]: { totalCoins: number, donationCount: number } } = {};
 
     // Aggregate donations for each user
     donatePackages.forEach((donatePackage) => {
@@ -50,9 +51,10 @@ export const getDonatorList: RequestHandler = async (req, res, next) => {
       donatePackage.donateRecords.forEach((record) => {
         const userId = record.userId.toString();
         if (!userDonations[userId]) {
-          userDonations[userId] = 0;
+          userDonations[userId] = { totalCoins: 0, donationCount: 0 };
         }
-        userDonations[userId] += packageCoin;
+        userDonations[userId].totalCoins += packageCoin;
+        userDonations[userId].donationCount += 1;
       });
     });
 
@@ -60,14 +62,22 @@ export const getDonatorList: RequestHandler = async (req, res, next) => {
     const userIds = Object.keys(userDonations).filter(id => mongoose.Types.ObjectId.isValid(id)).map(id => new mongoose.Types.ObjectId(id));
 
     // Get user details
-    const users = await UserModel.find({ _id: { $in: userIds } }).select('username');
+    const users = await UserModel.find({ _id: { $in: userIds } }).select('username avatar');
 
     const result = users.map((user) => ({
       username: user.username,
-      totalCoins: userDonations[user._id.toString()],
+      totalCoins: userDonations[user._id.toString()].totalCoins,
+      donationCount: userDonations[user._id.toString()].donationCount,
+      avatar: user.avatar
     }));
 
-    res.status(200).json(result);
+    // Sort the result from highest to lowest totalCoins
+    result.sort((a, b) => b.totalCoins - a.totalCoins);
+
+    // Only get the top 10 highest records
+    const top10Result = result.slice(0, 10);
+
+    res.status(200).json(top10Result);
   } catch (error) {
     next(error);
   }

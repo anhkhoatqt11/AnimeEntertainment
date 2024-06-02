@@ -407,8 +407,6 @@ class _HomeAlbumComponentState extends State<HomeAlbumComponent> {
                 index == 1
                     ? GestureDetector(
                         onTap: () {
-                          Provider.of<NavigatorProvider>(context, listen: false)
-                              .setShow(false);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -425,8 +423,6 @@ class _HomeAlbumComponentState extends State<HomeAlbumComponent> {
                 index == 2
                     ? GestureDetector(
                         onTap: () {
-                          Provider.of<NavigatorProvider>(context, listen: false)
-                              .setShow(false);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

@@ -2,6 +2,7 @@ import 'package:anime_and_comic_entertainment/components/ui/CoinButton.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/pages/donate/donate_page.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_podium_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/about_us_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
@@ -57,7 +58,7 @@ class ProfilePage extends StatelessWidget {
                   top: 100,
                   child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
-                      height: 540,
+                      height: 700,
                       child: Stack(
                         children: [
                           Positioned(
@@ -67,7 +68,7 @@ class ProfilePage extends StatelessWidget {
                                 height:
                                     user.authentication['sessionToken'] == ""
                                         ? 400
-                                        : 440,
+                                        : 500,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: const Color(0xFF242424))),
@@ -150,7 +151,7 @@ class ProfilePage extends StatelessWidget {
                                   child: SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width * 0.8,
-                                    height: 540,
+                                    height: 590,
                                     child: Padding(
                                       padding: const EdgeInsets.only(top: 60),
                                       child: Column(
@@ -340,10 +341,6 @@ class ProfilePage extends StatelessWidget {
                                                       top: 4.0, bottom: 4.0),
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      Provider.of<NavigatorProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .setShow(false);
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
@@ -432,10 +429,48 @@ class ProfilePage extends StatelessWidget {
                                                       top: 4.0, bottom: 4.0),
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      Provider.of<NavigatorProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .setShow(false);
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const DonatePodium()));
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 20,
+                                                          child: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .rankingStar,
+                                                            color: Colors.white,
+                                                            size: 18,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        Text(
+                                                          'Bảng xếp hạng đóng góp',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                const Divider(
+                                                  color: Colors.grey,
+                                                  thickness: .5,
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 4.0, bottom: 4.0),
+                                                  child: GestureDetector(
+                                                    onTap: () {
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
@@ -473,37 +508,31 @@ class ProfilePage extends StatelessWidget {
                                                   color: Colors.grey,
                                                   thickness: .5,
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 4.0,
-                                                          bottom: 4.0),
-                                                  child: AspectRatio(
-                                                    aspectRatio: 4 / 1,
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        Provider.of<NavigatorProvider>(
-                                                                context,
-                                                                listen: false)
-                                                            .setShow(false);
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        const DonatePage()));
-                                                      },
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4),
-                                                        child: Image.asset(
-                                                          "assets/images/donatebanner.png",
-                                                          fit: BoxFit.cover,
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                const DonatePage()));
+                                                  },
+                                                  child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 4.0,
+                                                              bottom: 4.0),
+                                                      child: AspectRatio(
+                                                        aspectRatio: 4 / 1,
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(4),
+                                                          child: Image.asset(
+                                                            "assets/images/donatebanner.png",
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ),
+                                                      )),
                                                 ),
                                                 Padding(
                                                   padding:

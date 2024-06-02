@@ -50,6 +50,39 @@ class DonatePackagesApi {
     }
   }
 
+  static Future<List<Map<String, dynamic>>> getDonatorList(
+      BuildContext context) async {
+    var url = Uri.parse("${baseUrl}getDonatorList");
+    try {
+      final res = await http.get(url);
+      if (res.statusCode == 200) {
+        var result = jsonDecode(res.body) as List<dynamic>;
+        List<Map<String, dynamic>> donatorList = [];
+        result.forEach((element) {
+          donatorList.add({
+            'username': element['username'],
+            'totalCoins': element['totalCoins'],
+            'donationCount': element['donationCount'],
+            'avatar': element['avatar'],
+          });
+        });
+        return donatorList;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true, 0, "Page1");
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+      return [];
+    }
+  }
+
   static Future<bool> uploadDonateRecord(
       BuildContext context, String packageId, String userId) async {
     var url = Uri.parse("${baseUrl}uploadDonateRecord");

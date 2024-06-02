@@ -4,6 +4,7 @@ import 'package:anime_and_comic_entertainment/components/donate/DonatePackageLis
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_album_page.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:anime_and_comic_entertainment/model/album.dart';
@@ -227,10 +228,18 @@ class _ComicAlbumComponentState extends State<ComicAlbumComponent> {
                     child: ComicAlbumItem(
                         idList: listAlbum[index].comicList.toString())),
                 index == 2
-                    ? const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: DonateBannerHome(
-                          urlAsset: 'assets/images/donate2.png',
+                    ? GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DonatePage()));
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: DonateBannerHome(
+                            urlAsset: 'assets/images/donate2.png',
+                          ),
                         ),
                       )
                     : const SizedBox.shrink(),
