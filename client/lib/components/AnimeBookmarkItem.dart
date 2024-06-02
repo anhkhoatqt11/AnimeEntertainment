@@ -79,81 +79,84 @@ class AnimeBookmarkItem extends StatelessWidget {
                     },
                     child: Container(
                       color: const Color(0xFF141414),
-                      height: 187,
-                      child: Row(children: [
-                        CachedNetworkImage(
-                          imageUrl: coverImage,
-                          width: 125,
-                          height: 187,
-                          placeholder: (context, url) => Container(
-                            height: 187,
-                            width: 125,
-                            decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(4)),
-                            child: Shimmer.fromColors(
-                              baseColor: Colors.grey.shade300,
-                              highlightColor: Colors.grey.shade100,
-                              child: Container(
-                                width: 125,
-                                height: 187,
+                      height: 120,
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: coverImage,
+                              width: 100,
+                              height: 100,
+                              placeholder: (context, url) => Container(
+                                height: 100,
+                                width: 100,
                                 decoration: BoxDecoration(
                                     color: Colors.blue,
                                     borderRadius: BorderRadius.circular(4)),
+                                child: Shimmer.fromColors(
+                                  baseColor: Colors.grey.shade300,
+                                  highlightColor: Colors.grey.shade100,
+                                  child: Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.circular(4)),
+                                  ),
+                                ),
                               ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                              imageBuilder: (context, imageProvider) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      image: DecorationImage(
+                                          image: imageProvider,
+                                          fit: BoxFit.cover)),
+                                );
+                              },
                             ),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                          imageBuilder: (context, imageProvider) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
-                                  image: DecorationImage(
-                                      image: imageProvider, fit: BoxFit.fill)),
-                            );
-                          },
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.left,
-                                movieName,
-                                maxLines: 2,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.left,
+                                    movieName,
+                                    maxLines: 2,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  if (onChanged == null)
+                                    GenresBranch(genreList: genreNames),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.left,
+                                    episodeName,
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              if (onChanged == null)
-                                GenresBranch(genreList: genreNames),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.left,
-                                episodeName,
-                                maxLines: 3,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ]),
+                            )
+                          ]),
                     ),
                   ),
                 ),

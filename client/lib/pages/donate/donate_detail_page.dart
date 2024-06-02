@@ -1,3 +1,4 @@
+import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/donate_packages_api.dart';
@@ -11,6 +12,7 @@ import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/size/gf_size.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DonateDetailPage extends StatefulWidget {
   final DonatePackages donatePackage;
@@ -35,6 +37,7 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
     var donatePackage = widget.donatePackage;
     var donatePackageCoin = donatePackage.coin ?? 0;
     var donatePackageImage = donatePackage.coverImage ?? "";
+    final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
       backgroundColor: const Color(0xFF141414),
       body: Column(
@@ -221,7 +224,9 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
                               children: [
                                 Expanded(
                                   child: GFButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _launchUrl();
+                                    },
                                     color: Utils.primaryColor,
                                     text: "Nạp thêm",
                                     size: GFSize.LARGE,
@@ -237,42 +242,49 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
                                 Expanded(
                                   child: GFButton(
                                     onPressed: () async {
-                                      if (0 < donatePackageCoin) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Bạn không có đủ SkyCoins.'),
-                                          ),
-                                        );
+                                      if (user.coinPoint < donatePackageCoin) {
                                         Navigator.pop(context);
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => CustomAlertDialog(
+                                                  content:
+                                                      "Bạn không có đủ Skycoin để thực hiện giao dịch này.",
+                                                  title: "Thông báo",
+                                                  action: () {},
+                                                ));
                                         return;
                                       }
-                                      bool success = await DonatePackagesApi
-                                          .uploadDonateRecord(
-                                        context,
-                                        donatePackage.id ?? '',
-                                        Provider.of<UserProvider>(context)
-                                            .user
-                                            .id, // Replace with the actual user ID from UserProvider
-                                      );
-                                      Navigator.pop(
-                                          context); // Close the modal bottom sheet
-
-                                      if (success) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  'Cảm ơn bạn đã ủng hộ đội ngũ')),
-                                        );
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  'Quá trình bị lỗi. Vui lòng thử lại sau.')),
-                                        );
+                                      try {
+                                        await DonatePackagesApi.uploadDonateRecord(
+                                            context,
+                                            donatePackage.id ?? '',
+                                            user.id // Replace with the actual user ID from UserProvider
+                                            );
+                                        await DonatePackagesApi
+                                            .processDonationPayment(
+                                                context,
+                                                donatePackage.coin,
+                                                user.id // Replace with the actual user ID from UserProvider
+                                                );
+                                        Navigator.pop(context);
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => CustomAlertDialog(
+                                                  content:
+                                                      "Giao dịch thành công. Cảm ơn bạn đã ủng hộ Skylark.",
+                                                  title: "Thông báo",
+                                                  action: () {},
+                                                ));
+                                        // Close the modal bottom sheet
+                                      } catch (e) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) => CustomAlertDialog(
+                                                  content:
+                                                      "Giao dịch thất bại. Vui lòng thử lại sau.",
+                                                  title: "Thông báo",
+                                                  action: () {},
+                                                ));
                                       }
                                     },
                                     color: Utils.primaryColor,
@@ -296,6 +308,14 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _launchUrl() async {
+    final Uri _url =
+        Uri.parse('https://anime-entertainment-payment.vercel.app/');
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 }
 

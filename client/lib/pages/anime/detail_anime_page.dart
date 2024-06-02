@@ -196,7 +196,7 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                               SizedBox(
                                 child: Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                                      const EdgeInsets.fromLTRB(20, 0, 20, 0),
                                   child: Column(
                                     children: [
                                       Text(
@@ -462,7 +462,7 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                     Container(
                       color: const Color(0xFF050B11).withOpacity(0.9),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,

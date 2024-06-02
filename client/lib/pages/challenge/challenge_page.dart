@@ -223,7 +223,7 @@ class _ChallengePageState extends State<ChallengePage> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  userInfo.challenges.isEmpty
+                  userInfo.challenges.isEmpty && endTime.isAfter(DateTime.now())
                       ? GradientSquareButton(
                           content: "Tham gia ngay",
                           action: () async {
@@ -262,14 +262,16 @@ class _ChallengePageState extends State<ChallengePage> {
                           width: 160,
                           cornerRadius: 8,
                         )
-                      : Text(
-                          "${userInfo.challenges[0]['point']} điểm",
-                          style: TextStyle(
-                            color: Utils.accentColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                      : userInfo.challenges.isNotEmpty
+                          ? Text(
+                              "${userInfo.challenges[0]['point']} điểm",
+                              style: TextStyle(
+                                color: Utils.accentColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                 ],
               ),
             );

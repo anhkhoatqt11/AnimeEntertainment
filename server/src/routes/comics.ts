@@ -18,7 +18,7 @@ router.get("/getRankingTable", ComicsController.getRankingTable);
 
 router.get("/getDetailComicById", ComicsController.getDetailComicById);
 
-router.put("/updateUserSaveChapter", ComicsController.updateUserSaveChapter);
+router.post("/updateUserSaveChapter", ComicsController.updateUserSaveChapter);
 
 router.get(
   "/checkUserHasLikeOrSaveChapter",
@@ -45,7 +45,6 @@ router.get(
 );
 
 router.get("/getComicChapter", ComicsController.getComicChapter);
-
 
 router.get(
   "/getComicChapterComments",

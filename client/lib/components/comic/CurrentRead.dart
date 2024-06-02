@@ -1,6 +1,8 @@
+import 'package:anime_and_comic_entertainment/model/comicchapters.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +33,8 @@ class CurrentRead extends StatelessWidget {
             onTap: () {
               Provider.of<NavigatorProvider>(context, listen: false)
                   .setShow(false);
+              Provider.of<ComicChapterProvider>(context, listen: false)
+                  .setComic(Comics(id: comic.id), ComicChapter(id: chapterId));
               Navigator.push(
                 context,
                 MaterialPageRoute(

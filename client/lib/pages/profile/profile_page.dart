@@ -1,6 +1,7 @@
 import 'package:anime_and_comic_entertainment/components/ui/CoinButton.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/get_otp.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/about_us_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/avatar_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/bookmark_page.dart';
@@ -473,12 +474,25 @@ class ProfilePage extends StatelessWidget {
                                                   thickness: .5,
                                                 ),
                                                 Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 4.0,
-                                                            bottom: 4.0),
-                                                    child: AspectRatio(
-                                                      aspectRatio: 4 / 1,
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 4.0,
+                                                          bottom: 4.0),
+                                                  child: AspectRatio(
+                                                    aspectRatio: 4 / 1,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        Provider.of<NavigatorProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .setShow(false);
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const DonatePage()));
+                                                      },
                                                       child: ClipRRect(
                                                         borderRadius:
                                                             BorderRadius
@@ -488,7 +502,9 @@ class ProfilePage extends StatelessWidget {
                                                           fit: BoxFit.cover,
                                                         ),
                                                       ),
-                                                    )),
+                                                    ),
+                                                  ),
+                                                ),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(

@@ -173,59 +173,91 @@ class _SearchPageState extends State<SearchPage> {
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(0),
-                itemCount: _searchHistory.length,
+                itemCount: _searchHistory.isEmpty ? 1 : _searchHistory.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          String query = _searchHistory[index];
-                          _saveSearchHistory(query);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SearchResultPage(
-                                searchWord: query,
-                              ),
+                  return (_searchHistory.isNotEmpty)
+                      ? Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                String query = _searchHistory[index];
+                                _saveSearchHistory(query);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SearchResultPage(
+                                      searchWord: query,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: _buildHistoryItem(index),
                             ),
-                          );
-                        },
-                        child: _buildHistoryItem(index),
-                      ),
-                      !isLoading && index == _searchHistory.length - 1
-                          ? Wrap(
-                              spacing: 8.0,
-                              children: List.generate(
-                                listGenre.length,
-                                (index) => GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            SearchGenreResultPage(
-                                          genreId: listGenre[index].id,
-                                          genreName: listGenre[index].genreName,
+                            !isLoading && index == _searchHistory.length - 1
+                                ? Wrap(
+                                    spacing: 8.0,
+                                    children: List.generate(
+                                      listGenre.length,
+                                      (index) => GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SearchGenreResultPage(
+                                                genreId: listGenre[index].id,
+                                                genreName:
+                                                    listGenre[index].genreName,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Chip(
+                                          label: Text(
+                                            listGenre[index].genreName,
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12),
+                                          ),
+                                          backgroundColor:
+                                              const Color(0xFF282727),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(32)),
                                         ),
                                       ),
-                                    );
-                                  },
-                                  child: Chip(
-                                    label: Text(
-                                      listGenre[index].genreName,
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 12),
+                                    ))
+                                : const SizedBox.shrink()
+                          ],
+                        )
+                      : Wrap(
+                          spacing: 8.0,
+                          children: List.generate(
+                            listGenre.length,
+                            (index) => GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SearchGenreResultPage(
+                                      genreId: listGenre[index].id,
+                                      genreName: listGenre[index].genreName,
                                     ),
-                                    backgroundColor: const Color(0xFF282727),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(32)),
                                   ),
+                                );
+                              },
+                              child: Chip(
+                                label: Text(
+                                  listGenre[index].genreName,
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 12),
                                 ),
-                              ))
-                          : const SizedBox.shrink()
-                    ],
-                  );
+                                backgroundColor: const Color(0xFF282727),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(32)),
+                              ),
+                            ),
+                          ));
                 },
               ),
             ),

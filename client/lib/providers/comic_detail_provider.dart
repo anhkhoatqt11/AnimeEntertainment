@@ -13,7 +13,7 @@ class ComicChapterProvider extends ChangeNotifier {
   ComicChapter get chapter => _chapter;
   bool get hadLiked => _hadLiked;
   bool get hadSaved => _hadSaved;
-  void setAnime(Comics item, ComicChapter item2) {
+  void setComic(Comics item, ComicChapter item2) {
     _comic = Comics();
     _chapter = ComicChapter();
     notifyListeners();

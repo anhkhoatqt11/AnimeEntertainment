@@ -489,323 +489,319 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                     children: [
                       GestureDetector(
                         onTap: () {},
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ShaderMask(
-                                  shaderCallback: (rect) => LinearGradient(
-                                          colors: Utils.gradientColors,
-                                          begin: Alignment.centerLeft,
-                                          stops: const [0, 0.4],
-                                          end: Alignment.centerRight)
-                                      .createShader(rect),
-                                  child: Row(
-                                    children: [
-                                      const FaIcon(
-                                        FontAwesomeIcons.youtube,
-                                        color: Colors.white,
-                                        size: 14,
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      Flexible(
-                                        child: Text(
-                                          detailAnime.movieName!,
-                                          maxLines: 1,
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  detailAnimeEpisode.episodeName!,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ShaderMask(
+                                shaderCallback: (rect) => LinearGradient(
+                                        colors: Utils.gradientColors,
+                                        begin: Alignment.centerLeft,
+                                        stops: const [0, 0.4],
+                                        end: Alignment.centerRight)
+                                    .createShader(rect),
+                                child: Row(
+                                  children: [
+                                    const FaIcon(
+                                      FontAwesomeIcons.youtube,
                                       color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 20),
+                                      size: 14,
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                    Flexible(
+                                      child: Text(
+                                        detailAnime.movieName!,
+                                        maxLines: 1,
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Consumer(
-                                  builder: (BuildContext context, value,
-                                      Widget? child) {
-                                    final hadLiked =
-                                        Provider.of<VideoProvider>(context)
-                                            .hadLiked;
-                                    final hadSaved =
-                                        Provider.of<VideoProvider>(context)
-                                            .hadSaved;
-                                    return Center(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          GestureDetector(
-                                            onTap: () {
-                                              if (Provider.of<UserProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .user
-                                                          .authentication[
-                                                      'sessionToken'] !=
-                                                  "") {
-                                                AnimesApi.updateUserLikeEpisode(
-                                                    context,
-                                                    widget.videoId,
-                                                    Provider.of<UserProvider>(
+                              ),
+                              const SizedBox(
+                                height: 4,
+                              ),
+                              Text(
+                                detailAnimeEpisode.episodeName!,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 20),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Consumer(
+                                builder: (BuildContext context, value,
+                                    Widget? child) {
+                                  final hadLiked =
+                                      Provider.of<VideoProvider>(context)
+                                          .hadLiked;
+                                  final hadSaved =
+                                      Provider.of<VideoProvider>(context)
+                                          .hadSaved;
+                                  return Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (Provider.of<UserProvider>(
                                                             context,
                                                             listen: false)
                                                         .user
-                                                        .id);
-                                                setState(
-                                                  () {
-                                                    Provider.of<VideoProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .setLiked();
-                                                  },
-                                                );
-                                              } else {
-                                                _controllerAd!.pause();
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const Login()));
-                                              }
-                                            },
-                                            child: Column(children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.solidThumbsUp,
-                                                color: hadLiked
-                                                    ? Utils.primaryColor
-                                                    : Colors.grey,
-                                                size: 20,
-                                              ),
-                                              const SizedBox(
-                                                height: 4,
-                                              ),
-                                              Text(
-                                                "Thích",
-                                                style: TextStyle(
-                                                    color: hadLiked
-                                                        ? Utils.primaryColor
-                                                        : Colors.grey,
-                                                    fontSize: 12),
-                                              )
-                                            ]),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              if (Provider.of<UserProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .user
-                                                          .authentication[
-                                                      'sessionToken'] !=
-                                                  "") {
-                                                AnimesApi.updateUserSaveEpisode(
-                                                    context,
-                                                    widget.videoId,
-                                                    Provider.of<UserProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .user
-                                                        .id);
-                                                setState(
-                                                  () {
-                                                    Provider.of<VideoProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .setSaved();
-                                                  },
-                                                );
-                                              } else {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const Login()));
-                                              }
-                                            },
-                                            child: Column(children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.solidBookmark,
-                                                color: hadSaved
-                                                    ? Utils.accentColor
-                                                    : Colors.grey,
-                                                size: 18,
-                                              ),
-                                              const SizedBox(
-                                                height: 4,
-                                              ),
-                                              Text(
-                                                "Lưu phim",
-                                                style: TextStyle(
-                                                    color: hadSaved
-                                                        ? Utils.accentColor
-                                                        : Colors.grey,
-                                                    fontSize: 12),
-                                              )
-                                            ]),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
+                                                        .authentication[
+                                                    'sessionToken'] !=
+                                                "") {
+                                              AnimesApi.updateUserLikeEpisode(
+                                                  context,
+                                                  widget.videoId,
+                                                  Provider.of<UserProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .user
+                                                      .id);
+                                              setState(
+                                                () {
+                                                  Provider.of<VideoProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .setLiked();
+                                                },
+                                              );
+                                            } else {
+                                              _controllerAd!.pause();
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ComicChapterComment(
-                                                            sourceId:
-                                                                detailAnimeEpisode
-                                                                    .id!,
-                                                            type: "episode"),
-                                                  ));
-                                            },
-                                            child: const Column(children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.solidMessage,
-                                                color: Colors.grey,
-                                                size: 18,
-                                              ),
-                                              SizedBox(
-                                                height: 4,
-                                              ),
-                                              Text(
-                                                "Bình luận",
-                                                style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 12),
-                                              )
-                                            ]),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Dành cho độ tuổi: ",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    Flexible(
-                                      child: Text(detailAnime.ageFor!,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              color: Utils.accentColor,
-                                              fontWeight: FontWeight.w600)),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Thể loại: ",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    Expanded(
-                                      child: Wrap(
-                                          spacing: 2,
-                                          children: List.generate(
-                                            detailAnime.genres!.length,
-                                            (index) => GestureDetector(
-                                              onTap: () {
-                                                print(detailAnime.genres![index]
-                                                    ['genreName']);
-                                              },
-                                              child: Text(
-                                                  detailAnime.genres![index]
-                                                          ['genreName'] +
-                                                      (index ==
-                                                              detailAnime
-                                                                      .genres!
-                                                                      .length -
-                                                                  1
-                                                          ? ""
-                                                          : ", "),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyle(
-                                                      color: Utils.primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.w600)),
+                                                      builder: (context) =>
+                                                          const Login()));
+                                            }
+                                          },
+                                          child: Column(children: [
+                                            FaIcon(
+                                              FontAwesomeIcons.solidThumbsUp,
+                                              color: hadLiked
+                                                  ? Utils.primaryColor
+                                                  : Colors.grey,
+                                              size: 20,
                                             ),
-                                          )),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Phát sóng: ",
-                                      style: TextStyle(color: Colors.grey),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              "Thích",
+                                              style: TextStyle(
+                                                  color: hadLiked
+                                                      ? Utils.primaryColor
+                                                      : Colors.grey,
+                                                  fontSize: 12),
+                                            )
+                                          ]),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            if (Provider.of<UserProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .user
+                                                        .authentication[
+                                                    'sessionToken'] !=
+                                                "") {
+                                              AnimesApi.updateUserSaveEpisode(
+                                                  context,
+                                                  widget.videoId,
+                                                  Provider.of<UserProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .user
+                                                      .id);
+                                              setState(
+                                                () {
+                                                  Provider.of<VideoProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .setSaved();
+                                                },
+                                              );
+                                            } else {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const Login()));
+                                            }
+                                          },
+                                          child: Column(children: [
+                                            FaIcon(
+                                              FontAwesomeIcons.solidBookmark,
+                                              color: hadSaved
+                                                  ? Utils.accentColor
+                                                  : Colors.grey,
+                                              size: 18,
+                                            ),
+                                            const SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              "Lưu phim",
+                                              style: TextStyle(
+                                                  color: hadSaved
+                                                      ? Utils.accentColor
+                                                      : Colors.grey,
+                                                  fontSize: 12),
+                                            )
+                                          ]),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ComicChapterComment(
+                                                          sourceId:
+                                                              detailAnimeEpisode
+                                                                  .id!,
+                                                          type: "episode"),
+                                                ));
+                                          },
+                                          child: const Column(children: [
+                                            FaIcon(
+                                              FontAwesomeIcons.solidMessage,
+                                              color: Colors.grey,
+                                              size: 18,
+                                            ),
+                                            SizedBox(
+                                              height: 4,
+                                            ),
+                                            Text(
+                                              "Bình luận",
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12),
+                                            )
+                                          ]),
+                                        ),
+                                      ],
                                     ),
-                                    Flexible(
-                                      child: Text(detailAnime.publishTime!,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              color: Colors.grey[400],
-                                              fontWeight: FontWeight.w600)),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 2,
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "Nhà phát hành: ",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    Flexible(
-                                      child: Text(detailAnime.publisher!,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600)),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                              ],
-                            ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(
+                                height: 2,
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Dành cho độ tuổi: ",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  Flexible(
+                                    child: Text(detailAnime.ageFor!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Utils.accentColor,
+                                            fontWeight: FontWeight.w600)),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 2,
+                              ),
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Thể loại: ",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  Expanded(
+                                    child: Wrap(
+                                        spacing: 2,
+                                        children: List.generate(
+                                          detailAnime.genres!.length,
+                                          (index) => GestureDetector(
+                                            onTap: () {
+                                              print(detailAnime.genres![index]
+                                                  ['genreName']);
+                                            },
+                                            child: Text(
+                                                detailAnime.genres![index]
+                                                        ['genreName'] +
+                                                    (index ==
+                                                            detailAnime.genres!
+                                                                    .length -
+                                                                1
+                                                        ? ""
+                                                        : ", "),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    color: Utils.primaryColor,
+                                                    fontWeight:
+                                                        FontWeight.w600)),
+                                          ),
+                                        )),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 2,
+                              ),
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Phát sóng: ",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  Flexible(
+                                    child: Text(detailAnime.publishTime!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.grey[400],
+                                            fontWeight: FontWeight.w600)),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 2,
+                              ),
+                              Row(
+                                children: [
+                                  const Text(
+                                    "Nhà phát hành: ",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  Flexible(
+                                    child: Text(detailAnime.publisher!,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600)),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -1016,7 +1012,6 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                   })),
                                 ),
                                 SuggestionByView(),
-                                Container(child: Text("Bình luận")),
                               ],
                             ),
                           ),

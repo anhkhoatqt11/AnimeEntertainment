@@ -3,6 +3,7 @@ import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import DonatePackagesModel from "../models/donatePackage";
 import UserModel from "../models/user";
+import PaymentHistoryModel from "../models/paymentHistories";
 
 export const getDonatePackageList: RequestHandler = async (req, res, next) => {
   try {
@@ -55,8 +56,10 @@ export const getDonatorList: RequestHandler = async (req, res, next) => {
       });
     });
 
+    // Convert user IDs to ObjectId if valid
+    const userIds = Object.keys(userDonations).filter(id => mongoose.Types.ObjectId.isValid(id)).map(id => new mongoose.Types.ObjectId(id));
+
     // Get user details
-    const userIds = Object.keys(userDonations);
     const users = await UserModel.find({ _id: { $in: userIds } }).select('username');
 
     const result = users.map((user) => ({
@@ -69,3 +72,32 @@ export const getDonatorList: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const processDonationPayment: RequestHandler = async (req, res, next) => {
+
+  try {
+    const { userId, amount } = req.body;
+
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return next(createHttpError(404, "User not found"));
+    }
+
+    user.coinPoint = (user.coinPoint ?? 0) - amount;
+
+    const newPaymentHistory = await PaymentHistoryModel.create({
+      userId: userId,
+      orderDate: new Date(),
+      paymentMethod: "Donation",
+      status: "completed",
+      price: amount,
+      packageId: null,
+    });
+    await user.save();
+    res.status(200).json(newPaymentHistory);
+  } catch (error) {
+    next(error);
+  }
+}

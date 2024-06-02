@@ -11,6 +11,7 @@ import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dar
 import 'package:anime_and_comic_entertainment/pages/comic/comic_buy_chapter.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_comment.dart';
 import 'package:anime_and_comic_entertainment/pages/donate/donate_page.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_podium_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_result_page.dart';
@@ -556,6 +557,16 @@ class _TestPageState extends State<TestPage> {
                 );
               },
               child: const Text("donate page")),
+          ElevatedButton(
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DonatePodium(),
+                  ),
+                );
+              },
+              child: const Text("bxh donate"))
         ]),
       );
     }));

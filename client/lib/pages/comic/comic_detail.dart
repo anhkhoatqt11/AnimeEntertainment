@@ -440,7 +440,7 @@ class _DetailComicPageState extends State<DetailComicPage> {
                             child: Column(
                                 children: List.generate(
                                     comic.chapterList!.length,
-                                    (index) => ComicChapter(
+                                    (index) => ComicChapterDetail(
                                         index: index, comic: comic))),
                           ),
                         ],
