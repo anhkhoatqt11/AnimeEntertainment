@@ -1,5 +1,6 @@
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/donate/donate_detail_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/services/donate_packages_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +11,7 @@ import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_button_type.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DonatePage extends StatefulWidget {
@@ -48,6 +50,8 @@ class _DonatePageState extends State<DonatePage> {
               size: 24,
             ),
             onPressed: () {
+              Provider.of<NavigatorProvider>(context, listen: false)
+                  .setShow(true);
               Navigator.of(context).pop();
             },
             type: GFButtonType.transparent,

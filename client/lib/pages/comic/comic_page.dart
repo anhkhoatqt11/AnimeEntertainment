@@ -3,12 +3,14 @@ import 'package:anime_and_comic_entertainment/components/comic/ComicBanner.dart'
 import 'package:anime_and_comic_entertainment/components/comic/NewChapterList.dart';
 import 'package:anime_and_comic_entertainment/components/comic/ReadingHistoresList.dart';
 import 'package:anime_and_comic_entertainment/components/ui/DonateBannerHome.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_page.dart';
 import 'package:anime_and_comic_entertainment/pages/notification/notification.dart';
 import 'package:anime_and_comic_entertainment/pages/search/search_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/firebase_api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:getwidget/components/button/gf_icon_button.dart';
 import 'package:getwidget/types/gf_button_type.dart';
@@ -113,10 +115,20 @@ class _ComicPageState extends State<ComicPage> {
               child: SizedBox(height: 256, child: NewChapterList()),
             ),
             // Top unlock...
-            const Padding(
-              padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-              child: DonateBannerHome(
-                urlAsset: 'assets/images/donate1.png',
+            GestureDetector(
+              onTap: () {
+                Provider.of<NavigatorProvider>(context, listen: false)
+                    .setShow(false);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DonatePage()));
+              },
+              child: const Padding(
+                padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
+                child: DonateBannerHome(
+                  urlAsset: 'assets/images/donate1.png',
+                ),
               ),
             ),
             const Padding(

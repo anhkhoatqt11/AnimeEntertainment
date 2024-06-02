@@ -1,7 +1,10 @@
 import 'package:anime_and_comic_entertainment/components/donate/PackageItem.dart';
 import 'package:anime_and_comic_entertainment/model/donatepackages.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_detail_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/services/donate_packages_api.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class DonatePackageListHome extends StatefulWidget {
@@ -88,9 +91,21 @@ class _DonatePackageListHomeState extends State<DonatePackageListHome> {
             itemCount: packageList.length,
             itemBuilder: (context, index) {
               return PackageItem(
-                  urlImage: packageList[index].coverImage,
-                  title: packageList[index].title,
-                  subTitle: packageList[index].subTitle);
+                urlImage: packageList[index].coverImage,
+                title: packageList[index].title,
+                subTitle: packageList[index].subTitle,
+                onPressed: () {
+                  Provider.of<NavigatorProvider>(context, listen: false)
+                      .setShow(false);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DonateDetailPage(donatePackage: packageList[index]),
+                    ),
+                  );
+                },
+              );
             });
   }
 }

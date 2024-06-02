@@ -8,12 +8,15 @@ import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/anime_album_page.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/top_view_detail_page.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_album_page.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:flutter/material.dart';
 
 import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeAlbumComponent extends StatefulWidget {
@@ -402,18 +405,38 @@ class _HomeAlbumComponentState extends State<HomeAlbumComponent> {
                       )
                     : Container(),
                 index == 1
-                    ? const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: DonateBannerHome(
-                          urlAsset: 'assets/images/donate1.png',
+                    ? GestureDetector(
+                        onTap: () {
+                          Provider.of<NavigatorProvider>(context, listen: false)
+                              .setShow(false);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DonatePage()));
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: DonateBannerHome(
+                            urlAsset: 'assets/images/donate1.png',
+                          ),
                         ),
                       )
                     : const SizedBox.shrink(),
                 index == 2
-                    ? const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: DonateBannerHome(
-                          urlAsset: 'assets/images/donate2.png',
+                    ? GestureDetector(
+                        onTap: () {
+                          Provider.of<NavigatorProvider>(context, listen: false)
+                              .setShow(false);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DonatePage()));
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: DonateBannerHome(
+                            urlAsset: 'assets/images/donate2.png',
+                          ),
                         ),
                       )
                     : const SizedBox.shrink(),

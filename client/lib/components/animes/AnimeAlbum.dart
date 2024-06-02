@@ -7,6 +7,8 @@ import 'package:anime_and_comic_entertainment/model/animeepisodes.dart';
 import 'package:anime_and_comic_entertainment/model/animes.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/anime_album_page.dart';
 import 'package:anime_and_comic_entertainment/pages/anime/top_view_detail_page.dart';
+import 'package:anime_and_comic_entertainment/pages/donate/donate_page.dart';
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,7 @@ import 'package:anime_and_comic_entertainment/model/album.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AnimeAlbumItem extends StatefulWidget {
@@ -452,7 +455,9 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                             child: SizedBox(
-                                height: 250, child: DonatePackageListHome()),
+                                height: 250, child: DonatePackageListHome(
+                                  
+                                )),
                           ),
                         ],
                       )
@@ -460,7 +465,12 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                 index == 1
                     ? GestureDetector(
                         onTap: () {
-                          //forward donate page
+                          Provider.of<NavigatorProvider>(context, listen: false)
+                              .setShow(false);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DonatePage()));
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
@@ -473,7 +483,12 @@ class _AnimeAlbumComponentState extends State<AnimeAlbumComponent> {
                 index == 3
                     ? GestureDetector(
                         onTap: () {
-                          //forward donate page
+                          Provider.of<NavigatorProvider>(context, listen: false)
+                              .setShow(false);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const DonatePage()));
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
