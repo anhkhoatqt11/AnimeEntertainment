@@ -1,9 +1,11 @@
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/AlertYesNoDialog.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
+import 'package:anime_and_comic_entertainment/model/comicchapters.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_buy_chapter.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_detail_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/user_api.dart';
@@ -17,17 +19,17 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ComicChapter extends StatefulWidget {
+class ComicChapterPage extends StatefulWidget {
   final int index;
   final Comics comic;
 
-  const ComicChapter({super.key, required this.index, required this.comic});
+  const ComicChapterPage({super.key, required this.index, required this.comic});
 
   @override
-  State<ComicChapter> createState() => _ComicChapterState();
+  State<ComicChapterPage> createState() => _ComicChapterPageState();
 }
 
-class _ComicChapterState extends State<ComicChapter> {
+class _ComicChapterPageState extends State<ComicChapterPage> {
   Future<List<dynamic>> getPayHis() async {
     var result = await UsersApi.getPaymentHistories(context);
     return result;
@@ -62,6 +64,9 @@ class _ComicChapterState extends State<ComicChapter> {
           );
         } else {
           Provider.of<NavigatorProvider>(context, listen: false).setShow(false);
+          Provider.of<ComicChapterProvider>(context, listen: false).setComic(
+              Comics(id: comic.id),
+              ComicChapter(id: comic.chapterList![widget.index]));
           Navigator.push(
             context,
             MaterialPageRoute(

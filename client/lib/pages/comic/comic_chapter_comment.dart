@@ -667,7 +667,11 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
           });
         }
       }
-      // isLoading = false;
+      if (comments.isEmpty) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
   }
 
@@ -705,32 +709,33 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
           padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           child: Stack(
             children: [
-              comments.isEmpty && isLoading == false
-                  ? Center(
-                      child: Column(
-                      children: [
-                        Image.asset(
-                          "assets/images/commentempty.png",
-                          fit: BoxFit.cover,
-                          width: 200,
-                          height: 200,
-                        ),
-                        Text(
-                          'Chưa có bình luận nào',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Text(
-                          'Hãy là người đầu tiên bình luận nào',
-                          style: TextStyle(color: Colors.grey, fontSize: 13),
-                        )
-                      ],
-                    ))
-                  : isLoading == true && comments.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 32),
-                          child: const Center(
-                            child: GFLoader(type: GFLoaderType.circle),
-                          ))
+              isLoading == true
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 32),
+                      child: const Center(
+                        child: GFLoader(type: GFLoaderType.circle),
+                      ))
+                  : comments.isEmpty
+                      ? Center(
+                          child: Column(
+                          children: [
+                            Image.asset(
+                              "assets/images/commentempty.png",
+                              fit: BoxFit.cover,
+                              width: 200,
+                              height: 200,
+                            ),
+                            Text(
+                              'Chưa có bình luận nào',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              'Hãy là người đầu tiên bình luận nào',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 13),
+                            )
+                          ],
+                        ))
                       : SizedBox(
                           height: MediaQuery.of(context).size.height - 100,
                           width: MediaQuery.of(context).size.width,

@@ -88,7 +88,8 @@ class _ComicChapterState extends State<NotiComponent> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: CachedNetworkImage(
-                      imageUrl: comic.landspaceImage != null
+                      imageUrl: comic.landspaceImage != null ||
+                              anime.landspaceImage != null
                           ? (noti.type == "chapter"
                               ? comic.landspaceImage!
                               : anime.landspaceImage!)

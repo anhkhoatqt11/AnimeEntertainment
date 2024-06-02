@@ -1,4 +1,5 @@
 import 'package:anime_and_comic_entertainment/model/banner.dart';
+import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,15 @@ class _ComicBannerState extends State<ComicBanner> {
             items: listBanner.map(
               (listItem) {
                 return GestureDetector(
-                    onTap: () => {print(listItem)},
+                    onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailComicPage(comicId: listItem.urlId!),
+                            ),
+                          )
+                        },
                     child: Container(
                       margin: EdgeInsets.all(8.0),
                       child: ClipRRect(

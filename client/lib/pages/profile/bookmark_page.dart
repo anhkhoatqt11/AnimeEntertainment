@@ -43,29 +43,27 @@ class _BookMarkPageState extends State<BookMarkPage> {
       if (userId == "") return;
       final result = await UsersApi.getBookmartList(context, userId);
       setState(() {
-        listAnimeItem = (result[0]['animes'] as List)
-            .map((item) => AnimeEpisodes(
-                id: item['_id'],
-                coverImage: item['coverImage'],
-                episodeName: item['episodeName'],
-                movieOwner: item['owner']['movieName'],
-                movieOwnerId: item['owner']['_id'],
-                genreNames: item['owner']['genreNames']))
-            .toList();
-        listComicItem = (result[0]['comics'] as List)
-            .map((item) => ComicChapter(
-                id: item['_id'],
-                coverImage: item['coverImage'],
-                chapterName: item['chapterName'],
-                comicOwner: item['owner']['comicName'],
-                genreNames: item['owner']['genreNames'],
-                index: item['owner']['index'],
-                comicOwnerId: item['owner']['_id'],
-                comicChapterList: item['owner']['chapterListDetail']))
-            .toList();
+        result[0]['animes'].forEach((item) {
+          listAnimeItem.add(AnimeEpisodes(
+              id: item['_id'],
+              coverImage: item['coverImage'],
+              episodeName: item['episodeName'],
+              movieOwner: item['owner'][0]['movieName'],
+              movieOwnerId: item['owner'][0]['_id'],
+              genreNames: item['owner'][0]['genreNames']));
+        });
+        result[0]['comics'].forEach((item) {
+          listComicItem.add(ComicChapter(
+              id: item['_id'],
+              coverImage: item['coverImage'],
+              chapterName: item['chapterName'],
+              comicOwner: item['owner'][0]['comicName'],
+              genreNames: item['owner'][0]['genreNames'],
+              index: item['owner'][0]['index'],
+              comicOwnerId: item['owner'][0]['_id'],
+              comicChapterList: item['owner'][0]['chapterListDetail']));
+        });
       });
-      print(listAnimeItem);
-      print(listComicItem);
     } catch (e) {
       // Handle error
     }

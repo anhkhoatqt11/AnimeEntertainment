@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class UserProvider extends ChangeNotifier {
   User _user = User(
-      id: '65ec67ad05c5cb2ad67cfb3f',
+      id: '',
       paymentHistories: [],
-      authentication: {"password": "", "salt": "", "sessionToken": "ss"},
+      authentication: {"password": "", "salt": "", "sessionToken": ""},
       bookmarkList: {},
       histories: {},
       username: '',
