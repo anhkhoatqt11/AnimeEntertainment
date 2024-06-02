@@ -6,12 +6,16 @@ import 'package:getwidget/getwidget.dart';
 class CustomAlertChoiceDialog extends StatelessWidget {
   final String content;
   final String title;
+  final String yesContent;
+  final String noContent;
   final Function action;
   const CustomAlertChoiceDialog(
       {super.key,
       required this.content,
       required this.title,
-      required this.action});
+      required this.action,
+      required this.yesContent,
+      required this.noContent});
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +68,11 @@ class CustomAlertChoiceDialog extends StatelessWidget {
                   children: [
                     Expanded(
                       child: GFButton(
-                        text: "Đăng xuất",
+                        text: yesContent,
                         type: GFButtonType.transparent,
                         color: Colors.white,
                         onPressed: () {
+                          Navigator.of(context).pop();
                           action();
                         },
                       ),
@@ -84,7 +89,7 @@ class CustomAlertChoiceDialog extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        text: "Bỏ qua",
+                        text: noContent,
                         color: Colors.white,
                         type: GFButtonType.transparent,
                       ),

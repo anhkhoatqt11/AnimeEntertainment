@@ -73,6 +73,7 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
   void loadComments() {
     setState(() {
       isLoading = true;
+      print(isLoading);
       cmtTreeWidge.clear();
       int a = 0;
       List<Comment> replies = [];
@@ -80,78 +81,362 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
         a = a + 1;
         replies = [];
         comment.replies!.forEach((element) {
-          replies.add(Comments(
+          replies.add(Comment(
               id: element["_id"],
               avatar: element['avatar'],
               userId: element['userId'],
               userName: element['userName'],
               content: element['content'],
-              likes: element['likes']) as Comment);
+              likes: element['likes']));
         });
-        cmtTreeWidge.add(CommentTreeWidget(
-          Comments(
-              id: comment.id,
-              avatar: comment.avatar,
-              userId: comment.userId,
-              userName: comment.userName,
-              content: comment.content,
-              likes: comment.likes),
-          replies,
-          treeThemeData:
-              TreeThemeData(lineColor: Color(0xFF141414), lineWidth: 3),
-          avatarRoot: (context, data) => PreferredSize(
-            preferredSize: Size.fromRadius(18),
-            child: CircleAvatar(
-              radius: 18,
-              backgroundColor: Colors.grey,
-              backgroundImage: NetworkImage(data.avatar),
+        setState(() {
+          cmtTreeWidge.add(CommentTreeWidget(
+            Comments(
+                id: comment.id,
+                avatar: comment.avatar,
+                userId: comment.userId,
+                userName: comment.userName,
+                content: comment.content,
+                likes: comment.likes),
+            replies,
+            treeThemeData:
+                TreeThemeData(lineColor: Color(0xFF141414), lineWidth: 3),
+            avatarRoot: (context, data) => PreferredSize(
+              preferredSize: Size.fromRadius(18),
+              child: CircleAvatar(
+                radius: 18,
+                backgroundColor: Colors.grey,
+                backgroundImage: NetworkImage(data.avatar),
+              ),
             ),
-          ),
-          avatarChild: (context, data) => PreferredSize(
-            preferredSize: Size.fromRadius(18),
-            child: CircleAvatar(
-              radius: 18,
-              backgroundColor: Colors.grey,
-              backgroundImage: NetworkImage(data.avatar),
+            avatarChild: (context, data) => PreferredSize(
+              preferredSize: Size.fromRadius(18),
+              child: CircleAvatar(
+                radius: 18,
+                backgroundColor: Colors.grey,
+                backgroundImage: NetworkImage(data.avatar),
+              ),
             ),
-          ),
-          contentChild: (context, data) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  width: 400,
-                  decoration: BoxDecoration(
-                      color: const Color(0xFF2A2A2A),
-                      borderRadius: BorderRadius.circular(6)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${data.userName}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w600, color: Colors.white),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        '${data.content}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w400, color: Colors.white),
-                      ),
-                    ],
+            contentChild: (context, data) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    width: 400,
+                    decoration: BoxDecoration(
+                        color: const Color(0xFF2A2A2A),
+                        borderRadius: BorderRadius.circular(6)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${data.userName}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          '${data.content}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
-                  child: DefaultTextStyle(
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11),
-                    child: Padding(
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
+                    child: DefaultTextStyle(
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 11),
+                      child: Padding(
+                          padding: EdgeInsets.only(top: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  GestureDetector(
+                                    child: Text(
+                                      hasLikeComment(
+                                              Provider.of<UserProvider>(context,
+                                                      listen: false)
+                                                  .user
+                                                  .id,
+                                              data.likes)
+                                          ? 'Đã thích'
+                                          : 'Thích',
+                                      style: TextStyle(
+                                          color: hasLikeComment(
+                                                  Provider.of<UserProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .user
+                                                      .id,
+                                                  data.likes)
+                                              ? Utils.primaryColor
+                                              : Colors.white),
+                                    ),
+                                    onTap: () async {
+                                      if (Provider.of<UserProvider>(context,
+                                                  listen: false)
+                                              .user
+                                              .authentication['sessionToken'] ==
+                                          "") {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const Login()));
+                                        return;
+                                      } else {
+                                        var userId = Provider.of<UserProvider>(
+                                                context,
+                                                listen: false)
+                                            .user
+                                            .id;
+
+                                        if (widget.type == "chapter") {
+                                          await ComicsApi
+                                              .updateUserLikeChildComment(
+                                                  context,
+                                                  widget.sourceId,
+                                                  userId,
+                                                  comment.id,
+                                                  data.id);
+                                        } else {
+                                          await AnimesApi
+                                              .updateUserLikeChildComment(
+                                                  context,
+                                                  widget.sourceId,
+                                                  userId,
+                                                  comment.id,
+                                                  data.id);
+                                        }
+
+                                        await getComicComments()
+                                            .then((value) => setState(() {
+                                                  comments.clear();
+                                                  comments = value;
+                                                  loadComments();
+                                                }));
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 24,
+                                  ),
+                                  GestureDetector(
+                                    child: Text('Báo cáo'),
+                                    onTap: () {
+                                      if (Provider.of<UserProvider>(context,
+                                                  listen: false)
+                                              .user
+                                              .authentication['sessionToken'] ==
+                                          "") {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const Login()));
+                                        return;
+                                      } else {
+                                        setState(() {
+                                          commentReportId = data.id;
+                                          reportedPersonId = data.userId;
+                                        });
+                                        showModalBottomSheet<void>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Container(
+                                              height: 150,
+                                              color: Color(0xFF2A2A2A),
+                                              child: Center(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: List.generate(
+                                                      dropList.length,
+                                                      (index) => Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap:
+                                                                    () async {
+                                                                  await ReportsApi.sendUserReport(
+                                                                      context,
+                                                                      dropList[
+                                                                          index],
+                                                                      reportedPersonId,
+                                                                      Provider.of<UserProvider>(
+                                                                              context,
+                                                                              listen:
+                                                                                  false)
+                                                                          .user
+                                                                          .id,
+                                                                      widget.type ==
+                                                                              "chapter"
+                                                                          ? "comic"
+                                                                          : "anime",
+                                                                      widget
+                                                                          .sourceId,
+                                                                      commentReportId);
+                                                                  GFToast.showToast(
+                                                                      'Đã gửi báo cáo cho quản trị viên.',
+                                                                      context,
+                                                                      toastPosition:
+                                                                          GFToastPosition
+                                                                              .BOTTOM,
+                                                                      textStyle:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            14,
+                                                                        color: GFColors
+                                                                            .LIGHT,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                      ),
+                                                                      backgroundColor:
+                                                                          GFColors
+                                                                              .DARK,
+                                                                      trailing:
+                                                                          Icon(
+                                                                        Icons
+                                                                            .notifications,
+                                                                        color: GFColors
+                                                                            .SUCCESS,
+                                                                        size:
+                                                                            16,
+                                                                      ));
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child:
+                                                                    Container(
+                                                                  padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          4.0,
+                                                                      horizontal:
+                                                                          20.0),
+                                                                  width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                                  child: Text(
+                                                                    dropList[
+                                                                        index],
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              Divider(
+                                                                thickness: .5,
+                                                              )
+                                                            ],
+                                                          )),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                              data.likes.length > 0
+                                  ? Row(
+                                      children: [
+                                        Text(
+                                          '${data.likes.length}',
+                                          style: TextStyle(
+                                              color: Utils.primaryColor),
+                                        ),
+                                        const SizedBox(
+                                          width: 3,
+                                        ),
+                                        FaIcon(
+                                          FontAwesomeIcons.solidThumbsUp,
+                                          color: Utils.primaryColor,
+                                          size: 10,
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox.shrink()
+                            ],
+                          )),
+                    ),
+                  ),
+                ],
+              );
+            },
+            contentRoot: (context, data) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    width: 400,
+                    decoration: BoxDecoration(
+                        color: const Color(0xFF2A2A2A),
+                        borderRadius: BorderRadius.circular(6)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${data.userName}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          '${data.content}',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
+                    child: DefaultTextStyle(
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 11),
+                      child: Padding(
                         padding: EdgeInsets.only(top: 4),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -200,30 +485,53 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                               listen: false)
                                           .user
                                           .id;
-
                                       if (widget.type == "chapter") {
                                         await ComicsApi
-                                            .updateUserLikeChildComment(
+                                            .updateUserLikeParentComment(
                                                 context,
                                                 widget.sourceId,
                                                 userId,
-                                                comment.id,
                                                 data.id);
                                       } else {
                                         await AnimesApi
-                                            .updateUserLikeChildComment(
+                                            .updateUserLikeParentComment(
                                                 context,
                                                 widget.sourceId,
                                                 userId,
-                                                comment.id,
                                                 data.id);
                                       }
-
                                       await getComicComments()
                                           .then((value) => setState(() {
+                                                comments.clear();
                                                 comments = value;
                                                 loadComments();
                                               }));
+                                    }
+                                  },
+                                ),
+                                SizedBox(
+                                  width: 24,
+                                ),
+                                GestureDetector(
+                                  child: Text('Trả lời'),
+                                  onTap: () {
+                                    if (Provider.of<UserProvider>(context,
+                                                listen: false)
+                                            .user
+                                            .authentication['sessionToken'] ==
+                                        "") {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const Login()));
+                                      return;
+                                    } else {
+                                      setState(() {
+                                        commentIdReplied = data.id;
+                                        userIdIsReplied = data.userId;
+                                        commentReplied = ' ${data.userName}';
+                                      });
                                     }
                                   },
                                 ),
@@ -372,298 +680,21 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                                   )
                                 : SizedBox.shrink()
                           ],
-                        )),
-                  ),
-                ),
-              ],
-            );
-          },
-          contentRoot: (context, data) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  width: 400,
-                  decoration: BoxDecoration(
-                      color: const Color(0xFF2A2A2A),
-                      borderRadius: BorderRadius.circular(6)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${data.userName}',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w600, color: Colors.white),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        '${data.content}',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w400, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 4, 0, 6),
-                  child: DefaultTextStyle(
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 11),
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 4),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 8,
-                              ),
-                              GestureDetector(
-                                child: Text(
-                                  hasLikeComment(
-                                          Provider.of<UserProvider>(context,
-                                                  listen: false)
-                                              .user
-                                              .id,
-                                          data.likes)
-                                      ? 'Đã thích'
-                                      : 'Thích',
-                                  style: TextStyle(
-                                      color: hasLikeComment(
-                                              Provider.of<UserProvider>(context,
-                                                      listen: false)
-                                                  .user
-                                                  .id,
-                                              data.likes)
-                                          ? Utils.primaryColor
-                                          : Colors.white),
-                                ),
-                                onTap: () async {
-                                  if (Provider.of<UserProvider>(context,
-                                              listen: false)
-                                          .user
-                                          .authentication['sessionToken'] ==
-                                      "") {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Login()));
-                                    return;
-                                  } else {
-                                    var userId = Provider.of<UserProvider>(
-                                            context,
-                                            listen: false)
-                                        .user
-                                        .id;
-                                    if (widget.type == "chapter") {
-                                      await ComicsApi
-                                          .updateUserLikeParentComment(context,
-                                              widget.sourceId, userId, data.id);
-                                    } else {
-                                      await AnimesApi
-                                          .updateUserLikeParentComment(context,
-                                              widget.sourceId, userId, data.id);
-                                    }
-                                    await getComicComments()
-                                        .then((value) => setState(() {
-                                              comments = value;
-                                              loadComments();
-                                            }));
-                                  }
-                                },
-                              ),
-                              SizedBox(
-                                width: 24,
-                              ),
-                              GestureDetector(
-                                child: Text('Trả lời'),
-                                onTap: () {
-                                  if (Provider.of<UserProvider>(context,
-                                              listen: false)
-                                          .user
-                                          .authentication['sessionToken'] ==
-                                      "") {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Login()));
-                                    return;
-                                  } else {
-                                    setState(() {
-                                      commentIdReplied = data.id;
-                                      userIdIsReplied = data.userId;
-                                      commentReplied = ' ${data.userName}';
-                                    });
-                                  }
-                                },
-                              ),
-                              SizedBox(
-                                width: 24,
-                              ),
-                              GestureDetector(
-                                child: Text('Báo cáo'),
-                                onTap: () {
-                                  if (Provider.of<UserProvider>(context,
-                                              listen: false)
-                                          .user
-                                          .authentication['sessionToken'] ==
-                                      "") {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Login()));
-                                    return;
-                                  } else {
-                                    setState(() {
-                                      commentReportId = data.id;
-                                      reportedPersonId = data.userId;
-                                    });
-                                    showModalBottomSheet<void>(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Container(
-                                          height: 150,
-                                          color: Color(0xFF2A2A2A),
-                                          child: Center(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: List.generate(
-                                                  dropList.length,
-                                                  (index) => Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          GestureDetector(
-                                                            onTap: () async {
-                                                              await ReportsApi.sendUserReport(
-                                                                  context,
-                                                                  dropList[
-                                                                      index],
-                                                                  reportedPersonId,
-                                                                  Provider.of<UserProvider>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .user
-                                                                      .id,
-                                                                  widget.type ==
-                                                                          "chapter"
-                                                                      ? "comic"
-                                                                      : "anime",
-                                                                  widget
-                                                                      .sourceId,
-                                                                  commentReportId);
-                                                              GFToast.showToast(
-                                                                  'Đã gửi báo cáo cho quản trị viên.',
-                                                                  context,
-                                                                  toastPosition:
-                                                                      GFToastPosition
-                                                                          .BOTTOM,
-                                                                  textStyle:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: GFColors
-                                                                        .LIGHT,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                  ),
-                                                                  backgroundColor:
-                                                                      GFColors
-                                                                          .DARK,
-                                                                  trailing:
-                                                                      Icon(
-                                                                    Icons
-                                                                        .notifications,
-                                                                    color: GFColors
-                                                                        .SUCCESS,
-                                                                    size: 16,
-                                                                  ));
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      vertical:
-                                                                          4.0,
-                                                                      horizontal:
-                                                                          20.0),
-                                                              width:
-                                                                  MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width,
-                                                              child: Text(
-                                                                dropList[index],
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          Divider(
-                                                            thickness: .5,
-                                                          )
-                                                        ],
-                                                      )),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          data.likes.length > 0
-                              ? Row(
-                                  children: [
-                                    Text(
-                                      '${data.likes.length}',
-                                      style:
-                                          TextStyle(color: Utils.primaryColor),
-                                    ),
-                                    const SizedBox(
-                                      width: 3,
-                                    ),
-                                    FaIcon(
-                                      FontAwesomeIcons.solidThumbsUp,
-                                      color: Utils.primaryColor,
-                                      size: 10,
-                                    ),
-                                  ],
-                                )
-                              : SizedBox.shrink()
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
-          },
-        ));
+                ],
+              );
+            },
+          ));
+        });
         if (a == comments.length) {
-          Future.delayed(const Duration(microseconds: 500), () {
+          Future.delayed(const Duration(milliseconds: 500), () {
             setState(() {
               isLoading = false;
             });
+            print(isLoading);
           });
         }
       }
@@ -715,34 +746,36 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
                       child: const Center(
                         child: GFLoader(type: GFLoaderType.circle),
                       ))
-                  : comments.isEmpty
-                      ? Center(
-                          child: Column(
-                          children: [
-                            Image.asset(
-                              "assets/images/commentempty.png",
-                              fit: BoxFit.cover,
-                              width: 200,
-                              height: 200,
-                            ),
-                            Text(
-                              'Chưa có bình luận nào',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              'Hãy là người đầu tiên bình luận nào',
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 13),
-                            )
-                          ],
-                        ))
-                      : SizedBox(
+                  : comments.isNotEmpty && !isLoading
+                      ? SizedBox(
                           height: MediaQuery.of(context).size.height - 100,
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 100),
                             child: ListView(children: cmtTreeWidge),
-                          )),
+                          ),
+                        )
+                      : Center(
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                "assets/images/commentempty.png",
+                                fit: BoxFit.cover,
+                                width: 200,
+                                height: 200,
+                              ),
+                              Text(
+                                'Chưa có bình luận nào',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                'Hãy là người đầu tiên bình luận nào',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 13),
+                              )
+                            ],
+                          ),
+                        ),
               Positioned(
                   left: 0,
                   bottom: 0,
@@ -885,6 +918,7 @@ class _ComicChapterCommentState extends State<ComicChapterComment> {
 
                                     await getComicComments()
                                         .then((value) => setState(() {
+                                              comments.clear();
                                               comments = value;
                                               loadComments();
                                             }));

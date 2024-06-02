@@ -1,3 +1,4 @@
+import 'package:anime_and_comic_entertainment/components/ui/AlertChoiceDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/model/comics.dart';
@@ -34,6 +35,7 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
 
   String text = "";
   bool isLoading = false;
+  bool isLogin = false;
   @override
   void initState() {
     super.initState();
@@ -43,7 +45,9 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
         "") {
       isLoading = true;
       text = "Đăng nhập để mua chương";
+      isLogin = false;
     } else {
+      isLogin = true;
       getPayHis().then((value) => setState(() {
             isLoading = true;
             if (value
@@ -86,8 +90,12 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                       top:
                           Provider.of<NavigatorProvider>(context, listen: false)
                                   .isShowNavigator
-                              ? MediaQuery.of(context).size.height - 400
-                              : MediaQuery.of(context).size.height - 355,
+                              ? MediaQuery.of(context).size.height -
+                                  400 -
+                                  (!isLogin ? -50 : 0)
+                              : MediaQuery.of(context).size.height -
+                                  355 -
+                                  (!isLogin ? -50 : 0),
                       left: 0,
                       right: 0,
                       bottom: 0,
@@ -97,8 +105,8 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                         height: Provider.of<NavigatorProvider>(context,
                                     listen: false)
                                 .isShowNavigator
-                            ? 400
-                            : 355,
+                            ? 400 - (!isLogin ? -50 : 0)
+                            : 355 - (!isLogin ? -50 : 0),
                         child: Column(
                           children: [
                             Row(
@@ -315,12 +323,49 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                                     .coinPoint >=
                                                 widget.comic.chapterList![widget
                                                     .index]['unlockPrice']) {
-                                              await UsersApi.paySkycoin(
-                                                context,
-                                                widget.comic.chapterList![widget
-                                                    .index]['unlockPrice'],
-                                                widget.comic.chapterList![
-                                                    widget.index]['_id'],
+                                              showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    CustomAlertChoiceDialog(
+                                                  yesContent: "Đồng ý",
+                                                  noContent: "Hủy",
+                                                  content:
+                                                      "Bạn có chắc chắn muốn mua chương truyện này?!",
+                                                  title: "Thông báo",
+                                                  action: () async {
+                                                    await UsersApi.paySkycoin(
+                                                      context,
+                                                      widget.comic.chapterList![
+                                                              widget.index]
+                                                          ['unlockPrice'],
+                                                      widget.comic.chapterList![
+                                                          widget.index]['_id'],
+                                                    );
+                                                    Provider.of<UserProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .minusCoinPoint(widget
+                                                                    .comic
+                                                                    .chapterList![
+                                                                widget.index]
+                                                            ['unlockPrice']);
+                                                    Provider.of<NavigatorProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .setShow(false);
+                                                    Navigator.of(context).pop();
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ComicChapterDetail(
+                                                          comic: widget.comic,
+                                                          index: widget.index,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
                                               );
                                             } else {
                                               showDialog(
@@ -348,7 +393,8 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                   )
                                 : Center(
                                     child: GradientSquareButton(
-                                      width: 230,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
                                       height: 45,
                                       action: () async {
                                         Navigator.push(

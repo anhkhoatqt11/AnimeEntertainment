@@ -14,6 +14,7 @@ import 'package:anime_and_comic_entertainment/pages/profile/edit_profile_page.da
 import 'package:anime_and_comic_entertainment/pages/profile/payment_history_page.dart';
 import 'package:anime_and_comic_entertainment/pages/profile/profile_page.dart';
 import 'package:anime_and_comic_entertainment/pages/test.dart';
+import 'package:anime_and_comic_entertainment/providers/comic_comment_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/mini_player_controller_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
 import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
@@ -50,6 +51,7 @@ void main() async {
     ChangeNotifierProvider(create: (context) => MiniPlayerControllerProvider()),
     ChangeNotifierProvider(create: (context) => NavigatorProvider()),
     ChangeNotifierProvider(create: (context) => ComicChapterProvider()),
+    ChangeNotifierProvider(create: (context) => ComicCommentProvider()),
   ], child: const MyApp()));
 }
 

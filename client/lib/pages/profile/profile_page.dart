@@ -516,6 +516,10 @@ class ProfilePage extends StatelessWidget {
                                                           context: context,
                                                           builder: (_) =>
                                                               CustomAlertChoiceDialog(
+                                                                yesContent:
+                                                                    "Đăng xuất",
+                                                                noContent:
+                                                                    "Bỏ qua",
                                                                 content:
                                                                     "Việc đăng xuất sẽ hạn chế một số tính năng của ứng dụng",
                                                                 title:

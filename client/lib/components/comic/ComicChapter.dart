@@ -36,9 +36,15 @@ class _ComicChapterComponentState extends State<ComicChapterComponent> {
     return result;
   }
 
+  bool bought = false;
+
   @override
   initState() {
     super.initState();
+    getPayHis().then((value) => setState(() {
+          bought =
+              value.contains(widget.comic.chapterList![widget.index]['_id']);
+        }));
   }
 
   @override
@@ -139,7 +145,7 @@ class _ComicChapterComponentState extends State<ComicChapterComponent> {
                     ],
                   ),
                 ),
-                comic.chapterList![widget.index]['unlockPrice'] > 0
+                comic.chapterList![widget.index]['unlockPrice'] > 0 && !bought
                     ? Container(
                         height: 40,
                         width: 100,
@@ -168,21 +174,37 @@ class _ComicChapterComponentState extends State<ComicChapterComponent> {
                             ),
                           ],
                         ))
-                    : Container(
-                        height: 40,
-                        width: 100,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: Colors.transparent),
-                        child: Text(
-                          "Miễn phí",
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Utils.primaryColor,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
+                    : comic.chapterList![widget.index]['unlockPrice'] == 0
+                        ? Container(
+                            height: 40,
+                            width: 100,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                                color: Colors.transparent),
+                            child: Text(
+                              "Miễn phí",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Utils.primaryColor,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          )
+                        : Container(
+                            height: 40,
+                            width: 100,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                                color: Colors.transparent),
+                            child: const Text(
+                              "Đã mua",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
               ],
             ),
             const SizedBox(

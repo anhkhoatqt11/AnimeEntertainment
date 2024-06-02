@@ -47,6 +47,11 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void minusCoinPoint(int coinPoint) {
+    _user.coinPoint -= coinPoint;
+    notifyListeners();
+  }
+
   void setNotificationSentCount(int count) {
     _user.notificationSentCount += count;
     notifyListeners();

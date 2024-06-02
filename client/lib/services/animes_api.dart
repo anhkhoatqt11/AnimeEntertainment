@@ -757,7 +757,7 @@ class AnimesApi {
         "userId": userId,
         "content": content
       };
-      await http.post(url, body: body);
+      await http.put(url, body: body);
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)
           .isShowNetworkError);
@@ -783,7 +783,7 @@ class AnimesApi {
         "commentId": commentId,
         "userId": userId
       };
-      await http.post(url, body: body);
+      await http.put(url, body: body);
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)
           .isShowNetworkError);
@@ -808,7 +808,7 @@ class AnimesApi {
         "userId": userId,
         "commentChildId": commentChildId
       };
-      await http.post(url, body: body);
+      await http.put(url, body: body);
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)
           .isShowNetworkError);

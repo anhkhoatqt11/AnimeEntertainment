@@ -37,10 +37,14 @@ class HomePage extends StatelessWidget {
                         .authentication['sessionToken'] !=
                     ""
                 ? Stack(
+                    alignment: AlignmentDirectional.center,
                     children: [
                       GFIconButton(
-                        icon: const Icon(Icons.notifications,
-                            color: Colors.white),
+                        icon: const Icon(
+                          Icons.notifications,
+                          color: Colors.white,
+                          size: 24,
+                        ),
                         onPressed: () {
                           Provider.of<NavigatorProvider>(context, listen: false)
                               .setShow(false);
@@ -52,8 +56,8 @@ class HomePage extends StatelessWidget {
                         type: GFButtonType.transparent,
                       ),
                       Positioned(
-                        right: 0,
-                        top: 0,
+                        right: 4,
+                        top: 4,
                         child: Consumer(builder: (context, watch, _) {
                           final user = Provider.of<UserProvider>(context).user;
                           return user.authentication['sessionToken'] != ""

@@ -898,13 +898,13 @@ export const updateUserLikeChildComment: RequestHandler = async (
   next
 ) => {
   try {
-    const { episodeIdId, userId, commentId, commentChildId } = req.body;
-    var episodeId = await AnimeEpisodeModel.findById(episodeIdId);
-    if (!episodeId) {
+    const { episodeId, userId, commentId, commentChildId } = req.body;
+    var episode = await AnimeEpisodeModel.findById(episodeId);
+    if (!episode) {
       return res.sendStatus(400);
     }
     console.log(commentId, commentChildId, userId);
-    episodeId.comments.forEach((item) => {
+    episode.comments.forEach((item) => {
       if (item._id.toString() === commentId) {
         item.replies.forEach(async (item: any) => {
           if (item._id.toString() === commentChildId) {
@@ -914,15 +914,15 @@ export const updateUserLikeChildComment: RequestHandler = async (
             if (copyList.length === item.likes.length) {
               item.likes.push(new mongoose.Types.ObjectId(userId));
               const changed = await AnimeEpisodeModel.findByIdAndUpdate(
-                episodeIdId,
-                episodeId!
+                episodeId,
+                episode!
               );
               return res.status(200).json(changed).end();
             } else {
               item.likes = copyList;
               const changed = await AnimeEpisodeModel.findByIdAndUpdate(
-                episodeIdId,
-                episodeId!
+                episodeId,
+                episode!
               );
               return res.status(200).json(changed).end();
             }
