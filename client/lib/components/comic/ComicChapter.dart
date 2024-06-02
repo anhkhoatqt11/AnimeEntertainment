@@ -19,17 +19,18 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ComicChapterPage extends StatefulWidget {
+class ComicChapterComponent extends StatefulWidget {
   final int index;
   final Comics comic;
 
-  const ComicChapterPage({super.key, required this.index, required this.comic});
+  const ComicChapterComponent(
+      {super.key, required this.index, required this.comic});
 
   @override
-  State<ComicChapterPage> createState() => _ComicChapterPageState();
+  State<ComicChapterComponent> createState() => _ComicChapterComponentState();
 }
 
-class _ComicChapterPageState extends State<ComicChapterPage> {
+class _ComicChapterComponentState extends State<ComicChapterComponent> {
   Future<List<dynamic>> getPayHis() async {
     var result = await UsersApi.getPaymentHistories(context);
     return result;

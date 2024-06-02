@@ -7,18 +7,22 @@ import 'package:anime_and_comic_entertainment/pages/anime/detail_anime_page.dart
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_comment.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_chapter_detail.dart';
 import 'package:anime_and_comic_entertainment/pages/comic/comic_detail.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/services/animes_api.dart';
 import 'package:anime_and_comic_entertainment/services/comics_api.dart';
+import 'package:anime_and_comic_entertainment/services/user_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class NotiComponent extends StatefulWidget {
   final Notifications noti;
+  final int index;
 
-  const NotiComponent({super.key, required this.noti});
+  const NotiComponent({super.key, required this.noti, required this.index});
 
   @override
   State<NotiComponent> createState() => _ComicChapterState();
@@ -88,12 +92,13 @@ class _ComicChapterState extends State<NotiComponent> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: CachedNetworkImage(
-                      imageUrl: comic.landspaceImage != null ||
-                              anime.landspaceImage != null
-                          ? (noti.type == "chapter"
-                              ? comic.landspaceImage!
-                              : anime.landspaceImage!)
-                          : 'https://cdn-icons-png.flaticon.com/512/4387/4387152.png',
+                      imageUrl: noti.type == "chapter" &&
+                              comic.landspaceImage != null
+                          ? comic.landspaceImage!
+                          : noti.type == "episode" &&
+                                  anime.landspaceImage != null
+                              ? anime.landspaceImage!
+                              : 'https://cdn-icons-png.flaticon.com/512/4387/4387152.png',
                       height: 60,
                       width: 60,
                       fit: BoxFit.cover,
@@ -152,6 +157,12 @@ class _ComicChapterState extends State<NotiComponent> {
         ),
       ),
       onTap: () {
+        if (noti.status == "sent") {
+          UsersApi.readNotication(context, widget.index);
+          Provider.of<UserProvider>(context, listen: false)
+              .setNotificationSentCount(-1);
+        }
+
         if (noti.type == "chapter") {
           Navigator.push(
               context,

@@ -214,52 +214,54 @@ class _TestPageState extends State<TestPage> {
                                   width: 10,
                                 ),
                                 Expanded(
-                                    child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Konosuba",
-                                          style: TextStyle(
-                                              color: Utils.primaryColor,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 18),
-                                        ),
-                                        const Text(
-                                          "Chương 24",
-                                          style: TextStyle(
-                                              color: Color(0xFFE9E9E9),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Text(
-                                          "30",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Image.asset(
-                                          "assets/images/skycoin.png",
-                                          width: 16,
-                                          height: 16,
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ))
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Konosuba",
+                                            style: TextStyle(
+                                                color: Utils.primaryColor,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18),
+                                          ),
+                                          const Text(
+                                            "Chương 24",
+                                            style: TextStyle(
+                                                color: Color(0xFFE9E9E9),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            "30",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Image.asset(
+                                            "assets/images/skycoin.png",
+                                            width: 16,
+                                            height: 16,
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),

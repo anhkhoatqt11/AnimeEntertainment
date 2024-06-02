@@ -10,7 +10,11 @@ import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:getwidget/components/button/gf_button.dart';
+import 'package:getwidget/size/gf_size.dart';
+import 'package:getwidget/types/gf_button_type.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ComicBuyChapter extends StatefulWidget {
   final Comics comic;
@@ -82,8 +86,8 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                       top:
                           Provider.of<NavigatorProvider>(context, listen: false)
                                   .isShowNavigator
-                              ? MediaQuery.of(context).size.height - 375
-                              : MediaQuery.of(context).size.height - 330,
+                              ? MediaQuery.of(context).size.height - 400
+                              : MediaQuery.of(context).size.height - 355,
                       left: 0,
                       right: 0,
                       bottom: 0,
@@ -93,8 +97,8 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                         height: Provider.of<NavigatorProvider>(context,
                                     listen: false)
                                 .isShowNavigator
-                            ? 375
-                            : 330,
+                            ? 400
+                            : 355,
                         child: Column(
                           children: [
                             Row(
@@ -123,68 +127,91 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                     ))
                               ],
                             ),
-                            Row(
-                              children: [
-                                const SizedBox(width: 10),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        widget.comic.chapterList![widget.index]
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(16.0, 8, 16, 8),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: FadeInImage.assetNetwork(
+                                        placeholder:
+                                            'assets/images/loadingcomicimage.png',
+                                        image: widget.comic
+                                                .chapterList![widget.index]
                                             ['coverImage'],
-                                    width: 75,
-                                    height: 75,
-                                    fit: BoxFit.cover,
+                                        width: 80,
+                                        height: 80,
+                                        fit: BoxFit.cover),
                                   ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      widget.comic.comicName!,
-                                      style: TextStyle(
-                                          color: Utils.primaryColor,
-                                          fontSize: 16),
-                                    ),
-                                    Text(
-                                      widget.comic.chapterList![widget.index]
-                                          ['chapterName'],
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 14),
-                                    )
-                                  ],
-                                )
-                              ],
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                170,
+                                            child: Text(
+                                              widget.comic.comicName!,
+                                              style: TextStyle(
+                                                  color: Utils.primaryColor,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18),
+                                            ),
+                                          ),
+                                          Text(
+                                            widget.comic
+                                                    .chapterList![widget.index]
+                                                ['chapterName'],
+                                            style: const TextStyle(
+                                                color: Color(0xFFE9E9E9),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            widget
+                                                .comic
+                                                .chapterList![widget.index]
+                                                    ['unlockPrice']
+                                                .toString(),
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Image.asset(
+                                            "assets/images/skycoin.png",
+                                            width: 16,
+                                            height: 16,
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const SizedBox(
-                                  height: 20,
-                                  width: 15,
-                                ),
-                                const Text(
-                                  'Giá: ',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 18),
-                                ),
-                                Text(
-                                  widget.comic
-                                      .chapterList![widget.index]['unlockPrice']
-                                      .toString(),
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 18),
-                                ),
-                                const SizedBox(width: 5),
-                                Image.asset(
-                                  "assets/images/skycoin.png",
-                                  width: 16,
-                                  height: 16,
-                                ),
-                              ],
+                            const Divider(
+                              color: Color(0xFF686868),
+                              thickness: .5,
                             ),
                             const SizedBox(
                               height: 10,
@@ -193,27 +220,58 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                         .user
                                         .authentication['sessionToken'] !=
                                     ""
-                                ? Row(
-                                    children: [
-                                      const SizedBox(width: 10),
-                                      FaIcon(
-                                        FontAwesomeIcons.wallet,
-                                        color: Utils.primaryColor,
-                                        size: 16,
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        'Bạn hiện đang có:   ${Provider.of<UserProvider>(context, listen: false).user.coinPoint}',
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 16),
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Image.asset(
-                                        "assets/images/skycoin.png",
-                                        width: 16,
-                                        height: 16,
-                                      ),
-                                    ],
+                                ? Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        16, 8.0, 16, 8),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons
+                                                  .account_balance_wallet_outlined,
+                                              color: Utils.primaryColor,
+                                              size: 18,
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            const Text(
+                                              "Bạn hiện đang có:",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 14),
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              Utils.formatNumberWithDots(
+                                                  Provider.of<UserProvider>(
+                                                          context)
+                                                      .user
+                                                      .coinPoint),
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Image.asset(
+                                              "assets/images/skycoin.png",
+                                              width: 16,
+                                              height: 16,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   )
                                 : const SizedBox.shrink(),
                             const SizedBox(
@@ -227,22 +285,29 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Center(
-                                        child: GradientSquareButton(
-                                          width: 130,
-                                          height: 45,
-                                          action: () async {
-                                            //forward to payment link
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      Expanded(
+                                        child: GFButton(
+                                          onPressed: () {
+                                            _launchUrl();
                                           },
-                                          content: 'Nạp thêm',
-                                          cornerRadius: 16,
+                                          color: Utils.primaryColor,
+                                          text: "Nạp thêm",
+                                          size: GFSize.LARGE,
+                                          textStyle: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: Utils.primaryColor),
+                                          type: GFButtonType.outline2x,
                                         ),
                                       ),
-                                      Center(
-                                        child: GradientSquareButton(
-                                          width: 130,
-                                          height: 45,
-                                          action: () async {
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      Expanded(
+                                        child: GFButton(
+                                          onPressed: () async {
                                             if (Provider.of<UserProvider>(
                                                         context,
                                                         listen: false)
@@ -270,9 +335,14 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                               );
                                             }
                                           },
-                                          content: 'Mua ngay',
-                                          cornerRadius: 16,
+                                          color: Utils.primaryColor,
+                                          text: "Mua ngay",
+                                          size: GFSize.LARGE,
+                                          type: GFButtonType.solid,
                                         ),
+                                      ),
+                                      const SizedBox(
+                                        width: 20,
                                       ),
                                     ],
                                   )
@@ -300,5 +370,13 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
           )
         : SafeArea(
             child: Material(color: Colors.black.withOpacity(0), child: null));
+  }
+
+  Future<void> _launchUrl() async {
+    final Uri _url =
+        Uri.parse('https://anime-entertainment-payment.vercel.app/');
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
   }
 }

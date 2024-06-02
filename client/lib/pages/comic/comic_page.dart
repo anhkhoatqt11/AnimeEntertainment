@@ -43,19 +43,50 @@ class _ComicPageState extends State<ComicPage> {
                 color: Colors.white, fontSize: 28, fontWeight: FontWeight.w600),
           ),
           actions: <Widget>[
-            GFIconButton(
-              icon: const Icon(Icons.notifications_none_outlined,
-                  color: Colors.white, size: 24),
-              onPressed: () {
-                Provider.of<NavigatorProvider>(context, listen: false)
-                    .setShow(false);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NotificationPage()));
-              },
-              type: GFButtonType.transparent,
-            ),
+            Provider.of<UserProvider>(context, listen: false)
+                        .user
+                        .authentication['sessionToken'] !=
+                    ""
+                ? Stack(
+                    children: [
+                      GFIconButton(
+                        icon: const Icon(Icons.notifications,
+                            color: Colors.white),
+                        onPressed: () {
+                          Provider.of<NavigatorProvider>(context, listen: false)
+                              .setShow(false);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NotificationPage()));
+                        },
+                        type: GFButtonType.transparent,
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Consumer(builder: (context, watch, _) {
+                          final user = Provider.of<UserProvider>(context).user;
+                          return user.authentication['sessionToken'] != ""
+                              ? user.notificationSentCount != 0
+                                  ? Container(
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: const BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle),
+                                      child: Text(
+                                        user.notificationSentCount.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 12),
+                                      ),
+                                    )
+                                  : const SizedBox.shrink()
+                              : const SizedBox.shrink();
+                        }),
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
             GFIconButton(
               icon: const Icon(Icons.search, color: Colors.white, size: 24),
               onPressed: () {
