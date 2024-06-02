@@ -5,6 +5,7 @@ import * as admin from "firebase-admin";
 import AvatarModel from "../models/avatars";
 import UserModel from "../models/user";
 import qs from "qs";
+import PaymentHistoryModel from "../models/paymentHistories";
 import ComicsModel from "../models/comics";
 import AnimeModel from "../models/anime";
 
@@ -100,7 +101,7 @@ export const sendPushNoti: RequestHandler = async (req, res, next) => {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
       });
-    } catch {}
+    } catch { }
 
     //const token = "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";
 
@@ -132,6 +133,24 @@ export const sendPushNoti: RequestHandler = async (req, res, next) => {
         console.log("Error sending message:", error);
         res.send("Error sending message: " + error);
       });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const readNotification: RequestHandler = async (req, res, next) => {
+  try {
+    const { userId, index } = req.body;
+    var user = await UserModel.findById(userId);
+    console.log(user);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+
+    user.notifications[index].status = "seen";
+    const changed = await UserModel.findByIdAndUpdate(userId, user);
+    console.log(user.notifications);
+    return res.status(200).json(changed).end();
   } catch (error) {
     next(error);
   }
@@ -171,6 +190,16 @@ export const paySkycoin: RequestHandler = async (req, res, next) => {
     console.log(user.paymentHistories);
     user.paymentHistories.push(new mongoose.Types.ObjectId(chapterId));
     await user?.save();
+
+    const newPaymentHistory = await PaymentHistoryModel.create({
+      userId: userId,
+      orderDate: new Date(),
+      paymentMethod: "BuyComicChapter",
+      status: "completed",
+      price: coin,
+      packageId: chapterId,
+    });
+    console.log(newPaymentHistory);
     return res.status(200).json(user.coinPoint).end();
   } catch (error) {
     next(error);
