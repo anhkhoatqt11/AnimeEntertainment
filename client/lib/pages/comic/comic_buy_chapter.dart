@@ -91,7 +91,7 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                           Provider.of<NavigatorProvider>(context, listen: false)
                                   .isShowNavigator
                               ? MediaQuery.of(context).size.height -
-                                  400 -
+                                  360 -
                                   (!isLogin ? -50 : 0)
                               : MediaQuery.of(context).size.height -
                                   355 -
@@ -105,7 +105,7 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                         height: Provider.of<NavigatorProvider>(context,
                                     listen: false)
                                 .isShowNavigator
-                            ? 400 - (!isLogin ? -50 : 0)
+                            ? 360 - (!isLogin ? -50 : 0)
                             : 355 - (!isLogin ? -50 : 0),
                         child: Column(
                           children: [
@@ -118,10 +118,12 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                 const Text(
                                   'Mở khóa truyện để tiếp tục đọc nhé!',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 const SizedBox(
-                                  height: 30,
+                                  height: 10,
                                   width: 60,
                                 ),
                                 IconButton(
@@ -137,7 +139,7 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                             ),
                             Padding(
                               padding:
-                                  const EdgeInsets.fromLTRB(16.0, 8, 16, 8),
+                                  const EdgeInsets.fromLTRB(16.0, 0, 16, 8),
                               child: Row(
                                 children: [
                                   ClipRRect(
@@ -175,7 +177,7 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                               style: TextStyle(
                                                   color: Utils.primaryColor,
                                                   fontWeight: FontWeight.w500,
-                                                  fontSize: 18),
+                                                  fontSize: 16),
                                             ),
                                           ),
                                           Text(
@@ -222,15 +224,15 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                               thickness: .5,
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 5,
                             ),
                             Provider.of<UserProvider>(context, listen: false)
                                         .user
                                         .authentication['sessionToken'] !=
                                     ""
                                 ? Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        16, 8.0, 16, 8),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(16, 4, 16, 4),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -283,7 +285,7 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                   )
                                 : const SizedBox.shrink(),
                             const SizedBox(
-                              height: 10,
+                              height: 5,
                             ),
                             Provider.of<UserProvider>(context, listen: false)
                                         .user

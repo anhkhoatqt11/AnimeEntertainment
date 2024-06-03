@@ -1,3 +1,4 @@
+import 'package:anime_and_comic_entertainment/components/ui/AlertChoiceDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/AlertDialog.dart';
 import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/pages/auth/login.dart';
@@ -278,44 +279,62 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
                                                             ));
                                                     return;
                                                   }
-                                                  try {
-                                                    await DonatePackagesApi
-                                                        .uploadDonateRecord(
-                                                            context,
-                                                            donatePackage.id ??
-                                                                '',
-                                                            user.id // Replace with the actual user ID from UserProvider
-                                                            );
-                                                    await DonatePackagesApi
-                                                        .processDonationPayment(
-                                                            context,
-                                                            donatePackage.coin,
-                                                            user.id // Replace with the actual user ID from UserProvider
-                                                            );
-                                                    Navigator.pop(context);
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (_) =>
-                                                            CustomAlertDialog(
-                                                              content:
-                                                                  "Giao dịch thành công. Cảm ơn bạn đã ủng hộ Skylark.",
-                                                              title:
-                                                                  "Thông báo",
-                                                              action: () {},
-                                                            ));
-                                                    // Close the modal bottom sheet
-                                                  } catch (e) {
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (_) =>
-                                                            CustomAlertDialog(
-                                                              content:
-                                                                  "Giao dịch thất bại. Vui lòng thử lại sau.",
-                                                              title:
-                                                                  "Thông báo",
-                                                              action: () {},
-                                                            ));
-                                                  }
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (_) =>
+                                                        CustomAlertChoiceDialog(
+                                                      yesContent: "Đồng ý",
+                                                      noContent: "Hủy",
+                                                      content:
+                                                          'Bạn có chắc chắn muốn donate cho Skylark ${donatePackage.coin.toString()} skycoins!',
+                                                      title: "Thông báo",
+                                                      action: () async {
+                                                        try {
+                                                          await DonatePackagesApi
+                                                              .uploadDonateRecord(
+                                                                  context,
+                                                                  donatePackage
+                                                                          .id ??
+                                                                      '',
+                                                                  user.id // Replace with the actual user ID from UserProvider
+                                                                  );
+                                                          await DonatePackagesApi
+                                                              .processDonationPayment(
+                                                                  context,
+                                                                  donatePackage
+                                                                      .coin,
+                                                                  user.id // Replace with the actual user ID from UserProvider
+                                                                  );
+                                                          Navigator.pop(
+                                                              context);
+                                                          showDialog(
+                                                              context: context,
+                                                              builder: (_) =>
+                                                                  CustomAlertDialog(
+                                                                    content:
+                                                                        "Giao dịch thành công. Cảm ơn bạn đã ủng hộ Skylark.",
+                                                                    title:
+                                                                        "Thông báo",
+                                                                    action:
+                                                                        () {},
+                                                                  ));
+                                                          // Close the modal bottom sheet
+                                                        } catch (e) {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder: (_) =>
+                                                                  CustomAlertDialog(
+                                                                    content:
+                                                                        "Giao dịch thất bại. Vui lòng thử lại sau.",
+                                                                    title:
+                                                                        "Thông báo",
+                                                                    action:
+                                                                        () {},
+                                                                  ));
+                                                        }
+                                                      },
+                                                    ),
+                                                  );
                                                 },
                                                 color: Utils.primaryColor,
                                                 text: "Donate ngay",
