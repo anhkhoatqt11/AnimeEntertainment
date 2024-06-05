@@ -253,8 +253,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 splashSpeedInMilliseconds: 0,
                 notchSmoothness: NotchSmoothness.defaultEdge,
                 gapLocation: GapLocation.none,
-                leftCornerRadius: 24,
-                rightCornerRadius: 24,
+                leftCornerRadius: 0,
+                rightCornerRadius: 0,
                 // onTap: (index) => setState(() => _bottomNavIndex = index),
                 onTap: (index) => {
                       if (Provider.of<MiniPlayerControllerProvider>(context,

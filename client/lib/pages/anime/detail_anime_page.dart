@@ -396,7 +396,8 @@ class _DetailAnimePageState extends State<DetailAnimePage> {
                                                 TextStyle(color: Colors.grey),
                                           ),
                                           Flexible(
-                                            child: Text(detailAnime.ageFor!,
+                                            child: Text(
+                                                detailAnime.ageFor!.toString(),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(

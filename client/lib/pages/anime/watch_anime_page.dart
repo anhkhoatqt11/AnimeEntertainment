@@ -186,20 +186,25 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                   completeInitContent = true;
                 });
               });
-        _controllerAd =
-            VideoPlayerController.networkUrl(Uri.parse(value.advertising!))
-              ..initialize().then((_) {
-                _chewieControllerAd = ChewieController(
-                    videoPlayerController: _controllerAd!,
-                    autoPlay: true,
-                    looping: false,
-                    startAt: Duration(seconds: 10),
-                    showControls: false);
-                _playerWidgetAd = Chewie(controller: _chewieControllerAd!);
-                setState(() {
-                  completeInitAd = true;
+        if (value.advertising! != "") {
+          _controllerAd =
+              VideoPlayerController.networkUrl(Uri.parse(value.advertising!))
+                ..initialize().then((_) {
+                  _chewieControllerAd = ChewieController(
+                      videoPlayerController: _controllerAd!,
+                      autoPlay: true,
+                      looping: false,
+                      startAt: Duration(seconds: 10),
+                      showControls: false);
+                  _playerWidgetAd = Chewie(controller: _chewieControllerAd!);
+                  setState(() {
+                    completeInitAd = true;
+                  });
                 });
-              });
+        } else {
+          _controllerAd = null;
+          completeInitAd = true;
+        }
       });
     });
   }
@@ -208,7 +213,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xFF141414),
-        body: Column(children: [
+        body: Column(mainAxisSize: MainAxisSize.min, children: [
           GestureDetector(
             onTap: () {
               Provider.of<MiniPlayerControllerProvider>(context, listen: false)
@@ -250,7 +255,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                       ),
                               ),
                               // ad video player
-                              completeInitAd
+                              completeInitAd && _controllerAd != null
                                   ? ValueListenableBuilder(
                                       valueListenable: _controllerAd!,
                                       builder: (context, value, child) {
@@ -313,7 +318,8 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                                               child:
                                                                   _playerWidgetAd,
                                                             )
-                                                          : Container(),
+                                                          : const SizedBox
+                                                              .shrink(),
                                                     ),
                                                   ),
                                                   Padding(
@@ -383,26 +389,33 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                                   )
                                                 ],
                                               )
-                                            : Container();
+                                            : const SizedBox.shrink();
                                       },
                                     )
-                                  : SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                                  widget.percent >
-                                              186
-                                          ? MediaQuery.of(context).size.width *
-                                              widget.percent
-                                          : 186,
-                                      child: AspectRatio(
-                                        aspectRatio: 16 / 9,
-                                        child: Container(
-                                          color: Colors.grey.withOpacity(0.4),
-                                          child: const Center(
-                                            child: GFLoader(
-                                                type: GFLoaderType.circle),
-                                          ),
-                                        ),
-                                      )),
+                                  : !completeInitAd
+                                      ? SizedBox(
+                                          width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      widget.percent >
+                                                  186
+                                              ? MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  widget.percent
+                                              : 186,
+                                          child: AspectRatio(
+                                            aspectRatio: 16 / 9,
+                                            child: Container(
+                                              color:
+                                                  Colors.grey.withOpacity(0.4),
+                                              child: const Center(
+                                                child: GFLoader(
+                                                    type: GFLoaderType.circle),
+                                              ),
+                                            ),
+                                          ))
+                                      : const SizedBox.shrink(),
                             ]),
                             widget.percent == 0
                                 ? Padding(
@@ -447,7 +460,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                       ),
                                     ),
                                   )
-                                : Container(),
+                                : const SizedBox.shrink(),
                             widget.percent == 0
                                 ? IconButton(
                                     color: Colors.white,
@@ -457,7 +470,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                                           .setAnime(Animes(), AnimeEpisodes());
                                     },
                                     icon: const Icon(Icons.close))
-                                : Container()
+                                : const SizedBox.shrink()
                           ]),
                         ]),
                     widget.percent == 0 && completeInitContent
@@ -474,7 +487,7 @@ class _WatchAnimePageState extends State<WatchAnimePage>
                               );
                             },
                           )
-                        : Container(),
+                        : const SizedBox.shrink(),
                   ]),
             ),
           ),
