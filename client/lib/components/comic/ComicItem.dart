@@ -26,7 +26,7 @@ class ComicItem extends StatelessWidget {
       genreList += "/ ";
     }
     return Padding(
-      padding: const EdgeInsets.all(6.0),
+      padding: const EdgeInsets.all(3.0),
       child: GestureDetector(
         onTap: () {
           Navigator.push(

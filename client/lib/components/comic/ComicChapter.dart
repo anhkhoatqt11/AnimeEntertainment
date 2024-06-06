@@ -70,10 +70,10 @@ class _ComicChapterComponentState extends State<ComicChapterComponent> {
             ),
           );
         } else {
-          Provider.of<NavigatorProvider>(context, listen: false).setShow(false);
           Provider.of<ComicChapterProvider>(context, listen: false).setComic(
               Comics(id: comic.id),
-              ComicChapter(id: comic.chapterList![widget.index]));
+              ComicChapter(id: comic.chapterList![widget.index]['_id']));
+          Provider.of<NavigatorProvider>(context, listen: false).setShow(false);
           Navigator.push(
             context,
             MaterialPageRoute(

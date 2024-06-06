@@ -16,12 +16,6 @@ class ComicChapterProvider extends ChangeNotifier {
   void setComic(Comics item, ComicChapter item2) {
     _comic = Comics();
     _chapter = ComicChapter();
-    notifyListeners();
-    Future.delayed(const Duration(microseconds: 100), () {
-      _comic = item;
-      _chapter = item2;
-      notifyListeners(); // Prints after 1 second.
-    });
   }
 
   Future<void> setLikeSave(String userId, BuildContext context) async {

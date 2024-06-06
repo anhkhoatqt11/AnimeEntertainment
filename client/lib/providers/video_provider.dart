@@ -17,7 +17,8 @@ class VideoProvider extends ChangeNotifier {
     _anime = Animes();
     _episode = AnimeEpisodes();
     notifyListeners();
-    Future.delayed(const Duration(microseconds: 100), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      print("allo");
       _anime = item;
       _episode = item2;
       notifyListeners(); // Prints after 1 second.

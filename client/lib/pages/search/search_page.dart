@@ -231,7 +231,7 @@ class _SearchPageState extends State<SearchPage> {
                           ],
                         )
                       : Wrap(
-                          spacing: 8.0,
+                          spacing: 0.0,
                           children: List.generate(
                             listGenre.length,
                             (index) => GestureDetector(

@@ -436,7 +436,7 @@ class _DetailComicPageState extends State<DetailComicPage> {
                                 )),
                           ),
                           SizedBox(
-                            height: comic.chapterList!.length * 100,
+                            height: comic.chapterList!.length * 86,
                             child: Column(
                                 children: List.generate(
                                     comic.chapterList!.length,

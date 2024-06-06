@@ -28,7 +28,7 @@ class AnimeItem extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.all(6.0),
+        padding: const EdgeInsets.all(3.0),
         child: SizedBox(
           width: 118,
           child: Column(children: [

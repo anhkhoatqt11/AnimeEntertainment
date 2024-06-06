@@ -59,13 +59,13 @@ class ChallengeTestResult extends StatelessWidget {
   }
 
   Future<void> _showDialog(BuildContext context) async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showDialog(
-          context: context,
-          builder: (_) => ReceivedCoinDialog(
-                content:
-                    "Chúc mừng bạn đã vượt thử thách với $totalPoints điểm. Phần thưởng ${(totalPoints / 10).ceil()} skycoins sẽ được gửi vào túi của bạn.",
-              ));
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    showDialog(
+        context: context,
+        builder: (_) => ReceivedCoinDialog(
+              content:
+                  "Chúc mừng bạn đã vượt thử thách với $totalPoints điểm. Phần thưởng ${(totalPoints / 10).ceil()} skycoins sẽ được gửi vào túi của bạn.",
+            ));
+    // });
   }
 }
