@@ -128,7 +128,7 @@ class AnimeBookmarkItem extends StatelessWidget {
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.left,
                                     movieName,
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.white,

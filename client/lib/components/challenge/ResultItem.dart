@@ -26,14 +26,20 @@ class ResultItem extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  answer!,
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                Expanded(
+                  child: Text(
+                    answer!,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
                 ),
-                Icon(
-                  isCorrect! ? Icons.check : Icons.close,
-                  color: Colors.white,
-                  size: 20,
+                SizedBox(
+                  width: 20,
+                  child: Icon(
+                    isCorrect! ? Icons.check : Icons.close,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
               ],
             )),

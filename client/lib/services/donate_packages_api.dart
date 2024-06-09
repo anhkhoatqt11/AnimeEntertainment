@@ -8,6 +8,7 @@ import 'package:anime_and_comic_entertainment/model/comics.dart';
 import 'package:anime_and_comic_entertainment/model/donatepackages.dart';
 import 'package:anime_and_comic_entertainment/pages/home/no_internet_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:anime_and_comic_entertainment/utils/apiKey.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -127,6 +128,11 @@ class DonatePackagesApi {
           "userId": userId,
         }),
       );
+      var currentCoin =
+          Provider.of<UserProvider>(context, listen: false).user.coinPoint -
+              amount!;
+      Provider.of<UserProvider>(context, listen: false)
+          .setCoinPoint(currentCoin);
       if (res.statusCode == 201) {
         return true;
       } else {

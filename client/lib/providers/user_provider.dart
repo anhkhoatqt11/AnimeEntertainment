@@ -20,8 +20,16 @@ class UserProvider extends ChangeNotifier {
         "hasReceivedDailyGift": false,
       },
       challenges: []);
+  bool _isNotifyPassChallenges = false;
 
+  bool get getIsNotifyPassChallenges => _isNotifyPassChallenges;
   User get user => _user;
+
+  void setNotifyPassChallenges(bool value) {
+    _isNotifyPassChallenges = value;
+    notifyListeners();
+  }
+
   void setUserToken(String token) {
     _user.authentication = {"password": "", "salt": "", "sessionToken": token};
     notifyListeners();

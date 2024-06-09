@@ -71,6 +71,30 @@ class UsersApi {
     }
   }
 
+  static updateUsername(BuildContext context, username) async {
+    var url = Uri.parse(
+      "${baseUrl}updateUsername",
+    );
+    try {
+      var body = {
+        "userId": Provider.of<UserProvider>(context, listen: false).user.id,
+        "username": username
+      };
+      await http.post(url, body: body);
+    } catch (e) {
+      print(Provider.of<NavigatorProvider>(context, listen: false)
+          .isShowNetworkError);
+      if (Provider.of<NavigatorProvider>(context, listen: false)
+              .isShowNetworkError ==
+          false) {
+        Provider.of<NavigatorProvider>(context, listen: false)
+            .setShowNetworkError(true, 0, "Page1");
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const NoInternetPage()));
+      }
+    }
+  }
+
   static paySkycoin(BuildContext context, coin, chapterId) async {
     var url = Uri.parse(
       "${baseUrl}paySkycoin",

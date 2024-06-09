@@ -33,6 +33,20 @@ export const updateAvatar: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+export const updateUsername: RequestHandler = async (req, res, next) => {
+  try {
+    const { userId, username } = req.body;
+    var user = await UserModel.findById(userId);
+    if (!user) {
+      return res.sendStatus(400);
+    }
+    user.username = username;
+    await user?.save();
+    return res.status(200).json(user).end();
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getNotification: RequestHandler = async (req, res, next) => {
   const url = req.url;
@@ -101,7 +115,7 @@ export const sendPushNoti: RequestHandler = async (req, res, next) => {
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
       });
-    } catch { }
+    } catch {}
 
     //const token = "fYxl0HrhQGWk50NtCOKqq6:APA91bHMWUF391_XNFlIlBQcCzPK-1qwofwwZAj0pfE072_3q5ZhbzGOIgmV8i-nk-lOrLHoYPVo6rL7MjFXn0XttdBFwn5-rh3Wad8dfy7xFXfcN5MNRdmaUb0PpOJakDZvqLvdXGAt";
 

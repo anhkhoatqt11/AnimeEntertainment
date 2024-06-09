@@ -28,25 +28,25 @@ class AnimeItem extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.all(6.0),
         child: SizedBox(
-          width: 118,
+          width: 112,
           child: Column(children: [
             CachedNetworkImage(
               imageUrl: urlImage!,
-              width: 118,
-              height: 180,
+              width: 112,
+              height: 172,
               placeholder: (context, url) => Container(
-                height: 180,
-                width: 118,
+                height: 172,
+                width: 112,
                 decoration: BoxDecoration(
                     color: Colors.blue, borderRadius: BorderRadius.circular(4)),
                 child: Shimmer.fromColors(
                   baseColor: Colors.grey.shade300,
                   highlightColor: Colors.grey.shade100,
                   child: Container(
-                    width: 118,
-                    height: 180,
+                    width: 112,
+                    height: 172,
                     decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(4)),

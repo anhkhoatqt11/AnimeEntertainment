@@ -290,21 +290,26 @@ class _DonateDetailPageState extends State<DonateDetailPage> {
                                                       title: "Thông báo",
                                                       action: () async {
                                                         try {
+                                                          var userID = Provider
+                                                                  .of<UserProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                              .user
+                                                              .id;
                                                           await DonatePackagesApi
                                                               .uploadDonateRecord(
                                                                   context,
                                                                   donatePackage
                                                                           .id ??
                                                                       '',
-                                                                  user.id // Replace with the actual user ID from UserProvider
-                                                                  );
+                                                                  userID);
                                                           await DonatePackagesApi
                                                               .processDonationPayment(
                                                                   context,
                                                                   donatePackage
                                                                       .coin,
-                                                                  user.id // Replace with the actual user ID from UserProvider
-                                                                  );
+                                                                  userID);
                                                           Navigator.pop(
                                                               context);
                                                           showDialog(

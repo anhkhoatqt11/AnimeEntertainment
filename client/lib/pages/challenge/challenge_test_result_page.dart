@@ -3,6 +3,7 @@ import 'package:anime_and_comic_entertainment/components/ui/Button.dart';
 import 'package:anime_and_comic_entertainment/components/ui/ReceivedCoinDialog.dart';
 import 'package:anime_and_comic_entertainment/pages/challenge/challenge_page.dart';
 import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
+import 'package:anime_and_comic_entertainment/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/components/appbar/gf_appbar.dart';
 import 'package:provider/provider.dart';
@@ -59,13 +60,18 @@ class ChallengeTestResult extends StatelessWidget {
   }
 
   Future<void> _showDialog(BuildContext context) async {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    showDialog(
-        context: context,
-        builder: (_) => ReceivedCoinDialog(
-              content:
-                  "Chúc mừng bạn đã vượt thử thách với $totalPoints điểm. Phần thưởng ${(totalPoints / 10).ceil()} skycoins sẽ được gửi vào túi của bạn.",
-            ));
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!Provider.of<UserProvider>(context, listen: false)
+          .getIsNotifyPassChallenges) {
+        Provider.of<UserProvider>(context, listen: false)
+            .setNotifyPassChallenges(true);
+        showDialog(
+            context: context,
+            builder: (_) => ReceivedCoinDialog(
+                  content:
+                      "Chúc mừng bạn đã vượt thử thách với $totalPoints điểm. Phần thưởng ${(totalPoints / 10).ceil()} skycoins sẽ được gửi vào túi của bạn.",
+                ));
+      }
+    });
   }
 }

@@ -1,3 +1,5 @@
+import 'package:anime_and_comic_entertainment/providers/navigator_provider.dart';
+import 'package:anime_and_comic_entertainment/services/user_api.dart';
 import 'package:anime_and_comic_entertainment/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -71,7 +73,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const SizedBox(height: 20),
             TextField(
               controller: _usernameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Tên người dùng',
                 border: OutlineInputBorder(),
                 labelStyle: TextStyle(color: Colors.white),
@@ -83,9 +85,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
             const SizedBox(height: 20),
             GFButton(
               onPressed: () {
-                // Implement username update functionality
                 final newUsername = _usernameController.text;
-                // Update the username using userProvider.updateUsername(newUsername);
+                Provider.of<UserProvider>(context, listen: false)
+                    .setUsername(newUsername);
+                UsersApi.updateUsername(context, newUsername);
+                Provider.of<NavigatorProvider>(context, listen: false)
+                    .setShow(true);
+                Navigator.of(context).pop();
               },
               text: "Cập nhật",
               type: GFButtonType.solid,

@@ -14,8 +14,8 @@ class ComicChapterProvider extends ChangeNotifier {
   bool get hadLiked => _hadLiked;
   bool get hadSaved => _hadSaved;
   void setComic(Comics item, ComicChapter item2) {
-    _comic = Comics();
-    _chapter = ComicChapter();
+    _comic = item;
+    _chapter = item2;
   }
 
   Future<void> setLikeSave(String userId, BuildContext context) async {

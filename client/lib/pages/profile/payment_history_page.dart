@@ -31,8 +31,8 @@ class _PaymentHistoryState extends State<PaymentHistory> {
 
   Future<void> fetchPaymentHistory() async {
     try {
-      final result = await PaymentApi.getUserPaymentHistories(
-          context, "662777d1ba7dff5ac56f1729");
+      var userID = Provider.of<UserProvider>(context, listen: false).user.id;
+      final result = await PaymentApi.getUserPaymentHistories(context, userID);
       setState(() {
         listPaymentHistory = (result as List)
             .map((item) => PaymentHistories(

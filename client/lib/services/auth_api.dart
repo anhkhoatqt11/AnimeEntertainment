@@ -108,6 +108,14 @@ class AuthApi {
             jsonDecode(res.body)["questLog"]["received"],
             jsonDecode(res.body)["questLog"]["finalTime"],
             jsonDecode(res.body)["questLog"]["hasReceivedDailyGift"]);
+        var notis = jsonDecode(res.body)['notifications'];
+        var count = 0;
+        for (var noti in notis) {
+          if (noti['status'] == 'sent') {
+            count++;
+          }
+        }
+        userProvider.setNotificationSentCount(count);
       }
     } catch (e) {
       print(Provider.of<NavigatorProvider>(context, listen: false)

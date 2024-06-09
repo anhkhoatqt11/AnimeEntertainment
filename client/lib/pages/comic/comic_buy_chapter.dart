@@ -94,7 +94,7 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                   360 -
                                   (!isLogin ? -50 : 0)
                               : MediaQuery.of(context).size.height -
-                                  355 -
+                                  300 -
                                   (!isLogin ? -50 : 0),
                       left: 0,
                       right: 0,
@@ -355,8 +355,9 @@ class _ComicBuyChapterState extends State<ComicBuyChapter> {
                                                             context,
                                                             listen: false)
                                                         .setShow(false);
-                                                    Navigator.of(context).pop();
-                                                    Navigator.push(
+                                                    Navigator.of(context)
+                                                        .pop(true);
+                                                    Navigator.pushReplacement(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>
