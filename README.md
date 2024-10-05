@@ -1,4 +1,4 @@
-## Skylark - Ứng dụng giải trí xem phim, đọc truyện Anime
+## Skylark - Entertainment App for Watching Anime Movies and Reading Anime Comics
 
 ![alt text](https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)
 ![alt text](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
@@ -9,43 +9,49 @@
 ![alt text](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)
 ![alt text](https://img.shields.io/badge/Font_Awesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white)
 
-##
-Skylark - ứng dụng trên nền tảng di động giúp các bạn trẻ thoải sức đam mê giải trí trong thế giới Anime.
-Dưới đây là tổng quan dự án của chúng mình.
-### 📚 Đa dạng truyện tranh và phim Anime cho các bạn lựa chọn
-Hệ thống banner và bảng xếp hạng, cũng như danh sách album được quản trị và biên tập viên soạn cẩn thận giúp các bạn lựa chọn nội dung dễ dàng hơn
+## 
+Skylark is a mobile platform app that allows young people to freely indulge in the world of Anime entertainment.  
+Below is an overview of our project.
+
+### 📚 A wide range of Anime movies and comics for you to choose from  
+The system features banners, leaderboards, and album lists carefully curated by the administrators and editors to help you easily choose content.  
 
 ![alt text](https://github.com/SonDangUIT1111/AnimeEntertainment/blob/readme/ReadmePIC/readmePIC1.png)
-### 🌟 Nhiều album thể loại phong phú
-Khám phá các bộ truyện phim và các series nhiều lượt xem nhất
+
+### 🌟 A variety of diverse genre albums  
+Explore the most viewed movie series and comics.  
 
 ![alt text](https://github.com/SonDangUIT1111/AnimeEntertainment/blob/readme/ReadmePIC/readmePIC2.png)
-### 🍰 Xem phim đọc truyện chill chill với snack nào
-Thả ga đọc truyện, xem phim với màn hình thu nhỏ, bình luận vui vẻ với bạn bè và lưu vào yêu thích để xem sau
+
+### 🍰 Enjoy watching movies and reading comics with snacks  
+Relax with reading and watching in mini-screen mode, chatting with friends, and saving your favorites to watch later.  
 
 ![alt text](https://github.com/SonDangUIT1111/AnimeEntertainment/blob/readme/ReadmePIC/readmePIC3.png)
-### 👘 Quản lý thông tin chặt chẽ, thay lớp avatar với bộ sưu tập avatar siêu ngầu nào !!!
-Đăng nhập, đăng ký với số điện thoại, chỉnh sửa avatar với bộ sưu tập do Skylark biên soạn nè
+
+### 👘 Manage your information securely, and switch up your avatar with our cool avatar collection!  
+Register or log in with your phone number, and edit your avatar with a collection curated by Skylark.  
 
 ![alt text](https://github.com/SonDangUIT1111/AnimeEntertainment/blob/readme/ReadmePIC/readmePIC4.png)
-### 🚀 Vượt thử thách mỗi mùa và làm nhiệm vụ để nhận thêm skycoin mua truyện nè
-Làm nhiệm vụ hằng ngày, đăng nhập nhận thưởng và tham gia đố vui mỗi mùa để nhận skycoin nè. Skycoin dùng để mua chương truyện và donate cho chúng tớ ấy
 
-![alt text](https://github.com/SonDangUIT1111/AnimeEntertainment/blob/readme/ReadmePIC/readmePIC5.png)
-### 💵 Sử dụng hệ thống thanh toán để nạp thêm skycoin nè
+### 🚀 Take on challenges every season and complete tasks to earn more Skycoins to buy comics!  
+Complete daily tasks, log in to receive rewards, and participate in quizzes each season to earn Skycoins. Skycoins can be used to purchase comic chapters or donate to us.  
+
+![alt text](https://github.com/SonDangUIT1111/AnimeEntertainment/blob/readme/ReadmePIC5.png)
+
+### 💵 Use the payment system to top up your Skycoins  
 ![alt text](https://github.com/SonDangUIT1111/AnimeEntertainment/blob/readme/ReadmePIC/readmePIC6.png)
-### 🏦 Donate cho chúng tớ có thêm động lực phát triển và ra nhiều nội dung mới hơn nhé 
-Thèm bún bò, lẩu, ramen của Naruto mà không có tiền nè 
+
+### 🏦 Donate to support us so we can develop more content!  
+Craving Naruto's ramen or hotpot but short on cash?
 
 ![alt text](https://github.com/SonDangUIT1111/AnimeEntertainment/blob/readme/ReadmePIC/readmePIC7.png)
 
-Đây là tổng quan ứng dụng của chúng tớ.
-# Đây là phần mô tả ứng dụng quản trị skylark portal, các bạn có thể ghé qua xem nhé.
-https://github.com/anhkhoatqt11/AnimeEntertainmentAdmin
+This is an overview of our app.  
+
+# Check out the admin description of the Skylark portal here.  
+https://github.com/anhkhoatqt11/AnimeEntertainmentAdmin  
 
 ![alt text](https://github.com/SonDangUIT1111/AnimeEntertainment/blob/readme/ReadmePIC/readmePIC8.png)
 
-## 💕 Cảm ơn các bạn đã ghé thăm project của chúng tớ
-Ứng dụng sẽ được cập nhật sớm trên Google Play, chúng tớ sẽ cập nhật chi tiết sau.
-
-
+## 💕 Thank you for visiting our project  
+The app will be available soon on Google Play, and we will update you with more details.
