@@ -4,11 +4,37 @@ import mongoose from "mongoose";
 import DonatePackagesModel from "../models/donatePackage";
 import UserModel from "../models/user";
 import PaymentHistoryModel from "../models/paymentHistories";
+import qs from "qs";
 
 export const getDonatePackageList: RequestHandler = async (req, res, next) => {
   try {
     const donatePackages = await DonatePackagesModel.find();
     res.status(200).json(donatePackages);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getDonatePackageDetail: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
+  const url = req.url;
+  const [, params] = url.split("?");
+  const parsedParams = qs.parse(params);
+  const packageId =
+    typeof parsedParams.packageId === "string" ? parsedParams.packageId : "";
+  try {
+    if (!mongoose.isValidObjectId(packageId)) {
+      throw createHttpError(400, "Invalid packageId id");
+    }
+    const donatePackage = await DonatePackagesModel.findById(packageId);
+
+    if (!donatePackage) {
+      throw createHttpError(404, "Donate Package not found");
+    }
+    res.status(200).json(donatePackage);
   } catch (error) {
     next(error);
   }
@@ -26,7 +52,7 @@ export const uploadDonateRecord: RequestHandler = async (req, res, next) => {
 
     const newDonateRecord = {
       userId,
-      datetime: new Date()
+      datetime: new Date(),
     };
 
     donatePackage.donateRecords.push(newDonateRecord);
@@ -36,14 +62,15 @@ export const uploadDonateRecord: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
-
+};
 
 export const getDonatorList: RequestHandler = async (req, res, next) => {
   try {
     const donatePackages = await DonatePackagesModel.find();
 
-    const userDonations: { [key: string]: { totalCoins: number, donationCount: number } } = {};
+    const userDonations: {
+      [key: string]: { totalCoins: number; donationCount: number };
+    } = {};
 
     // Aggregate donations for each user
     donatePackages.forEach((donatePackage) => {
@@ -59,16 +86,20 @@ export const getDonatorList: RequestHandler = async (req, res, next) => {
     });
 
     // Convert user IDs to ObjectId if valid
-    const userIds = Object.keys(userDonations).filter(id => mongoose.Types.ObjectId.isValid(id)).map(id => new mongoose.Types.ObjectId(id));
+    const userIds = Object.keys(userDonations)
+      .filter((id) => mongoose.Types.ObjectId.isValid(id))
+      .map((id) => new mongoose.Types.ObjectId(id));
 
     // Get user details
-    const users = await UserModel.find({ _id: { $in: userIds } }).select('username avatar');
+    const users = await UserModel.find({ _id: { $in: userIds } }).select(
+      "username avatar"
+    );
 
     const result = users.map((user) => ({
       username: user.username,
       totalCoins: userDonations[user._id.toString()].totalCoins,
       donationCount: userDonations[user._id.toString()].donationCount,
-      avatar: user.avatar
+      avatar: user.avatar,
     }));
 
     // Sort the result from highest to lowest totalCoins
@@ -83,9 +114,11 @@ export const getDonatorList: RequestHandler = async (req, res, next) => {
   }
 };
 
-
-export const processDonationPayment: RequestHandler = async (req, res, next) => {
-
+export const processDonationPayment: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   try {
     const { userId, amount } = req.body;
 
@@ -95,7 +128,9 @@ export const processDonationPayment: RequestHandler = async (req, res, next) => 
       return next(createHttpError(404, "User not found"));
     }
 
-    user.coinPoint = (user.coinPoint ?? 0) - amount;
+    if ((user.coinPoint || 0) < (amount || 1)) {
+      return next(createHttpError(404, "Skycoin not enough for payment"));
+    } else user.coinPoint = (user.coinPoint ?? 0) - amount;
 
     const newPaymentHistory = await PaymentHistoryModel.create({
       userId: userId,
@@ -110,4 +145,4 @@ export const processDonationPayment: RequestHandler = async (req, res, next) => 
   } catch (error) {
     next(error);
   }
-}
+};
