@@ -5,6 +5,7 @@ import * as admin from "firebase-admin";
 import AvatarModel from "../models/avatars";
 import UserModel from "../models/user";
 import qs from "qs";
+import ComicChapterModel from "../models/comicChapter";
 import PaymentHistoryModel from "../models/paymentHistories";
 import ComicsModel from "../models/comics";
 import AnimeModel from "../models/anime";
@@ -193,15 +194,26 @@ export const getPaymentHistories: RequestHandler = async (req, res, next) => {
 export const paySkycoin: RequestHandler = async (req, res, next) => {
   try {
     const { userId, coin, chapterId } = req.body;
+    if (!mongoose.isValidObjectId(chapterId)) {
+      throw createHttpError(400, "Invalid chapter id");
+    }
+    if (!mongoose.isValidObjectId(userId)) {
+      throw createHttpError(400, "Invalid user id");
+    }
     var user = await UserModel.findById(userId);
-    console.log(user);
+    const chapter = await ComicChapterModel.findById(chapterId);
+    if (!chapter) {
+      throw createHttpError(404, "chapter not found");
+    }
     if (!user) {
-      return res.sendStatus(400);
+      throw createHttpError(404, "user not found");
+    }
+    if ((user.coinPoint || 0) < (chapter.unlockPrice || 1)) {
+      throw createHttpError(404, "Skycoin not enough for payment");
     }
     if (user.coinPoint != undefined) {
-      user.coinPoint -= coin;
+      user.coinPoint -= chapter.unlockPrice || 0;
     }
-    console.log(user.paymentHistories);
     user.paymentHistories.push(new mongoose.Types.ObjectId(chapterId));
     await user?.save();
 
